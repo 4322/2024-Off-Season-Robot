@@ -1,0 +1,102 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.7518994781213513,
+        "y": 4.520382906671662
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.7121880748754352,
+        "y": 3.4195642713682
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.913825345482359,
+        "y": 2.2367697802442676
+      },
+      "prevControl": {
+        "x": 2.7193200178126444,
+        "y": 2.8457332806249056
+      },
+      "nextControl": {
+        "x": 5.173756901232695,
+        "y": 1.5944517322146852
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.637871367040879,
+        "y": 0.9837102698456457
+      },
+      "prevControl": {
+        "x": 5.892956721719433,
+        "y": 1.3116136931275295
+      },
+      "nextControl": {
+        "x": 9.44176247573327,
+        "y": 0.6447240212323082
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.918404239090931,
+        "y": 3.126793357723663
+      },
+      "prevControl": {
+        "x": 5.260571548247232,
+        "y": 1.4521437316769061
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 153.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 2.6,
+      "maxWaypointRelativePos": 3.0,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 4.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 153.13018691250087,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "FourNoteSourceSide",
+  "previewStartingState": {
+    "rotation": 120.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

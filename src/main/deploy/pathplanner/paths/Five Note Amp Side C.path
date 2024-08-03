@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.52,
+        "y": 5.54
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.1103565174320065,
+        "y": 5.820285763253409
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.6607658350837373,
+        "y": 6.827417706190619
+      },
+      "prevControl": {
+        "x": 2.122303150512147,
+        "y": 6.5463576290902905
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -144.2461127455634,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "FiveNoteAmpSide",
+  "previewStartingState": {
+    "rotation": 179.53037298031035,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}
