@@ -178,3 +178,6 @@ logs/
 ctre_sim/
 
 *.txt
+
+# Version file
+src/main/java/frc/robot/BuildConstants.java
