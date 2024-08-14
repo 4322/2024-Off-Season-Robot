@@ -1,17 +1,14 @@
 package frc.robot;
 
-import com.ctre.phoenix.led.CANdle;
 import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commons.LoggedTunableNumber;
-import frc.robot.subsystems.Superstructure.SuperstructureState;
 import java.util.Optional;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -79,7 +76,7 @@ public class Robot extends LoggedRobot {
 
   private boolean requestedHome = false;
 
-  private CANdle leds = new CANdle(31, "dabus");
+  // private CANdle leds = new CANdle(31, "dabus");
 
   public static LoggedTunableNumber leftSpeed = new LoggedTunableNumber("Tuning/LeftSpeed", 0.0);
   public static LoggedTunableNumber rightSpeed = new LoggedTunableNumber("Tuning/RightSpeed", 0.0);
@@ -171,7 +168,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
+    /*
     if (RobotContainer.superstructure.getSystemState() == SuperstructureState.PRE_CLIMB) {
       leds.setLEDs(255, 0, 0, 0, 0, 60);
       RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
@@ -185,6 +182,7 @@ public class Robot extends LoggedRobot {
       leds.setLEDs(0, 0, 0, 0, 0, 60);
       RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
     }
+     */
 
     Optional<Alliance> allianceOptional = DriverStation.getAlliance();
     if (allianceOptional.isPresent()) {

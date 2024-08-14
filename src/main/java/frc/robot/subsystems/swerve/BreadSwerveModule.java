@@ -24,7 +24,6 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -192,7 +191,8 @@ public class BreadSwerveModule {
     CANcoderConfiguration cancoderConfigs = new CANcoderConfiguration();
     cancoderConfigs.MagnetSensor.MagnetOffset = constants.CANcoderOffset;
     // CLOCKWORK: Config needed due to not being able to invert Falcon rotation motors
-    // CLOCKWORK: CANcoder sensor direction must be same as the direction the module spins when positive power is applied to motor
+    // CLOCKWORK: CANcoder sensor direction must be same as the direction the module spins when
+    // positive power is applied to motor
     cancoderConfigs.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
     response = m_cancoder.getConfigurator().apply(cancoderConfigs);
     if (!response.isOK()) {
@@ -262,7 +262,7 @@ public class BreadSwerveModule {
     /* Now latency-compensate our signals */
     double drive_rot =
         BaseStatusSignal.getLatencyCompensatedValue(m_drivePosition, m_driveVelocity);
-    
+
     // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
     double angle_rot =
         -BaseStatusSignal.getLatencyCompensatedValue(m_steerPosition, m_steerVelocity);
@@ -305,8 +305,9 @@ public class BreadSwerveModule {
       SteerRequestType steerRequestType) {
     var optimized = SwerveModuleState.optimize(state, m_internalState.angle);
     m_targetState = optimized;
-    
-    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure motor inversion
+
+    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure
+    // motor inversion
     double angleToSetDeg = optimized.angle.getRotations();
     switch (steerRequestType) {
       case MotionMagic:
@@ -397,7 +398,8 @@ public class BreadSwerveModule {
   public void applyCharacterization(Rotation2d steerTarget, VoltageOut driveRequest) {
     double angleToSetDeg = steerTarget.getRotations();
     /* Use the configured closed loop output mode */
-    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure motor inversion
+    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure
+    // motor inversion
     switch (m_steerClosedLoopOutput) {
       case Voltage:
         m_steerMotor.setControl(m_angleVoltageSetter.withPosition(-angleToSetDeg));
@@ -425,7 +427,8 @@ public class BreadSwerveModule {
   public void applyCharacterization(Rotation2d steerTarget, TorqueCurrentFOC driveRequest) {
     double angleToSetDeg = steerTarget.getRotations();
     /* Use the configured closed loop output mode */
-    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure motor inversion
+    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure
+    // motor inversion
     switch (m_steerClosedLoopOutput) {
       case Voltage:
         m_steerMotor.setControl(m_angleVoltageSetter.withPosition(-angleToSetDeg));

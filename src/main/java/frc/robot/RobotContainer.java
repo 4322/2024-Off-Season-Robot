@@ -20,38 +20,30 @@ import frc.robot.commons.BreadUtil;
 import frc.robot.constants.GammaTunerConstants;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.elevatorpivot.ElevatorIO;
-import frc.robot.subsystems.elevatorpivot.ElevatorIOKrakenX60;
 import frc.robot.subsystems.elevatorpivot.PivotIO;
-import frc.robot.subsystems.elevatorpivot.PivotIOKrakenX60;
 import frc.robot.subsystems.feeder.FeederIO;
-import frc.robot.subsystems.feeder.FeederIOFalcon500;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIO;
-import frc.robot.subsystems.intake.IntakeIOFalcon500;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
-import frc.robot.subsystems.shooter.ShooterIOKrakenX60;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.vision.VisionSupplier;
-import frc.robot.vision.photonvision.BreadPhotonCamera;
-import frc.robot.vision.photonvision.PhotonAprilTagVision;
 import frc.robot.vision.photonvision.PhotonNoteDetection;
-import org.photonvision.PhotonCamera;
 
 public class RobotContainer {
 
   public static XboxController driver = new XboxController(0);
   public static XboxController operator = new XboxController(1);
 
-  public static ShooterIO shooterIO = new ShooterIOKrakenX60();
+  public static ShooterIO shooterIO = new ShooterIO() {};
   public static Shooter shooter = new Shooter(shooterIO);
 
-  public static IntakeIO intakeIO = new IntakeIOFalcon500();
+  public static IntakeIO intakeIO = new IntakeIO() {};
   public static Intake intake = new Intake(intakeIO);
 
-  public static ElevatorIO elevatorIO = new ElevatorIOKrakenX60();
-  public static PivotIO pivotIO = new PivotIOKrakenX60();
-  public static FeederIO feederIO = new FeederIOFalcon500();
+  public static ElevatorIO elevatorIO = new ElevatorIO() {};
+  public static PivotIO pivotIO = new PivotIO() {};
+  public static FeederIO feederIO = new FeederIO() {};
   public static Superstructure superstructure = new Superstructure(elevatorIO, pivotIO, feederIO);
   public static final Swerve swerve =
       new Swerve(
@@ -62,6 +54,7 @@ public class RobotContainer {
           GammaTunerConstants.BackRight);
 
   // April tag cameras
+  /*
   public static final BreadPhotonCamera frontLeftCamera = new BreadPhotonCamera("front-left");
   public static final BreadPhotonCamera frontRightCamera = new BreadPhotonCamera("front-right");
   public static final BreadPhotonCamera backLeftCamera = new BreadPhotonCamera("back-left");
@@ -75,13 +68,15 @@ public class RobotContainer {
       new PhotonAprilTagVision(frontLeftCamera, frontRightCamera, backLeftCamera, backRightCamera);
   public static final PhotonNoteDetection noteDetection =
       new PhotonNoteDetection(leftObjCamera, rightObjCamera);
-  // public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection();
+  */
+
+  public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection();
   public static final VisionSupplier visionSupplier = new VisionSupplier();
   public static AutonomousSelector autonomousSelector;
 
   public RobotContainer() {
     configureBindings();
-    configureAprilTagVision();
+    // configureAprilTagVision();
   }
 
   private void configureBindings() {
@@ -131,9 +126,11 @@ public class RobotContainer {
         .whileTrue(new FenderShotCommand(swerve, superstructure, shooter));
   }
 
+  /*
   private void configureAprilTagVision() {
     aprilTagVision.setDataInterfaces(swerve::getPose, swerve::addVisionData);
   }
+  */
 
   public Command getAutonomousCommand() {
     return autonomousSelector.get();
