@@ -28,7 +28,7 @@ public class BetaTunerConstants {
   private static final double kSteerGearRatio = 21.4285714286;
   private static final double kWheelRadiusInches = 1.9855196;
   private static final int kPigeonId = 30;
-  private static final boolean kSteerMotorReversed = true;
+  private static final boolean kSteerMotorReversed = false;
   private static final String kCANbusName = "dabus";
   private static final boolean kInvertLeftSide = false;
   private static final boolean kInvertRightSide = true;

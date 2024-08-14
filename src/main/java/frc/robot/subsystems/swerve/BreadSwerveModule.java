@@ -23,6 +23,8 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -189,6 +191,9 @@ public class BreadSwerveModule {
 
     CANcoderConfiguration cancoderConfigs = new CANcoderConfiguration();
     cancoderConfigs.MagnetSensor.MagnetOffset = constants.CANcoderOffset;
+    // CLOCKWORK: Config needed due to not being able to invert Falcon rotation motors
+    // CLOCKWORK: CANcoder sensor direction must be same as the direction the module spins when positive power is applied to motor
+    cancoderConfigs.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
     response = m_cancoder.getConfigurator().apply(cancoderConfigs);
     if (!response.isOK()) {
       System.out.println(
@@ -257,8 +262,10 @@ public class BreadSwerveModule {
     /* Now latency-compensate our signals */
     double drive_rot =
         BaseStatusSignal.getLatencyCompensatedValue(m_drivePosition, m_driveVelocity);
+    
+    // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
     double angle_rot =
-        BaseStatusSignal.getLatencyCompensatedValue(m_steerPosition, m_steerVelocity);
+        -BaseStatusSignal.getLatencyCompensatedValue(m_steerPosition, m_steerVelocity);
 
     /*
      * Back out the drive rotations based on angle rotations due to coupling between
@@ -298,18 +305,19 @@ public class BreadSwerveModule {
       SteerRequestType steerRequestType) {
     var optimized = SwerveModuleState.optimize(state, m_internalState.angle);
     m_targetState = optimized;
-
+    
+    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure motor inversion
     double angleToSetDeg = optimized.angle.getRotations();
     switch (steerRequestType) {
       case MotionMagic:
         switch (m_steerClosedLoopOutput) {
           case Voltage:
             m_steerMotor.setControl(
-                m_angleVoltageSetter.withPosition(angleToSetDeg).withEnableFOC(true));
+                m_angleVoltageSetter.withPosition(-angleToSetDeg).withEnableFOC(true));
             break;
 
           case TorqueCurrentFOC:
-            m_steerMotor.setControl(m_angleTorqueSetter.withPosition(angleToSetDeg));
+            m_steerMotor.setControl(m_angleTorqueSetter.withPosition(-angleToSetDeg));
             break;
         }
         break;
@@ -318,11 +326,11 @@ public class BreadSwerveModule {
         switch (m_steerClosedLoopOutput) {
           case Voltage:
             m_steerMotor.setControl(
-                m_angleVoltageExpoSetter.withPosition(angleToSetDeg).withEnableFOC(true));
+                m_angleVoltageExpoSetter.withPosition(-angleToSetDeg).withEnableFOC(true));
             break;
 
           case TorqueCurrentFOC:
-            m_steerMotor.setControl(m_angleTorqueExpoSetter.withPosition(angleToSetDeg));
+            m_steerMotor.setControl(m_angleTorqueExpoSetter.withPosition(-angleToSetDeg));
             break;
         }
         break;
@@ -332,7 +340,8 @@ public class BreadSwerveModule {
 
     /* From FRC 900's whitepaper, we add a cosine compensator to the applied drive velocity */
     /* To reduce the "skew" that occurs when changing direction */
-    double steerMotorError = angleToSetDeg - m_steerPosition.getValue();
+    // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
+    double steerMotorError = angleToSetDeg - (-m_steerPosition.getValue());
     /* If error is close to 0 rotations, we're already there, so apply full power */
     /* If the error is close to 0.25 rotations, then we're 90 degrees, so movement doesn't help us at all */
     double cosineScalar = Math.cos(Units.rotationsToRadians(steerMotorError));
@@ -344,7 +353,8 @@ public class BreadSwerveModule {
 
     /* Back out the expected shimmy the drive motor will see */
     /* Find the angular rate to determine what to back out */
-    double azimuthTurnRps = m_steerVelocity.getValue();
+    // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
+    double azimuthTurnRps = -m_steerVelocity.getValue();
     /* Azimuth turn rate multiplied by coupling ratio provides back-out rps */
     double driveRateBackOut = azimuthTurnRps * m_couplingRatioDriveRotorToCANcoder;
     velocityToSet += driveRateBackOut;
@@ -387,13 +397,14 @@ public class BreadSwerveModule {
   public void applyCharacterization(Rotation2d steerTarget, VoltageOut driveRequest) {
     double angleToSetDeg = steerTarget.getRotations();
     /* Use the configured closed loop output mode */
+    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure motor inversion
     switch (m_steerClosedLoopOutput) {
       case Voltage:
-        m_steerMotor.setControl(m_angleVoltageSetter.withPosition(angleToSetDeg));
+        m_steerMotor.setControl(m_angleVoltageSetter.withPosition(-angleToSetDeg));
         break;
 
       case TorqueCurrentFOC:
-        m_steerMotor.setControl(m_angleTorqueSetter.withPosition(angleToSetDeg));
+        m_steerMotor.setControl(m_angleTorqueSetter.withPosition(-angleToSetDeg));
         break;
     }
 
@@ -414,13 +425,14 @@ public class BreadSwerveModule {
   public void applyCharacterization(Rotation2d steerTarget, TorqueCurrentFOC driveRequest) {
     double angleToSetDeg = steerTarget.getRotations();
     /* Use the configured closed loop output mode */
+    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure motor inversion
     switch (m_steerClosedLoopOutput) {
       case Voltage:
-        m_steerMotor.setControl(m_angleVoltageSetter.withPosition(angleToSetDeg));
+        m_steerMotor.setControl(m_angleVoltageSetter.withPosition(-angleToSetDeg));
         break;
 
       case TorqueCurrentFOC:
-        m_steerMotor.setControl(m_angleTorqueSetter.withPosition(angleToSetDeg));
+        m_steerMotor.setControl(m_angleTorqueSetter.withPosition(-angleToSetDeg));
         break;
     }
 
@@ -471,10 +483,11 @@ public class BreadSwerveModule {
    *
    * @return Current state of the module
    */
+  // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
   public SwerveModuleState getCurrentState() {
     return new SwerveModuleState(
         m_driveVelocity.getValue() / m_driveRotationsPerMeter,
-        Rotation2d.fromRotations(m_steerPosition.getValue()));
+        Rotation2d.fromRotations(-m_steerPosition.getValue()));
   }
 
   /**
