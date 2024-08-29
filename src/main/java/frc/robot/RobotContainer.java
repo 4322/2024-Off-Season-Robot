@@ -17,7 +17,7 @@ import frc.robot.commands.LowPassCommand;
 import frc.robot.commands.PassCommand;
 import frc.robot.commands.TeleopShootCommand;
 import frc.robot.commons.BreadUtil;
-import frc.robot.constants.GammaTunerConstants;
+import frc.robot.constants.TunerConstants;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.elevatorpivot.ElevatorIO;
 import frc.robot.subsystems.elevatorpivot.ElevatorIOKrakenX60;
@@ -55,11 +55,11 @@ public class RobotContainer {
   public static Superstructure superstructure = new Superstructure(elevatorIO, pivotIO, feederIO);
   public static final Swerve swerve =
       new Swerve(
-          GammaTunerConstants.DrivetrainConstants,
-          GammaTunerConstants.FrontLeft,
-          GammaTunerConstants.FrontRight,
-          GammaTunerConstants.BackLeft,
-          GammaTunerConstants.BackRight);
+          TunerConstants.DrivetrainConstants,
+          TunerConstants.FrontLeft,
+          TunerConstants.FrontRight,
+          TunerConstants.BackLeft,
+          TunerConstants.BackRight);
 
   // April tag cameras
   public static final BreadPhotonCamera frontLeftCamera = new BreadPhotonCamera("front-left");
