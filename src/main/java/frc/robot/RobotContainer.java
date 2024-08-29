@@ -83,9 +83,9 @@ public class RobotContainer {
     swerve.setDefaultCommand(
         new RunCommand(
             () -> {
-              double x = BreadUtil.deadband(driver.getLeftY(), 0.1);
-              double y = BreadUtil.deadband(driver.getLeftX(), 0.1);
-              double omega = BreadUtil.deadband(driver.getRightX(), 0.1);
+              double x = BreadUtil.deadband(driver.getLeftY(), 0.16);
+              double y = BreadUtil.deadband(driver.getLeftX(), 0.16);
+              double omega = BreadUtil.deadband(driver.getRightX(), 0.16);
 
               double dx = 0;
               double dy = 0;
