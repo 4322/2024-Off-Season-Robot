@@ -40,8 +40,8 @@ public class Constants {
 
     static {
       if (robot == RobotType.BETA) {
-        INTAKE_ID = 16;
-        VECTOR_ID = 27;
+        INTAKE_ID = 5;
+        VECTOR_ID = 6;
 
         INTAKE_SPEED = 1.0;
         SPIT_SPEED = -0.4;
@@ -50,14 +50,15 @@ public class Constants {
         INTAKE_INVERSION = InvertedValue.Clockwise_Positive;
         VECTOR_INVERSION = InvertedValue.Clockwise_Positive;
       } else {
-        INTAKE_ID = 16;
-        VECTOR_ID = 27;
+        INTAKE_ID = 5;
+        VECTOR_ID = 6;
 
         INTAKE_SPEED = 1.0;
         SPIT_SPEED = -0.4;
         FEED_SPEED = 0.8;
 
-        INTAKE_INVERSION = InvertedValue.Clockwise_Positive;
+        // Clockwork: Intake must not be inverted due to use of falcon
+        INTAKE_INVERSION = InvertedValue.CounterClockwise_Positive;
         VECTOR_INVERSION = InvertedValue.Clockwise_Positive;
       }
     }
