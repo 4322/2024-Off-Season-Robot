@@ -191,8 +191,19 @@ public class BreadSwerveModule {
     CANcoderConfiguration cancoderConfigs = new CANcoderConfiguration();
     cancoderConfigs.MagnetSensor.MagnetOffset = constants.CANcoderOffset;
     // CLOCKWORK: Config needed due to not being able to invert Falcon rotation motors
-    // CLOCKWORK: CANcoder sensor direction must be same as the direction the module spins when
-    // positive power is applied to motor
+    /*
+     * Non-inverted Talon FX motors and CANcoders are configured for counterclockwise positive.
+     * Due to gearing between output shaft and swerve rotation, swerve rotation direction is inverted from motor rotation direction.
+     * Ie. positive power(counterclockwise roation) applied to motor causes swerve rotation to spin clockwise.
+     * 
+     * FusedCANcoder combines relative encoder value from TalonFX with absolute encoder value from CANcoder.
+     * Positive power applied will cause relative encoder values from motor to be positive while 
+     * non-inverted CANcoder values will be negative.
+     * Fusing positive and negative values will cause algorithm to fail!
+     * 
+     * Therefore, CANcoder sensor direction must be same as the direction the module spins when positive power 
+     * is applied to motor, which is clockwise positive for this case.
+     */
     cancoderConfigs.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
     response = m_cancoder.getConfigurator().apply(cancoderConfigs);
     if (!response.isOK()) {
