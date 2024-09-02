@@ -19,8 +19,8 @@ import frc.robot.commons.LoggedTunableNumber;
 public class IntakeIOFalcon500 implements IntakeIO {
 
   /* Hardware */
-  private final TalonFX intake = new TalonFX(INTAKE_ID, "dabus");
-  private final TalonFX vector = new TalonFX(VECTOR_ID, "dabus");
+  private final TalonFX intake = new TalonFX(INTAKE_ID, "Clockwork");
+  private final TalonFX vector = new TalonFX(VECTOR_ID, "Clockwork");
   // private final AnalogInput beamBreak = new AnalogInput(0);
 
   /* Configurator */
@@ -133,9 +133,9 @@ public class IntakeIOFalcon500 implements IntakeIO {
   public void updateInputs(IntakeIOInputs inputs) {
     BaseStatusSignal.refreshAll(vectorVelocity, supplyVector);
 
-    inputs.intakeVelocityRPM = intake.getVelocity().getValueAsDouble() * 60;
-    inputs.intakeCurrentAmps = intake.getSupplyCurrent().getValue();
-    inputs.intakeAppliedVoltage = intake.getMotorVoltage().getValue();
+    inputs.intakeVelocityRPM = -intake.getVelocity().getValueAsDouble() * 60;
+    inputs.intakeCurrentAmps = -intake.getSupplyCurrent().getValue();
+    inputs.intakeAppliedVoltage = -intake.getMotorVoltage().getValue();
     inputs.intakeTempCelcius = intake.getDeviceTemp().getValue();
 
     inputs.vectorVelocityRPM = vectorVelocity.getValue() * 60;
@@ -151,7 +151,7 @@ public class IntakeIOFalcon500 implements IntakeIO {
 
   @Override
   public void setIntakePercent(double percent) {
-    intake.setControl(new DutyCycleOut(percent));
+    intake.setControl(new DutyCycleOut(-percent));
   }
 
   @Override
@@ -161,7 +161,7 @@ public class IntakeIOFalcon500 implements IntakeIO {
 
   @Override
   public void setIntakeVelocity(double velocityRpm) {
-    intake.setControl(new VelocityVoltage(velocityRpm / 60.0));
+    intake.setControl(new VelocityVoltage(-velocityRpm / 60.0));
   }
 
   @Override
