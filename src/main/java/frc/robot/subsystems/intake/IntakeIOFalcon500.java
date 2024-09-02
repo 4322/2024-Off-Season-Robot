@@ -67,14 +67,19 @@ public class IntakeIOFalcon500 implements IntakeIO {
     intakeCurrentLimitConfigs = new CurrentLimitsConfigs();
     intakeCurrentLimitConfigs.SupplyCurrentLimit = 40.0;
     intakeCurrentLimitConfigs.SupplyCurrentThreshold = 40.0;
-    intakeCurrentLimitConfigs.StatorCurrentLimit = 300.0;
+    // CLOCKWORK: Stator limit was originally 300
+    intakeCurrentLimitConfigs.StatorCurrentLimit = 120.0;
     intakeCurrentLimitConfigs.SupplyTimeThreshold = 1.5;
     intakeCurrentLimitConfigs.SupplyCurrentLimitEnable = true;
 
     vectorCurrentLimitConfigs = new CurrentLimitsConfigs();
-    vectorCurrentLimitConfigs.SupplyCurrentLimit = 100.0;
-    vectorCurrentLimitConfigs.SupplyCurrentThreshold = 100.0;
+    // CLOCKWORK: Supply limit was originally 100
+    vectorCurrentLimitConfigs.SupplyCurrentLimit = 40.0;
+    // CLOCKWORK: Supply threshold was originally 100 
+    vectorCurrentLimitConfigs.SupplyCurrentThreshold = 55.0;
     vectorCurrentLimitConfigs.SupplyTimeThreshold = 1;
+    // CLOCKWORK: Added stator current limit
+    vectorCurrentLimitConfigs.StatorCurrentLimit = 120.0;
     vectorCurrentLimitConfigs.SupplyCurrentLimitEnable = true;
 
     intakeOutputConfigs = new MotorOutputConfigs();
