@@ -57,7 +57,8 @@ public class Constants {
         SPIT_SPEED = -0.4;
         FEED_SPEED = 0.8;
 
-        INTAKE_INVERSION = InvertedValue.Clockwise_Positive;
+        // Clockwork: Intake must not be inverted due to use of falcon
+        INTAKE_INVERSION = InvertedValue.CounterClockwise_Positive;
         VECTOR_INVERSION = InvertedValue.Clockwise_Positive;
       }
     }
