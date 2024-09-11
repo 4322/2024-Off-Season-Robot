@@ -193,7 +193,9 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    RobotContainer.intake.requestIdle();
+  }
 
   @Override
   public void disabledPeriodic() {
