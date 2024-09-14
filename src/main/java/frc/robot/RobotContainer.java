@@ -98,7 +98,7 @@ public class RobotContainer {
                 dx = Math.pow(-x, 1) * -1 * 6.0;
                 dy = Math.pow(-y, 1) * -1 * 6.0;
               }
-              double rot = Math.pow(-omega, 3) * 12.0;
+              double rot = Math.pow(-omega, 3) * 6.0;
               swerve.requestPercent(new ChassisSpeeds(dx, dy, rot), true);
 
               if (driver.getRawButtonPressed(XboxController.Button.kStart.value)) {
