@@ -13,6 +13,7 @@ import frc.robot.autonomous.modes.FourNoteSourceSide;
 import frc.robot.autonomous.modes.Preload;
 import frc.robot.autonomous.modes.SixNoteAmpSide;
 import frc.robot.autonomous.modes.SixNoteAmpSideAlternate;
+import frc.robot.autonomous.modes.SourceSideDisruption;
 import frc.robot.autonomous.modes.SourceSideRush12;
 import frc.robot.autonomous.modes.SourceSideRush21;
 import frc.robot.autonomous.modes.ThreeNoteCenter;
@@ -55,6 +56,8 @@ public class AutonomousSelector {
         "SOURCE_SIDE_RUSH_21", new SourceSideRush21(superstructure, swerve, shooter, intake));
     autonomousSelector.addOption(
         "AMP_SIDE_RUSH", new AmpSideRush(superstructure, swerve, shooter, intake));
+    autonomousSelector.addOption(
+        "SOURCE_SIDE_DISRUPTION", new SourceSideDisruption(swerve, intake, superstructure));
 
     SmartDashboard.putData("Autonomus Selector", autonomousSelector);
   }

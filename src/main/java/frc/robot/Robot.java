@@ -75,6 +75,9 @@ public class Robot extends LoggedRobot {
   public static PathPlannerPath asrFromShootPoseB;
   public static PathPlannerPath asrFromShootPoseC;
 
+  public static PathPlannerPath sourceSideDisruptionA;
+  public static PathPlannerPath sourceSideDisruptionB;
+
   private boolean requestedHome = false;
 
   // private CANdle leds = new CANdle(31, "dabus");
@@ -163,6 +166,9 @@ public class Robot extends LoggedRobot {
     asrFromShootPoseA = PathPlannerPath.fromPathFile("ASR From Shoot Pose A");
     asrFromShootPoseB = PathPlannerPath.fromPathFile("ASR From Shoot Pose B");
     asrFromShootPoseC = PathPlannerPath.fromPathFile("ASR From Shoot Pose C");
+
+    sourceSideDisruptionA = PathPlannerPath.fromPathFile("Source Side Disruption A");
+    sourceSideDisruptionB = PathPlannerPath.fromPathFile("Source Side Disruption B");
 
     m_robotContainer.configureAutonomousSelector();
   }
