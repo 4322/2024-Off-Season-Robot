@@ -71,6 +71,8 @@ public class Constants {
     public static final double SWERVE_COAST_TRESHOLD_SEC;
     public static final double SWERVE_ANGULAR_ERROR_TOLERANCE_RAD;
     public static final double SWERVE_ANGULAR_ERROR_TOLERANCE_RAD_P_S;
+    public static final double driveDeadband = 0.16;
+    public static final double rotDeadband = 0.16;
 
     static {
       if (robot == RobotType.BETA) {
