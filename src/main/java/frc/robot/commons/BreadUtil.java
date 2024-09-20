@@ -67,7 +67,7 @@ public class BreadUtil {
   public static double deadband(double value, double tolerance) {
     if (Math.abs(value) < tolerance) return 0.0;
 
-    return Math.copySign(value, (value - tolerance) / (1.0 - tolerance));
+    return Math.copySign((Math.abs(value) - tolerance) / (1.0 - tolerance), value);
   }
 
   // Maps one numerical range to another
