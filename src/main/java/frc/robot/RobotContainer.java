@@ -17,6 +17,7 @@ import frc.robot.commands.LowPassCommand;
 import frc.robot.commands.PassCommand;
 import frc.robot.commands.TeleopShootCommand;
 import frc.robot.commons.BreadUtil;
+import frc.robot.constants.Constants;
 import frc.robot.constants.TunerConstants;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.elevatorpivot.ElevatorIO;
@@ -88,22 +89,42 @@ public class RobotContainer {
     swerve.setDefaultCommand(
         new RunCommand(
             () -> {
-              double x = BreadUtil.deadband(driver.getLeftY(), 0.16);
-              double y = BreadUtil.deadband(driver.getLeftX(), 0.16);
-              double omega = BreadUtil.deadband(driver.getRightX(), 0.16);
+              // Raw inputs
+              double x = -driver.getLeftY();
+              double y = -driver.getLeftX();
+              double omega = BreadUtil.deadband(-driver.getRightX(), Constants.Swerve.rotDeadband);
 
-              double dx = 0;
-              double dy = 0;
+              // Convert to polar to apply deadband
+              double rawDriveMag = Math.hypot(x, y);
+              double rawDriveTheta = Math.atan2(y, x);
+
+              // Apply polar deadband
+              double driveMag = 0;
+              if (rawDriveMag > Constants.Swerve.driveDeadband) {
+                // Normalize drive input over deadband in polar coordinates.
+                driveMag = (rawDriveMag - Constants.Swerve.driveDeadband) / (1 - Constants.Swerve.driveDeadband);
+              }
+              
+              // Quadratic scaling of drive inputs
+              driveMag = driveMag * driveMag;
+
+              // Normalize vector magnitude so as not to give an invalid input
+              if (driveMag > 1) {
+                driveMag = 1;
+              }
+
+              double dx = driveMag * Math.cos(rawDriveTheta);
+              double dy = driveMag * Math.sin(rawDriveTheta);
 
               if (Robot.alliance == DriverStation.Alliance.Blue) {
-                dx = Math.pow(-x, 1) * 6.0;
-                dy = Math.pow(-y, 1) * 6.0;
+                dx *= 6.0;
+                dy *= 6.0;
 
               } else {
-                dx = Math.pow(-x, 1) * -1 * 6.0;
-                dy = Math.pow(-y, 1) * -1 * 6.0;
+                dx *= -6.0;
+                dy *= -6.0;
               }
-              double rot = Math.pow(-omega, 3) * 6.0;
+              double rot = Math.pow(omega, 3) * 6.0;
               swerve.requestPercent(new ChassisSpeeds(dx, dy, rot), true);
 
               if (driver.getRawButtonPressed(XboxController.Button.kStart.value)) {
