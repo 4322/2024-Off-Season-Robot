@@ -30,6 +30,10 @@ public class SourceSideDisruption extends SequentialCommandGroup {
                   superstructure.requestIntake(true);
                 }),
         new TrajectoryFollowerCommand(
-            () -> Robot.sourceSideDisruptionB, swerve, false, () -> false));
+            () -> Robot.sourceSideDisruptionB, swerve, false, () -> false)
+            .andThen(
+                () -> {
+                  intake.requestIdle();
+                }));
   }
 }
