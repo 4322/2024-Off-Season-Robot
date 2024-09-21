@@ -87,19 +87,13 @@ public class RobotContainer {
               // Raw inputs
               double x = -driver.getLeftY();
               double y = -driver.getLeftX();
-              double omega = BreadUtil.deadband(-driver.getRightX(), Constants.Swerve.rotDeadband);
-
-              // Convert to polar to apply deadband
-              double rawDriveMag = Math.hypot(x, y);
-              double rawDriveTheta = Math.atan2(y, x);
+              double omega = BreadUtil.cartesianDeadband(-driver.getRightX(), Constants.Swerve.rotDeadband);
 
               // Apply polar deadband
-              double driveMag = 0;
-              if (rawDriveMag > Constants.Swerve.driveDeadband) {
-                // Normalize drive input over deadband in polar coordinates.
-                driveMag = (rawDriveMag - Constants.Swerve.driveDeadband) / (1 - Constants.Swerve.driveDeadband);
-              }
-              
+              double[] polarDriveCoord = BreadUtil.polarDeadband(x, y);
+              double driveMag = polarDriveCoord[0];
+              double driveTheta = polarDriveCoord[1];
+
               // Quadratic scaling of drive inputs
               driveMag = driveMag * driveMag;
 
@@ -108,8 +102,8 @@ public class RobotContainer {
                 driveMag = 1;
               }
 
-              double dx = driveMag * Math.cos(rawDriveTheta);
-              double dy = driveMag * Math.sin(rawDriveTheta);
+              double dx = driveMag * Math.cos(driveTheta);
+              double dy = driveMag * Math.sin(driveTheta);
 
               if (Robot.alliance == DriverStation.Alliance.Blue) {
                 dx *= 6.0;

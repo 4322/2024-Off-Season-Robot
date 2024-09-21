@@ -36,9 +36,9 @@ public class AmpCommand extends Command {
 
     double output = turnPID.calculate(measurement, setpoint);
 
-    double x = BreadUtil.deadband(RobotContainer.driver.getLeftY(), 0.1);
-    double y = BreadUtil.deadband(RobotContainer.driver.getLeftX(), 0.1);
-    double omega = BreadUtil.deadband(RobotContainer.driver.getRightX(), 0.1);
+    double x = BreadUtil.cartesianDeadband(RobotContainer.driver.getLeftY(), 0.1);
+    double y = BreadUtil.cartesianDeadband(RobotContainer.driver.getLeftX(), 0.1);
+    double omega = BreadUtil.cartesianDeadband(RobotContainer.driver.getRightX(), 0.1);
 
     double dx;
     double dy;

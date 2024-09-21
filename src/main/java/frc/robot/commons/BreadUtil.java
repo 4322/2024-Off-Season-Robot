@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.RobotController;
+import frc.robot.constants.Constants;
 
 public class BreadUtil {
 
@@ -64,10 +65,26 @@ public class BreadUtil {
   }
 
   // Deadband method
-  public static double deadband(double value, double tolerance) {
-    if (Math.abs(value) < tolerance) return 0.0;
+  public static double cartesianDeadband(double value, double tolerance) {
+    if (Math.abs(value) < tolerance)
+      return 0.0;
 
     return Math.copySign((Math.abs(value) - tolerance) / (1.0 - tolerance), value);
+  }
+  
+  public static double[] polarDeadband(double xValue, double yValue) {
+    // Convert to polar to apply deadband
+    double rawDriveMag = Math.hypot(xValue, yValue);
+    double rawDriveTheta = Math.atan2(yValue, xValue);
+
+    // Apply polar deadband
+    double driveMag = 0;
+    if (rawDriveMag > Constants.Swerve.driveDeadband) {
+      // Normalize drive input over deadband in polar coordinates.
+      driveMag = (rawDriveMag - Constants.Swerve.driveDeadband) / (1 - Constants.Swerve.driveDeadband);
+    }
+
+    return new double[] {driveMag, rawDriveTheta};
   }
 
   // Maps one numerical range to another
