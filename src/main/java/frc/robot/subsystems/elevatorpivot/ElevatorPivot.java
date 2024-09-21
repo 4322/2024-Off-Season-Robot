@@ -7,6 +7,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.RobotContainer;
 import frc.robot.commons.BreadUtil;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import org.littletonrobotics.junction.Logger;
 
@@ -89,15 +90,15 @@ public class ElevatorPivot {
       elevatorIO.setVoltage(0.0);
       pivotIO.setAngle(PIVOT_NEUTRAL_ANGLE, elevatorInputs.acceleration);
 
-      if (atPivotSetpoint(PIVOT_NEUTRAL_ANGLE)) {
+      if (atPivotSetpoint(PIVOT_NEUTRAL_ANGLE) || !Constants.elevatorPivotEnabled) {
         nextSystemState = ElevatorPivotState.HOMING;
       }
     } else if (systemState == ElevatorPivotState.HOMING) {
       elevatorIO.setVoltage(-3.0);
       pivotIO.setAngle(PIVOT_NEUTRAL_ANGLE, elevatorInputs.acceleration);
 
-      if (BreadUtil.getFPGATimeSeconds() - mStateStartTime > ELEVATOR_HOMING_TRESHOLD_SEC
-          && Math.abs(elevatorInputs.velMetersPerSecond) < ELEVATOR_HOMING_TRESHOLD_MPS) {
+      if ((BreadUtil.getFPGATimeSeconds() - mStateStartTime > ELEVATOR_HOMING_TRESHOLD_SEC
+          && Math.abs(elevatorInputs.velMetersPerSecond) < ELEVATOR_HOMING_TRESHOLD_MPS) || !Constants.elevatorPivotEnabled) {
         elevatorIO.resetHeight(0.0);
         nextSystemState = ElevatorPivotState.IDLE;
         requestHome = false;

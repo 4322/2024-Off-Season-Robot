@@ -22,6 +22,8 @@ public class Constants {
     GAMMA
   }
 
+  public static final boolean elevatorPivotEnabled = false;
+
   /* Constants pertaining to the intake */
   public static class Intake {
 
