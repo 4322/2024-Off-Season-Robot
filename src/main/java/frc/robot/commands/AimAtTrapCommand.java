@@ -33,7 +33,7 @@ public class AimAtTrapCommand extends Command {
     double output = turnPID.calculate(measurement, setpoint);
 
     // Drive Inputs
-    double x = BreadUtil.deadband(RobotContainer.driver.getLeftY(), 0.1);
+    double x = BreadUtil.cartesianDeadband(RobotContainer.driver.getLeftY(), 0.1);
     double dx;
 
     if (Robot.alliance == DriverStation.Alliance.Blue) {
