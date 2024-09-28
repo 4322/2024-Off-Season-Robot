@@ -1,5 +1,7 @@
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -30,6 +32,8 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.vision.VisionSupplier;
+import frc.robot.vision.photonvision.BreadPhotonCamera;
+import frc.robot.vision.photonvision.PhotonAprilTagVision;
 import frc.robot.vision.photonvision.PhotonNoteDetection;
 
 public class RobotContainer {
@@ -56,7 +60,7 @@ public class RobotContainer {
           TunerConstants.BackRight);
 
   // April tag cameras
-  /*
+  
   public static final BreadPhotonCamera frontLeftCamera = new BreadPhotonCamera("front-left");
   public static final BreadPhotonCamera frontRightCamera = new BreadPhotonCamera("front-right");
   public static final BreadPhotonCamera backLeftCamera = new BreadPhotonCamera("back-left");
@@ -68,17 +72,16 @@ public class RobotContainer {
 
   public static final PhotonAprilTagVision aprilTagVision =
       new PhotonAprilTagVision(frontLeftCamera, frontRightCamera, backLeftCamera, backRightCamera);
-  public static final PhotonNoteDetection noteDetection =
-      new PhotonNoteDetection(leftObjCamera, rightObjCamera);
-  */
+  public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection(leftObjCamera, rightObjCamera);
 
-  public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection();
+
+  // public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection();
   public static final VisionSupplier visionSupplier = new VisionSupplier();
   public static AutonomousSelector autonomousSelector;
 
   public RobotContainer() {
     configureBindings();
-    // configureAprilTagVision();
+    configureAprilTagVision();
   }
 
   private void configureBindings() {
@@ -142,11 +145,11 @@ public class RobotContainer {
         .whileTrue(new FenderShotCommand(swerve, superstructure, shooter));
   }
 
-  /*
+  
   private void configureAprilTagVision() {
     aprilTagVision.setDataInterfaces(swerve::getPose, swerve::addVisionData);
   }
-  */
+  
 
   public Command getAutonomousCommand() {
     return autonomousSelector.get();
