@@ -210,7 +210,7 @@ public class VisionSupplier extends SubsystemBase {
         new Rotation2d(robotToLowPassingTarget.getX(), robotToLowPassingTarget.getY());
 
     /* Note Poses */
-    notePoses = RobotContainer.noteDetection.getNotePoses();
+    // notePoses = RobotContainer.noteDetection.getNotePoses();
 
     /* Swerve Tolerance Calculations */
     Pose2d targetPoseA =
