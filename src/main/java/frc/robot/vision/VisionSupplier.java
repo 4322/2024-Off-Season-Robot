@@ -236,7 +236,7 @@ public class VisionSupplier extends SubsystemBase {
     Logger.recordOutput(
         "Vision/TangentialVirtualTarget", new Pose2d(tangentialVirtualTarget, new Rotation2d()));
     Logger.recordOutput("Vision/Target", targetPose);
-    Logger.recordOutput("Note Selection", getTargetNote(4, 3));
+    // Logger.recordOutput("Note Selection", getTargetNote(4, 3));
     Logger.recordOutput("Vision/AngleToleranceToTarget", angleToleranceRad);
     Logger.recordOutput("Vision/SwerveAngleTolerance", swerveAngleTolerance);
   }
