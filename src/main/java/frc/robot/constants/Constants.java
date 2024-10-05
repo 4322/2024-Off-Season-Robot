@@ -184,8 +184,8 @@ public class Constants {
         ELEVATOR_MAX_HEIGHT = 0.6387244800740626;
       } else {
 
-        ELEVATOR_LEFT_ID = 11;
-        ELEVATOR_RIGHT_ID = 12;
+        ELEVATOR_LEFT_ID = 26;
+        ELEVATOR_RIGHT_ID = 27;
 
         ELEVATOR_HOMING_VOLTAGE = -1;
 
