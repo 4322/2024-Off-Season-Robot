@@ -38,20 +38,33 @@ public class PassCommand extends Command {
 
     double output = turnPID.calculate(measurement, setpoint);
 
-    // Drive Inputs
-    double x = BreadUtil.cartesianDeadband(RobotContainer.driver.getLeftY(), 0.1);
-    double y = BreadUtil.cartesianDeadband(RobotContainer.driver.getLeftX(), 0.1);
+    // Raw inputs
+    double x = -RobotContainer.driver.getLeftY();
+    double y = -RobotContainer.driver.getLeftX();
 
-    double dx;
-    double dy;
+    // Apply polar deadband
+    double[] polarDriveCoord = BreadUtil.polarDeadband(x, y);
+    double driveMag = polarDriveCoord[0];
+    double driveTheta = polarDriveCoord[1];
+
+    // Quadratic scaling of drive inputs
+    driveMag = driveMag * driveMag;
+
+    // Normalize vector magnitude so as not to give an invalid input
+    if (driveMag > 1) {
+      driveMag = 1;
+    }
+
+    double dx = driveMag * Math.cos(driveTheta);
+    double dy = driveMag * Math.sin(driveTheta);
 
     if (Robot.alliance == DriverStation.Alliance.Blue) {
-      dx = Math.pow(-x, 1) * 5;
-      dy = Math.pow(-y, 1) * 5;
+      dx *= 5.0;
+      dy *= 5.0;
 
     } else {
-      dx = Math.pow(-x, 1) * -1 * 5;
-      dy = Math.pow(-y, 1) * -1 * 5;
+      dx *= -5.0;
+      dy *= -5.0;
     }
 
     // Subsystem Requests
