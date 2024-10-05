@@ -88,7 +88,8 @@ public class RobotContainer {
               // Raw inputs
               double x = -driver.getLeftY();
               double y = -driver.getLeftX();
-              double omega = BreadUtil.cartesianDeadband(-driver.getRightX(), Constants.Swerve.rotDeadband);
+              double omega =
+                  BreadUtil.cartesianDeadband(-driver.getRightX(), Constants.Swerve.rotDeadband);
 
               // Apply polar deadband
               double[] polarDriveCoord = BreadUtil.polarDeadband(x, y);
@@ -114,7 +115,7 @@ public class RobotContainer {
                 dx *= -6.0;
                 dy *= -6.0;
               }
-              double rot = Math.pow(omega, 3) * 6.0;
+              double rot = omega * omega * omega * 9.0;
               swerve.requestPercent(new ChassisSpeeds(dx, dy, rot), true);
 
               if (driver.getRawButtonPressed(XboxController.Button.kStart.value)) {
