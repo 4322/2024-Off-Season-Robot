@@ -24,7 +24,6 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -196,13 +195,13 @@ public class BreadSwerveModule {
      * Non-inverted Talon FX motors and CANcoders are configured for counterclockwise positive.
      * Due to gearing between output shaft and swerve rotation, swerve rotation direction is inverted from motor rotation direction.
      * Ie. positive power(counterclockwise roation) applied to motor causes swerve rotation to spin clockwise.
-     * 
+     *
      * FusedCANcoder combines relative encoder value from TalonFX with absolute encoder value from CANcoder.
-     * Positive power applied will cause relative encoder values from motor to be positive while 
+     * Positive power applied will cause relative encoder values from motor to be positive while
      * non-inverted CANcoder values will be negative.
      * Fusing positive and negative values will cause algorithm to fail!
-     * 
-     * Therefore, CANcoder sensor direction must be same as the direction the module spins when positive power 
+     *
+     * Therefore, CANcoder sensor direction must be same as the direction the module spins when positive power
      * is applied to motor, which is clockwise positive for this case.
      */
     cancoderConfigs.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
@@ -274,7 +273,7 @@ public class BreadSwerveModule {
     /* Now latency-compensate our signals */
     double drive_rot =
         BaseStatusSignal.getLatencyCompensatedValue(m_drivePosition, m_driveVelocity);
-    
+
     // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
     double angle_rot =
         -BaseStatusSignal.getLatencyCompensatedValue(m_steerPosition, m_steerVelocity);
@@ -317,8 +316,9 @@ public class BreadSwerveModule {
       SteerRequestType steerRequestType) {
     var optimized = SwerveModuleState.optimize(state, m_internalState.angle);
     m_targetState = optimized;
-    
-    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure motor inversion
+
+    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure
+    // motor inversion
     double angleToSetDeg = optimized.angle.getRotations();
     switch (steerRequestType) {
       case MotionMagic:
@@ -409,7 +409,8 @@ public class BreadSwerveModule {
   public void applyCharacterization(Rotation2d steerTarget, VoltageOut driveRequest) {
     double angleToSetDeg = steerTarget.getRotations();
     /* Use the configured closed loop output mode */
-    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure motor inversion
+    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure
+    // motor inversion
     switch (m_steerClosedLoopOutput) {
       case Voltage:
         m_steerMotor.setControl(m_angleVoltageSetter.withPosition(-angleToSetDeg));
@@ -437,7 +438,8 @@ public class BreadSwerveModule {
   public void applyCharacterization(Rotation2d steerTarget, TorqueCurrentFOC driveRequest) {
     double angleToSetDeg = steerTarget.getRotations();
     /* Use the configured closed loop output mode */
-    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure motor inversion
+    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure
+    // motor inversion
     switch (m_steerClosedLoopOutput) {
       case Voltage:
         m_steerMotor.setControl(m_angleVoltageSetter.withPosition(-angleToSetDeg));

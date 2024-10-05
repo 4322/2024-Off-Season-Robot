@@ -92,7 +92,8 @@ public class RobotContainer {
               // Raw inputs
               double x = -driver.getLeftY();
               double y = -driver.getLeftX();
-              double omega = BreadUtil.cartesianDeadband(-driver.getRightX(), Constants.Swerve.rotDeadband);
+              double omega =
+                  BreadUtil.cartesianDeadband(-driver.getRightX(), Constants.Swerve.rotDeadband);
 
               // Apply polar deadband
               double[] polarDriveCoord = BreadUtil.polarDeadband(x, y);

@@ -66,12 +66,11 @@ public class BreadUtil {
 
   // Deadband method
   public static double cartesianDeadband(double value, double tolerance) {
-    if (Math.abs(value) < tolerance)
-      return 0.0;
+    if (Math.abs(value) < tolerance) return 0.0;
 
     return Math.copySign((Math.abs(value) - tolerance) / (1.0 - tolerance), value);
   }
-  
+
   public static double[] polarDeadband(double xValue, double yValue) {
     // Convert to polar to apply deadband
     double rawDriveMag = Math.hypot(xValue, yValue);
@@ -81,7 +80,8 @@ public class BreadUtil {
     double driveMag = 0;
     if (rawDriveMag > Constants.Swerve.driveDeadband) {
       // Normalize drive input over deadband in polar coordinates.
-      driveMag = (rawDriveMag - Constants.Swerve.driveDeadband) / (1 - Constants.Swerve.driveDeadband);
+      driveMag =
+          (rawDriveMag - Constants.Swerve.driveDeadband) / (1 - Constants.Swerve.driveDeadband);
     }
 
     return new double[] {driveMag, rawDriveTheta};
