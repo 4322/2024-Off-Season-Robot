@@ -37,9 +37,9 @@ public class AimAtTrapCommand extends Command {
     double dx;
 
     if (Robot.alliance == DriverStation.Alliance.Blue) {
-      dx = Math.pow(-x, 1) * 1.0;
+      dx = -x * 1.0;
     } else {
-      dx = Math.pow(-x, 1) * -1 * 1.0;
+      dx = x * 1.0;
     }
 
     // Subsystem Requests
