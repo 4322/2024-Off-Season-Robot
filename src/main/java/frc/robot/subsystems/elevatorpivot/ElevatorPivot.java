@@ -7,6 +7,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.RobotContainer;
 import frc.robot.commons.BreadUtil;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import org.littletonrobotics.junction.Logger;
 
@@ -93,7 +94,7 @@ public class ElevatorPivot {
         nextSystemState = ElevatorPivotState.HOMING;
       }
     } else if (systemState == ElevatorPivotState.HOMING) {
-      elevatorIO.setVoltage(-3.0);
+      elevatorIO.setVoltage(Constants.Elevator.ELEVATOR_HOMING_VOLTAGE);
       pivotIO.setAngle(PIVOT_NEUTRAL_ANGLE, elevatorInputs.acceleration);
 
       if (BreadUtil.getFPGATimeSeconds() - mStateStartTime > ELEVATOR_HOMING_TRESHOLD_SEC
