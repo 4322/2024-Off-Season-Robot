@@ -187,7 +187,7 @@ public class Constants {
         ELEVATOR_LEFT_ID = 26;
         ELEVATOR_RIGHT_ID = 27;
 
-        ELEVATOR_HOMING_VOLTAGE = -1;
+        ELEVATOR_HOMING_VOLTAGE = -3.0;
 
         ELEVATOR_IDLE_HEIGHT = 0.125;
 
@@ -224,7 +224,7 @@ public class Constants {
             ((KRAKEN_FREE_SPEED / 60.0) * (1.0 / ELEVATOR_GEAR_RATIO))
                 * Math.PI
                 * ELEVATOR_SPOOL_DIAMETER;
-        ELEVATOR_LEFT_INVERSION = InvertedValue.Clockwise_Positive;
+        ELEVATOR_LEFT_INVERSION = InvertedValue.CounterClockwise_Positive;
         ELEVATOR_MIN_HEIGHT = 0.0;
         ELEVATOR_END_OF_DANGER_ZONE = 0.34461142807517386; // Top gun reference?!?!?!
         ELEVATOR_MAX_HEIGHT = 0.6342116721107851;
