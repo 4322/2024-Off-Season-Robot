@@ -110,8 +110,8 @@ public class FeederIOFalcon500 implements FeederIO {
     inputs.appliedVolts = motor.getMotorVoltage().getValue();
     inputs.tempCelcius = temperature.getValue();
     inputs.currentAmps = current.getValue();
-    inputs.beamBreakTriggered = beamBreakDebounce.calculate(beamBreak.get()); // FIGURE OUT POLARITY: IF FALSE MEANS BEAM TRIGGERED, INVERT INPUT
-    inputs.rawBeamBreakTriggered = beamBreak.get(); // FIGURE OUT POLARITY: IF FALSE MEANS BEAM TRIGGERED, INVERT INPUT
+    inputs.beamBreakTriggered = beamBreakDebounce.calculate(beamBreak.get()); // TODO: determine polarity of beam break, invert if false means beam triggered
+    inputs.rawBeamBreakTriggered = beamBreak.get(); // TODO: determine polarity of beam break, invert if false means beam triggered
     inputs.setpoint = setpoint;
   }
 
