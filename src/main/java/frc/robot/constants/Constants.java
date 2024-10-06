@@ -187,7 +187,7 @@ public class Constants {
         ELEVATOR_LEFT_ID = 26;
         ELEVATOR_RIGHT_ID = 27;
 
-        ELEVATOR_HOMING_VOLTAGE = -1;
+        ELEVATOR_HOMING_VOLTAGE = -3.0;
 
         ELEVATOR_IDLE_HEIGHT = 0.125;
 
@@ -224,7 +224,7 @@ public class Constants {
             ((KRAKEN_FREE_SPEED / 60.0) * (1.0 / ELEVATOR_GEAR_RATIO))
                 * Math.PI
                 * ELEVATOR_SPOOL_DIAMETER;
-        ELEVATOR_LEFT_INVERSION = InvertedValue.Clockwise_Positive;
+        ELEVATOR_LEFT_INVERSION = InvertedValue.CounterClockwise_Positive;
         ELEVATOR_MIN_HEIGHT = 0.0;
         ELEVATOR_END_OF_DANGER_ZONE = 0.34461142807517386; // Top gun reference?!?!?!
         ELEVATOR_MAX_HEIGHT = 0.6342116721107851;
@@ -328,9 +328,9 @@ public class Constants {
         PIVOT_GEAR_RATIO = 114.583;
         PIVOT_MAX_SPEED = ((FALCON_FREE_SPEED / 60.0) * (1.0 / PIVOT_GEAR_RATIO));
       } else {
-        PIVOT_ID = 18;
-        PIVOT_AZIMUTH_ID = 19;
-        PIVOT_MAGNET_OFFSET = Units.degreesToRotations(-33.0);
+        PIVOT_ID = 4;
+        PIVOT_AZIMUTH_ID = 7;
+        PIVOT_MAGNET_OFFSET = 0.2985839;
 
         PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(33);
         PIVOT_MIN_SAFE_ANGLE =
@@ -442,13 +442,13 @@ public class Constants {
         SHOOTER_LEFT_LOW_PASS_RPM = 2500;
         SHOOTER_RIGHT_LOW_PASS_RPM = 1500;
       } else {
-        SHOOTER_LEFT_ID = 13;
-        SHOOTER_RIGHT_ID = 14;
+        SHOOTER_LEFT_ID = 3;
+        SHOOTER_RIGHT_ID = 2;
 
         SHOOTER_SETPOINT_TOLERANCE_RPM = 200.0;
 
-        SHOOTER_LEFT_IDLE_RPM = 3000.0;
-        SHOOTER_RIGHT_IDLE_RPM = 3000.0;
+        SHOOTER_LEFT_IDLE_RPM = 0.0;
+        SHOOTER_RIGHT_IDLE_RPM = 0.0;
 
         SHOOTER_LEFT_AMP_RPM = 1000.0;
         SHOOTER_RIGHT_AMP_RPM = 1000.0;
@@ -479,6 +479,7 @@ public class Constants {
 
     /* IDs */
     public static final int FEEDER_ID;
+    public static final int BEAMBREAK_ID;
 
     /* Setpoints and tolerances */
     public static final double FEEDER_INTAKE_SPEED;
@@ -495,6 +496,7 @@ public class Constants {
     static {
       if (robot == RobotType.BETA) {
         FEEDER_ID = 15;
+        BEAMBREAK_ID = 0;
 
         FEEDER_INTAKE_SPEED = 65; // 65
 
@@ -506,7 +508,8 @@ public class Constants {
         FEEDER_ROLLER_DIAMETER = 1.0;
         FEEDER_INVERSION = InvertedValue.Clockwise_Positive;
       } else {
-        FEEDER_ID = 15;
+        FEEDER_ID = 25;
+        BEAMBREAK_ID = 0;
 
         FEEDER_INTAKE_SPEED = 0.75;
 
