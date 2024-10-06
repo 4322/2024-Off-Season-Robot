@@ -5,13 +5,18 @@ import static frc.robot.constants.Constants.Feeder.*;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ForwardLimitSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.ReverseLimitSourceValue;
+import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
+
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -31,6 +36,7 @@ public class FeederIOFalcon500 implements FeederIO {
   private final CurrentLimitsConfigs currentLimitConfigs;
   private final Slot0Configs slot0Configs;
   private final MotorOutputConfigs motorOutputConfigs;
+  private final HardwareLimitSwitchConfigs hardwareLimitSwitchConfigs;
 
   private StatusSignal<Double> position;
   private StatusSignal<Double> velocity;
@@ -71,6 +77,12 @@ public class FeederIOFalcon500 implements FeederIO {
     slot0Configs.kI = kI.get();
     slot0Configs.kD = kD.get();
 
+    hardwareLimitSwitchConfigs = new HardwareLimitSwitchConfigs();
+    hardwareLimitSwitchConfigs.ForwardLimitEnable = false;
+    hardwareLimitSwitchConfigs.ReverseLimitEnable = false;
+    hardwareLimitSwitchConfigs.ReverseLimitSource = ReverseLimitSourceValue.LimitSwitchPin;
+    hardwareLimitSwitchConfigs.ForwardLimitSource = ForwardLimitSourceValue.LimitSwitchPin;
+
     /* Set status signals */
     position = motor.getPosition();
     velocity = motor.getVelocity();
@@ -81,6 +93,7 @@ public class FeederIOFalcon500 implements FeederIO {
     configurator.apply(currentLimitConfigs);
     configurator.apply(motorOutputConfigs);
     configurator.apply(slot0Configs);
+    configurator.apply(hardwareLimitSwitchConfigs);
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50, position, velocity, current, temperature);
