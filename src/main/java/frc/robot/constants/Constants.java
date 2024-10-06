@@ -479,6 +479,7 @@ public class Constants {
 
     /* IDs */
     public static final int FEEDER_ID;
+    public static final int BEAMBREAK_ID;
 
     /* Setpoints and tolerances */
     public static final double FEEDER_INTAKE_SPEED;
@@ -495,6 +496,7 @@ public class Constants {
     static {
       if (robot == RobotType.BETA) {
         FEEDER_ID = 15;
+        BEAMBREAK_ID = 1;
 
         FEEDER_INTAKE_SPEED = 65; // 65
 
@@ -507,6 +509,7 @@ public class Constants {
         FEEDER_INVERSION = InvertedValue.Clockwise_Positive;
       } else {
         FEEDER_ID = 25;
+        BEAMBREAK_ID = 1;
 
         FEEDER_INTAKE_SPEED = 0.75;
 
