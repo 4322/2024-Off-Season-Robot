@@ -328,9 +328,9 @@ public class Constants {
         PIVOT_GEAR_RATIO = 114.583;
         PIVOT_MAX_SPEED = ((FALCON_FREE_SPEED / 60.0) * (1.0 / PIVOT_GEAR_RATIO));
       } else {
-        PIVOT_ID = 18;
-        PIVOT_AZIMUTH_ID = 19;
-        PIVOT_MAGNET_OFFSET = Units.degreesToRotations(-33.0);
+        PIVOT_ID = 4;
+        PIVOT_AZIMUTH_ID = 7;
+        PIVOT_MAGNET_OFFSET = Units.degreesToRotations(0.0);
 
         PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(33);
         PIVOT_MIN_SAFE_ANGLE =
@@ -442,8 +442,8 @@ public class Constants {
         SHOOTER_LEFT_LOW_PASS_RPM = 2500;
         SHOOTER_RIGHT_LOW_PASS_RPM = 1500;
       } else {
-        SHOOTER_LEFT_ID = 13;
-        SHOOTER_RIGHT_ID = 14;
+        SHOOTER_LEFT_ID = 3;
+        SHOOTER_RIGHT_ID = 2;
 
         SHOOTER_SETPOINT_TOLERANCE_RPM = 200.0;
 
@@ -506,7 +506,7 @@ public class Constants {
         FEEDER_ROLLER_DIAMETER = 1.0;
         FEEDER_INVERSION = InvertedValue.Clockwise_Positive;
       } else {
-        FEEDER_ID = 15;
+        FEEDER_ID = 25;
 
         FEEDER_INTAKE_SPEED = 0.75;
 
