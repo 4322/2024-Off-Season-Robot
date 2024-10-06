@@ -5,26 +5,25 @@ import static frc.robot.constants.Constants.Feeder.*;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.ForwardLimitSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.signals.ReverseLimitSourceValue;
-import com.ctre.phoenix6.signals.ReverseLimitValue;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.commons.LoggedTunableNumber;
+import frc.robot.constants.Constants;
 
 public class FeederIOFalcon500 implements FeederIO {
 
   /* Hardware */
   private final TalonFX motor = new TalonFX(FEEDER_ID);
-
+  private final DigitalInput beamBreak = new DigitalInput(Constants.Feeder.BEAMBREAK_ID);
+  
   /* Configurator */
   private final TalonFXConfigurator configurator;
 
@@ -32,13 +31,11 @@ public class FeederIOFalcon500 implements FeederIO {
   private final CurrentLimitsConfigs currentLimitConfigs;
   private final Slot0Configs slot0Configs;
   private final MotorOutputConfigs motorOutputConfigs;
-  private final HardwareLimitSwitchConfigs hardwareLimitSwitchConfigs;
 
   private StatusSignal<Double> position;
   private StatusSignal<Double> velocity;
   private StatusSignal<Double> current;
   private StatusSignal<Double> temperature;
-  private StatusSignal<ReverseLimitValue> beamBreak;
   private Debouncer beamBreakDebounce = new Debouncer(0.25, DebounceType.kFalling);
 
   /* Gains */
@@ -74,42 +71,34 @@ public class FeederIOFalcon500 implements FeederIO {
     slot0Configs.kI = kI.get();
     slot0Configs.kD = kD.get();
 
-    hardwareLimitSwitchConfigs = new HardwareLimitSwitchConfigs();
-    hardwareLimitSwitchConfigs.ReverseLimitEnable = false;
-    hardwareLimitSwitchConfigs.ForwardLimitEnable = false;
-    hardwareLimitSwitchConfigs.ReverseLimitSource = ReverseLimitSourceValue.LimitSwitchPin;
-    hardwareLimitSwitchConfigs.ForwardLimitSource = ForwardLimitSourceValue.LimitSwitchPin;
-
     /* Set status signals */
     position = motor.getPosition();
     velocity = motor.getVelocity();
     current = motor.getSupplyCurrent();
     temperature = motor.getDeviceTemp();
-    beamBreak = motor.getReverseLimit();
 
     /* Apply configs */
     configurator.apply(currentLimitConfigs);
     configurator.apply(motorOutputConfigs);
     configurator.apply(slot0Configs);
-    configurator.apply(hardwareLimitSwitchConfigs);
 
     BaseStatusSignal.setUpdateFrequencyForAll(
-        50, position, velocity, current, temperature, beamBreak);
+        50, position, velocity, current, temperature);
 
     motor.optimizeBusUtilization();
   }
 
   @Override
   public void updateInputs(FeederIOInputs inputs) {
-    BaseStatusSignal.refreshAll(position, velocity, current, temperature, beamBreak);
+    BaseStatusSignal.refreshAll(position, velocity, current, temperature);
 
     inputs.posMeters = position.getValue() * Math.PI * FEEDER_ROLLER_DIAMETER / FEEDER_GEAR_RATIO;
     inputs.velocityMps = velocity.getValue() * Math.PI * FEEDER_ROLLER_DIAMETER / FEEDER_GEAR_RATIO;
     inputs.appliedVolts = motor.getMotorVoltage().getValue();
     inputs.tempCelcius = temperature.getValue();
     inputs.currentAmps = current.getValue();
-    inputs.beamBreakTriggered = beamBreakDebounce.calculate(beamBreak.getValue().value == 1);
-    inputs.rawBeamBreakTriggered = beamBreak.getValue().value == 1;
+    inputs.beamBreakTriggered = beamBreakDebounce.calculate(beamBreak.get()); // FIGURE OUT POLARITY: IF FALSE MEANS BEAM TRIGGERED, INVERT INPUT
+    inputs.rawBeamBreakTriggered = beamBreak.get(); // FIGURE OUT POLARITY: IF FALSE MEANS BEAM TRIGGERED, INVERT INPUT
     inputs.setpoint = setpoint;
   }
 
