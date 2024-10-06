@@ -330,7 +330,7 @@ public class Constants {
       } else {
         PIVOT_ID = 4;
         PIVOT_AZIMUTH_ID = 7;
-        PIVOT_MAGNET_OFFSET = Units.degreesToRotations(0.0);
+        PIVOT_MAGNET_OFFSET = 0.2985839;
 
         PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(33);
         PIVOT_MIN_SAFE_ANGLE =
