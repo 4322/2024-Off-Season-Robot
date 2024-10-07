@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Voltage;
+import frc.robot.Robot;
 
 /**
  * Container for all the Swerve Requests. Use this to find all applicable swerve drive requests.
@@ -866,11 +868,13 @@ public interface BreadSwerveRequest {
 
     public StatusCode apply(
         SwerveControlRequestParameters parameters, BreadSwerveModule... modulesToApply) {
-      for (int i = 0; i < modulesToApply.length; ++i) {
-        modulesToApply[i]
-            .getSteerMotor()
-            .setControl(m_voltRequest.withOutput(VoltsToApply.in(Volts)));
-        modulesToApply[i].getDriveMotor().setControl(m_voltRequest.withOutput(0));
+      if (Robot.getIsReal()) {
+        for (int i = 0; i < modulesToApply.length; ++i) {
+          modulesToApply[i]
+              .getSteerMotor()
+              .setControl(m_voltRequest.withOutput(VoltsToApply.in(Volts)));
+          modulesToApply[i].getDriveMotor().setControl(m_voltRequest.withOutput(0));
+        }
       }
       return StatusCode.OK;
     }

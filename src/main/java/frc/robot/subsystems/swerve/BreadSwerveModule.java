@@ -28,6 +28,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Robot;
 
 /**
  * Swerve Module class that encapsulates a swerve module powered by CTR Electronics devices.
@@ -65,17 +66,17 @@ public class BreadSwerveModule {
     Velocity,
   }
 
-  private final TalonFX m_driveMotor;
-  private final TalonFX m_steerMotor;
-  private final CANcoder m_cancoder;
+  private TalonFX m_driveMotor;
+  private TalonFX m_steerMotor;
+  private CANcoder m_cancoder;
 
-  private final StatusSignal<Double> m_drivePosition;
-  private final StatusSignal<Double> m_driveVelocity;
-  private final StatusSignal<Double> m_steerPosition;
-  private final StatusSignal<Double> m_steerVelocity;
-  private final StatusSignal<Double> m_statorCurrent;
-  private final StatusSignal<Double> m_supplyCurrent;
-  private final BaseStatusSignal[] m_signals;
+  private StatusSignal<Double> m_drivePosition;
+  private StatusSignal<Double> m_driveVelocity;
+  private StatusSignal<Double> m_steerPosition;
+  private StatusSignal<Double> m_steerVelocity;
+  private StatusSignal<Double> m_statorCurrent;
+  private StatusSignal<Double> m_supplyCurrent;
+  private BaseStatusSignal[] m_signals;
   private final double m_driveRotationsPerMeter;
   private final double m_couplingRatioDriveRotorToCANcoder;
 
@@ -95,8 +96,8 @@ public class BreadSwerveModule {
   private final VelocityTorqueCurrentFOC m_velocityTorqueSetter =
       new VelocityTorqueCurrentFOC(0).withOverrideCoastDurNeutral(true);
 
-  private final ClosedLoopOutputType m_steerClosedLoopOutput;
-  private final ClosedLoopOutputType m_driveClosedLoopOutput;
+  private ClosedLoopOutputType m_steerClosedLoopOutput;
+  private ClosedLoopOutputType m_driveClosedLoopOutput;
 
   private final SwerveModulePosition m_internalState = new SwerveModulePosition();
   private SwerveModuleState m_targetState = new SwerveModuleState();
@@ -108,124 +109,142 @@ public class BreadSwerveModule {
    * @param canbusName The name of the CAN bus this module is on
    */
   public BreadSwerveModule(SwerveModuleConstants constants, String canbusName) {
-    m_driveMotor = new TalonFX(constants.DriveMotorId, canbusName);
-    m_steerMotor = new TalonFX(constants.SteerMotorId, canbusName);
-    m_cancoder = new CANcoder(constants.CANcoderId, canbusName);
+    if (Robot.getIsReal()) {
+      m_driveMotor = new TalonFX(constants.DriveMotorId, canbusName);
+      m_steerMotor = new TalonFX(constants.SteerMotorId, canbusName);
+      m_cancoder = new CANcoder(constants.CANcoderId, canbusName);
 
-    TalonFXConfiguration talonConfigs = new TalonFXConfiguration();
+      TalonFXConfiguration talonConfigs = new TalonFXConfiguration();
 
-    talonConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      talonConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-    talonConfigs.Slot0 = constants.DriveMotorGains;
-    talonConfigs.TorqueCurrent.PeakForwardTorqueCurrent = constants.SlipCurrent;
-    talonConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -constants.SlipCurrent;
-    talonConfigs.CurrentLimits.SupplyCurrentLimit = 80.0;
-    talonConfigs.CurrentLimits.StatorCurrentLimit = constants.SlipCurrent;
-    talonConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
+      talonConfigs.Slot0 = constants.DriveMotorGains;
+      talonConfigs.TorqueCurrent.PeakForwardTorqueCurrent = constants.SlipCurrent;
+      talonConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -constants.SlipCurrent;
+      talonConfigs.CurrentLimits.SupplyCurrentLimit = 80.0;
+      talonConfigs.CurrentLimits.StatorCurrentLimit = constants.SlipCurrent;
+      talonConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
 
-    talonConfigs.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = 0.02;
-    talonConfigs.OpenLoopRamps.TorqueOpenLoopRampPeriod = 0.02;
-    talonConfigs.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.02;
+      talonConfigs.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = 0.02;
+      talonConfigs.OpenLoopRamps.TorqueOpenLoopRampPeriod = 0.02;
+      talonConfigs.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.02;
 
-    talonConfigs.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.02;
-    talonConfigs.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.02;
-    talonConfigs.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.02;
+      talonConfigs.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.02;
+      talonConfigs.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.02;
+      talonConfigs.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.02;
 
-    talonConfigs.MotorOutput.Inverted =
-        constants.DriveMotorInverted
-            ? InvertedValue.Clockwise_Positive
-            : InvertedValue.CounterClockwise_Positive;
-    StatusCode response = m_driveMotor.getConfigurator().apply(talonConfigs);
-    if (!response.isOK()) {
-      System.out.println(
-          "TalonFX ID "
-              + m_driveMotor.getDeviceID()
-              + " failed config with error "
-              + response.toString());
+      talonConfigs.MotorOutput.Inverted =
+          constants.DriveMotorInverted
+              ? InvertedValue.Clockwise_Positive
+              : InvertedValue.CounterClockwise_Positive;
+      StatusCode response = m_driveMotor.getConfigurator().apply(talonConfigs);
+      if (!response.isOK()) {
+        System.out.println(
+            "TalonFX ID "
+                + m_driveMotor.getDeviceID()
+                + " failed config with error "
+                + response.toString());
+      }
+
+      /* Undo changes for torqueCurrent */
+      talonConfigs.TorqueCurrent = new TorqueCurrentConfigs();
+      /* And to current limits */
+      talonConfigs.CurrentLimits = new CurrentLimitsConfigs();
+
+      talonConfigs.Slot0 = constants.SteerMotorGains;
+      talonConfigs.CurrentLimits.SupplyCurrentLimit = 20.0;
+      // Modify configuration to use remote CANcoder fused
+      talonConfigs.Feedback.FeedbackRemoteSensorID = constants.CANcoderId;
+      switch (constants.FeedbackSource) {
+        case RemoteCANcoder:
+          talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+          break;
+        case FusedCANcoder:
+          talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+          break;
+        case SyncCANcoder:
+          talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
+          break;
+      }
+      talonConfigs.Feedback.RotorToSensorRatio = constants.SteerMotorGearRatio;
+
+      talonConfigs.MotionMagic.MotionMagicCruiseVelocity = 100.0 / constants.SteerMotorGearRatio;
+      talonConfigs.MotionMagic.MotionMagicAcceleration =
+          talonConfigs.MotionMagic.MotionMagicCruiseVelocity / 0.100;
+      talonConfigs.MotionMagic.MotionMagicExpo_kV = 0.12 * constants.SteerMotorGearRatio;
+      talonConfigs.MotionMagic.MotionMagicExpo_kA = 0.1;
+
+      talonConfigs.ClosedLoopGeneral.ContinuousWrap =
+          true; // Enable continuous wrap for swerve modules
+
+      talonConfigs.MotorOutput.Inverted =
+          constants.SteerMotorInverted
+              ? InvertedValue.Clockwise_Positive
+              : InvertedValue.CounterClockwise_Positive;
+      response = m_steerMotor.getConfigurator().apply(talonConfigs);
+      if (!response.isOK()) {
+        System.out.println(
+            "TalonFX ID "
+                + m_steerMotor.getDeviceID()
+                + " failed config with error "
+                + response.toString());
+      }
+
+      CANcoderConfiguration cancoderConfigs = new CANcoderConfiguration();
+      cancoderConfigs.MagnetSensor.MagnetOffset = constants.CANcoderOffset;
+      // CLOCKWORK: Config needed due to not being able to invert Falcon rotation motors
+      /*
+       * Non-inverted Talon FX motors and CANcoders are configured for counterclockwise positive.
+       * Due to gearing between output shaft and swerve rotation, swerve rotation direction is inverted from motor rotation direction.
+       * Ie. positive power(counterclockwise roation) applied to motor causes swerve rotation to spin clockwise.
+       *
+       * FusedCANcoder combines relative encoder value from TalonFX with absolute encoder value from CANcoder.
+       * Positive power applied will cause relative encoder values from motor to be positive while
+       * non-inverted CANcoder values will be negative.
+       * Fusing positive and negative values will cause algorithm to fail!
+       *
+       * Therefore, CANcoder sensor direction must be same as the direction the module spins when positive power
+       * is applied to motor, which is clockwise positive for this case.
+       */
+      cancoderConfigs.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
+      response = m_cancoder.getConfigurator().apply(cancoderConfigs);
+      if (!response.isOK()) {
+        System.out.println(
+            "CANcoder ID "
+                + m_cancoder.getDeviceID()
+                + " failed config with error "
+                + response.toString());
+      }
+
+      m_drivePosition = m_driveMotor.getPosition().clone();
+      m_driveVelocity = m_driveMotor.getVelocity().clone();
+      m_steerPosition = m_steerMotor.getPosition().clone();
+      m_steerVelocity = m_steerMotor.getVelocity().clone();
+      m_statorCurrent = m_driveMotor.getStatorCurrent().clone();
+      m_supplyCurrent = m_driveMotor.getSupplyCurrent().clone();
+
+      m_signals = new BaseStatusSignal[4];
+      m_signals[0] = m_drivePosition;
+      m_signals[1] = m_driveVelocity;
+      m_signals[2] = m_steerPosition;
+      m_signals[3] = m_steerVelocity;
+
+      /* Make control requests synchronous */
+      m_angleVoltageSetter.UpdateFreqHz = 0;
+      m_angleTorqueSetter.UpdateFreqHz = 0;
+      m_angleVoltageExpoSetter.UpdateFreqHz = 0;
+      m_angleTorqueExpoSetter.UpdateFreqHz = 0;
+      m_velocityTorqueSetter.UpdateFreqHz = 0;
+      m_velocityVoltageSetter.UpdateFreqHz = 0;
+      m_voltageOpenLoopSetter.UpdateFreqHz = 0;
+
+      /* Set the drive motor closed-loop output type */
+      m_steerClosedLoopOutput = constants.SteerMotorClosedLoopOutput;
+      m_driveClosedLoopOutput = constants.DriveMotorClosedLoopOutput;
+
+      /* Set status frame periods on the current signals */
+      BaseStatusSignal.setUpdateFrequencyForAll(50, m_statorCurrent, m_supplyCurrent);
     }
-
-    /* Undo changes for torqueCurrent */
-    talonConfigs.TorqueCurrent = new TorqueCurrentConfigs();
-    /* And to current limits */
-    talonConfigs.CurrentLimits = new CurrentLimitsConfigs();
-
-    talonConfigs.Slot0 = constants.SteerMotorGains;
-    talonConfigs.CurrentLimits.SupplyCurrentLimit = 20.0;
-    // Modify configuration to use remote CANcoder fused
-    talonConfigs.Feedback.FeedbackRemoteSensorID = constants.CANcoderId;
-    switch (constants.FeedbackSource) {
-      case RemoteCANcoder:
-        talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-        break;
-      case FusedCANcoder:
-        talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
-        break;
-      case SyncCANcoder:
-        talonConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
-        break;
-    }
-    talonConfigs.Feedback.RotorToSensorRatio = constants.SteerMotorGearRatio;
-
-    talonConfigs.MotionMagic.MotionMagicCruiseVelocity = 100.0 / constants.SteerMotorGearRatio;
-    talonConfigs.MotionMagic.MotionMagicAcceleration =
-        talonConfigs.MotionMagic.MotionMagicCruiseVelocity / 0.100;
-    talonConfigs.MotionMagic.MotionMagicExpo_kV = 0.12 * constants.SteerMotorGearRatio;
-    talonConfigs.MotionMagic.MotionMagicExpo_kA = 0.1;
-
-    talonConfigs.ClosedLoopGeneral.ContinuousWrap =
-        true; // Enable continuous wrap for swerve modules
-
-    talonConfigs.MotorOutput.Inverted =
-        constants.SteerMotorInverted
-            ? InvertedValue.Clockwise_Positive
-            : InvertedValue.CounterClockwise_Positive;
-    response = m_steerMotor.getConfigurator().apply(talonConfigs);
-    if (!response.isOK()) {
-      System.out.println(
-          "TalonFX ID "
-              + m_steerMotor.getDeviceID()
-              + " failed config with error "
-              + response.toString());
-    }
-
-    CANcoderConfiguration cancoderConfigs = new CANcoderConfiguration();
-    cancoderConfigs.MagnetSensor.MagnetOffset = constants.CANcoderOffset;
-    // CLOCKWORK: Config needed due to not being able to invert Falcon rotation motors
-    /*
-     * Non-inverted Talon FX motors and CANcoders are configured for counterclockwise positive.
-     * Due to gearing between output shaft and swerve rotation, swerve rotation direction is inverted from motor rotation direction.
-     * Ie. positive power(counterclockwise roation) applied to motor causes swerve rotation to spin clockwise.
-     *
-     * FusedCANcoder combines relative encoder value from TalonFX with absolute encoder value from CANcoder.
-     * Positive power applied will cause relative encoder values from motor to be positive while
-     * non-inverted CANcoder values will be negative.
-     * Fusing positive and negative values will cause algorithm to fail!
-     *
-     * Therefore, CANcoder sensor direction must be same as the direction the module spins when positive power
-     * is applied to motor, which is clockwise positive for this case.
-     */
-    cancoderConfigs.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
-    response = m_cancoder.getConfigurator().apply(cancoderConfigs);
-    if (!response.isOK()) {
-      System.out.println(
-          "CANcoder ID "
-              + m_cancoder.getDeviceID()
-              + " failed config with error "
-              + response.toString());
-    }
-
-    m_drivePosition = m_driveMotor.getPosition().clone();
-    m_driveVelocity = m_driveMotor.getVelocity().clone();
-    m_steerPosition = m_steerMotor.getPosition().clone();
-    m_steerVelocity = m_steerMotor.getVelocity().clone();
-    m_statorCurrent = m_driveMotor.getStatorCurrent().clone();
-    m_supplyCurrent = m_driveMotor.getSupplyCurrent().clone();
-
-    m_signals = new BaseStatusSignal[4];
-    m_signals[0] = m_drivePosition;
-    m_signals[1] = m_driveVelocity;
-    m_signals[2] = m_steerPosition;
-    m_signals[3] = m_steerVelocity;
 
     /* Calculate the ratio of drive motor rotation to meter on ground */
     double rotationsPerWheelRotation = constants.DriveMotorGearRatio;
@@ -233,25 +252,8 @@ public class BreadSwerveModule {
     m_driveRotationsPerMeter = rotationsPerWheelRotation / metersPerWheelRotation;
     m_couplingRatioDriveRotorToCANcoder = constants.CouplingGearRatio;
 
-    /* Make control requests synchronous */
-    m_angleVoltageSetter.UpdateFreqHz = 0;
-    m_angleTorqueSetter.UpdateFreqHz = 0;
-    m_angleVoltageExpoSetter.UpdateFreqHz = 0;
-    m_angleTorqueExpoSetter.UpdateFreqHz = 0;
-
-    m_velocityTorqueSetter.UpdateFreqHz = 0;
-    m_velocityVoltageSetter.UpdateFreqHz = 0;
-    m_voltageOpenLoopSetter.UpdateFreqHz = 0;
-
-    /* Set the drive motor closed-loop output type */
-    m_steerClosedLoopOutput = constants.SteerMotorClosedLoopOutput;
-    m_driveClosedLoopOutput = constants.DriveMotorClosedLoopOutput;
-
     /* Get the expected speed when applying 12 volts */
     m_speedAt12VoltsMps = constants.SpeedAt12VoltsMps;
-
-    /* Set status frame periods on the current signals */
-    BaseStatusSignal.setUpdateFrequencyForAll(50, m_statorCurrent, m_supplyCurrent);
   }
 
   /**
@@ -262,32 +264,37 @@ public class BreadSwerveModule {
    * @return SwerveModulePosition containing this module's state.
    */
   public SwerveModulePosition getPosition(boolean refresh) {
-    if (refresh) {
-      /* Refresh all signals */
-      m_drivePosition.refresh();
-      m_driveVelocity.refresh();
-      m_steerPosition.refresh();
-      m_steerVelocity.refresh();
+    if (Robot.getIsReal()) {
+      if (refresh) {
+        /* Refresh all signals */
+        m_drivePosition.refresh();
+        m_driveVelocity.refresh();
+        m_steerPosition.refresh();
+        m_steerVelocity.refresh();
+      }
+
+      /* Now latency-compensate our signals */
+      double drive_rot =
+          BaseStatusSignal.getLatencyCompensatedValue(m_drivePosition, m_driveVelocity);
+
+      // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
+      double angle_rot =
+          -BaseStatusSignal.getLatencyCompensatedValue(m_steerPosition, m_steerVelocity);
+
+      /*
+       * Back out the drive rotations based on angle rotations due to coupling between
+       * azimuth and steer
+       */
+      drive_rot -= angle_rot * m_couplingRatioDriveRotorToCANcoder;
+
+      /* And push them into a SwerveModulePosition object to return */
+      m_internalState.distanceMeters = drive_rot / m_driveRotationsPerMeter;
+      /* Angle is already in terms of steer rotations */
+      m_internalState.angle = Rotation2d.fromRotations(angle_rot);
+    } else {
+      m_internalState.distanceMeters = 0;
+      m_internalState.angle = Rotation2d.fromRotations(0);
     }
-
-    /* Now latency-compensate our signals */
-    double drive_rot =
-        BaseStatusSignal.getLatencyCompensatedValue(m_drivePosition, m_driveVelocity);
-
-    // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
-    double angle_rot =
-        -BaseStatusSignal.getLatencyCompensatedValue(m_steerPosition, m_steerVelocity);
-
-    /*
-     * Back out the drive rotations based on angle rotations due to coupling between
-     * azimuth and steer
-     */
-    drive_rot -= angle_rot * m_couplingRatioDriveRotorToCANcoder;
-
-    /* And push them into a SwerveModulePosition object to return */
-    m_internalState.distanceMeters = drive_rot / m_driveRotationsPerMeter;
-    /* Angle is already in terms of steer rotations */
-    m_internalState.angle = Rotation2d.fromRotations(angle_rot);
 
     return m_internalState;
   }
@@ -314,86 +321,89 @@ public class BreadSwerveModule {
       SwerveModuleState state,
       DriveRequestType driveRequestType,
       SteerRequestType steerRequestType) {
-    var optimized = SwerveModuleState.optimize(state, m_internalState.angle);
-    m_targetState = optimized;
+    if (Robot.getIsReal()) {
+      var optimized = SwerveModuleState.optimize(state, m_internalState.angle);
+      m_targetState = optimized;
 
-    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure
-    // motor inversion
-    double angleToSetDeg = optimized.angle.getRotations();
-    switch (steerRequestType) {
-      case MotionMagic:
-        switch (m_steerClosedLoopOutput) {
-          case Voltage:
-            m_steerMotor.setControl(
-                m_angleVoltageSetter.withPosition(-angleToSetDeg).withEnableFOC(true));
-            break;
+      // CLOCKWORK: Negative sign required for motor angle request due to not being able to
+      // configure
+      // motor inversion
+      double angleToSetDeg = optimized.angle.getRotations();
+      switch (steerRequestType) {
+        case MotionMagic:
+          switch (m_steerClosedLoopOutput) {
+            case Voltage:
+              m_steerMotor.setControl(
+                  m_angleVoltageSetter.withPosition(-angleToSetDeg).withEnableFOC(true));
+              break;
 
-          case TorqueCurrentFOC:
-            m_steerMotor.setControl(m_angleTorqueSetter.withPosition(-angleToSetDeg));
-            break;
-        }
-        break;
+            case TorqueCurrentFOC:
+              m_steerMotor.setControl(m_angleTorqueSetter.withPosition(-angleToSetDeg));
+              break;
+          }
+          break;
 
-      case MotionMagicExpo:
-        switch (m_steerClosedLoopOutput) {
-          case Voltage:
-            m_steerMotor.setControl(
-                m_angleVoltageExpoSetter.withPosition(-angleToSetDeg).withEnableFOC(true));
-            break;
+        case MotionMagicExpo:
+          switch (m_steerClosedLoopOutput) {
+            case Voltage:
+              m_steerMotor.setControl(
+                  m_angleVoltageExpoSetter.withPosition(-angleToSetDeg).withEnableFOC(true));
+              break;
 
-          case TorqueCurrentFOC:
-            m_steerMotor.setControl(m_angleTorqueExpoSetter.withPosition(-angleToSetDeg));
-            break;
-        }
-        break;
-    }
+            case TorqueCurrentFOC:
+              m_steerMotor.setControl(m_angleTorqueExpoSetter.withPosition(-angleToSetDeg));
+              break;
+          }
+          break;
+      }
 
-    double velocityToSet = optimized.speedMetersPerSecond * m_driveRotationsPerMeter;
+      double velocityToSet = optimized.speedMetersPerSecond * m_driveRotationsPerMeter;
 
-    /* From FRC 900's whitepaper, we add a cosine compensator to the applied drive velocity */
-    /* To reduce the "skew" that occurs when changing direction */
-    // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
-    double steerMotorError = angleToSetDeg - (-m_steerPosition.getValue());
-    /* If error is close to 0 rotations, we're already there, so apply full power */
-    /* If the error is close to 0.25 rotations, then we're 90 degrees, so movement doesn't help us at all */
-    double cosineScalar = Math.cos(Units.rotationsToRadians(steerMotorError));
-    /* Make sure we don't invert our drive, even though we shouldn't ever target over 90 degrees anyway */
-    if (cosineScalar < 0.0) {
-      cosineScalar = 0.0;
-    }
-    velocityToSet *= cosineScalar;
+      /* From FRC 900's whitepaper, we add a cosine compensator to the applied drive velocity */
+      /* To reduce the "skew" that occurs when changing direction */
+      // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
+      double steerMotorError = angleToSetDeg - (-m_steerPosition.getValue());
+      /* If error is close to 0 rotations, we're already there, so apply full power */
+      /* If the error is close to 0.25 rotations, then we're 90 degrees, so movement doesn't help us at all */
+      double cosineScalar = Math.cos(Units.rotationsToRadians(steerMotorError));
+      /* Make sure we don't invert our drive, even though we shouldn't ever target over 90 degrees anyway */
+      if (cosineScalar < 0.0) {
+        cosineScalar = 0.0;
+      }
+      velocityToSet *= cosineScalar;
 
-    /* Back out the expected shimmy the drive motor will see */
-    /* Find the angular rate to determine what to back out */
-    // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
-    double azimuthTurnRps = -m_steerVelocity.getValue();
-    /* Azimuth turn rate multiplied by coupling ratio provides back-out rps */
-    double driveRateBackOut = azimuthTurnRps * m_couplingRatioDriveRotorToCANcoder;
-    velocityToSet += driveRateBackOut;
+      /* Back out the expected shimmy the drive motor will see */
+      /* Find the angular rate to determine what to back out */
+      // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
+      double azimuthTurnRps = -m_steerVelocity.getValue();
+      /* Azimuth turn rate multiplied by coupling ratio provides back-out rps */
+      double driveRateBackOut = azimuthTurnRps * m_couplingRatioDriveRotorToCANcoder;
+      velocityToSet += driveRateBackOut;
 
-    switch (driveRequestType) {
-      case OpenLoopVoltage:
-        /* Open loop ignores the driveRotationsPerMeter since it only cares about the open loop at the mechanism */
-        /* But we do care about the backout due to coupling, so we keep it in */
-        velocityToSet /= m_driveRotationsPerMeter;
-        m_driveMotor.setControl(
-            m_voltageOpenLoopSetter
-                .withOutput(velocityToSet / m_speedAt12VoltsMps * 12.0)
-                .withEnableFOC(true));
-        break;
+      switch (driveRequestType) {
+        case OpenLoopVoltage:
+          /* Open loop ignores the driveRotationsPerMeter since it only cares about the open loop at the mechanism */
+          /* But we do care about the backout due to coupling, so we keep it in */
+          velocityToSet /= m_driveRotationsPerMeter;
+          m_driveMotor.setControl(
+              m_voltageOpenLoopSetter
+                  .withOutput(velocityToSet / m_speedAt12VoltsMps * 12.0)
+                  .withEnableFOC(true));
+          break;
 
-      case Velocity:
-        switch (m_driveClosedLoopOutput) {
-          case Voltage:
-            m_driveMotor.setControl(
-                m_velocityVoltageSetter.withVelocity(velocityToSet).withEnableFOC(true));
-            break;
+        case Velocity:
+          switch (m_driveClosedLoopOutput) {
+            case Voltage:
+              m_driveMotor.setControl(
+                  m_velocityVoltageSetter.withVelocity(velocityToSet).withEnableFOC(true));
+              break;
 
-          case TorqueCurrentFOC:
-            m_driveMotor.setControl(m_velocityTorqueSetter.withVelocity(velocityToSet));
-            break;
-        }
-        break;
+            case TorqueCurrentFOC:
+              m_driveMotor.setControl(m_velocityTorqueSetter.withVelocity(velocityToSet));
+              break;
+          }
+          break;
+      }
     }
   }
 
@@ -407,22 +417,25 @@ public class BreadSwerveModule {
    * @param driveRequest The direct voltage to apply to the motor for use during characterization
    */
   public void applyCharacterization(Rotation2d steerTarget, VoltageOut driveRequest) {
-    double angleToSetDeg = steerTarget.getRotations();
-    /* Use the configured closed loop output mode */
-    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure
-    // motor inversion
-    switch (m_steerClosedLoopOutput) {
-      case Voltage:
-        m_steerMotor.setControl(m_angleVoltageSetter.withPosition(-angleToSetDeg));
-        break;
+    if (Robot.getIsReal()) {
+      double angleToSetDeg = steerTarget.getRotations();
+      /* Use the configured closed loop output mode */
+      // CLOCKWORK: Negative sign required for motor angle request due to not being able to
+      // configure
+      // motor inversion
+      switch (m_steerClosedLoopOutput) {
+        case Voltage:
+          m_steerMotor.setControl(m_angleVoltageSetter.withPosition(-angleToSetDeg));
+          break;
 
-      case TorqueCurrentFOC:
-        m_steerMotor.setControl(m_angleTorqueSetter.withPosition(-angleToSetDeg));
-        break;
+        case TorqueCurrentFOC:
+          m_steerMotor.setControl(m_angleTorqueSetter.withPosition(-angleToSetDeg));
+          break;
+      }
+
+      /* And apply the high-level drive request */
+      m_driveMotor.setControl(driveRequest);
     }
-
-    /* And apply the high-level drive request */
-    m_driveMotor.setControl(driveRequest);
   }
 
   /**
@@ -436,22 +449,25 @@ public class BreadSwerveModule {
    *     characterization
    */
   public void applyCharacterization(Rotation2d steerTarget, TorqueCurrentFOC driveRequest) {
-    double angleToSetDeg = steerTarget.getRotations();
-    /* Use the configured closed loop output mode */
-    // CLOCKWORK: Negative sign required for motor angle request due to not being able to configure
-    // motor inversion
-    switch (m_steerClosedLoopOutput) {
-      case Voltage:
-        m_steerMotor.setControl(m_angleVoltageSetter.withPosition(-angleToSetDeg));
-        break;
+    if (Robot.getIsReal()) {
+      double angleToSetDeg = steerTarget.getRotations();
+      /* Use the configured closed loop output mode */
+      // CLOCKWORK: Negative sign required for motor angle request due to not being able to
+      // configure
+      // motor inversion
+      switch (m_steerClosedLoopOutput) {
+        case Voltage:
+          m_steerMotor.setControl(m_angleVoltageSetter.withPosition(-angleToSetDeg));
+          break;
 
-      case TorqueCurrentFOC:
-        m_steerMotor.setControl(m_angleTorqueSetter.withPosition(-angleToSetDeg));
-        break;
+        case TorqueCurrentFOC:
+          m_steerMotor.setControl(m_angleTorqueSetter.withPosition(-angleToSetDeg));
+          break;
+      }
+
+      /* And apply the high-level drive request */
+      m_driveMotor.setControl(driveRequest);
     }
-
-    /* And apply the high-level drive request */
-    m_driveMotor.setControl(driveRequest);
   }
 
   /**
@@ -461,23 +477,27 @@ public class BreadSwerveModule {
    * @return Status code response of the request
    */
   public StatusCode configNeutralMode(NeutralModeValue neutralMode) {
-    var configs = new MotorOutputConfigs();
+    if (Robot.getIsReal()) {
+      var configs = new MotorOutputConfigs();
 
-    /* First read the configs so they're up-to-date */
-    StatusCode status = m_driveMotor.getConfigurator().refresh(configs);
-    if (status.isOK()) {
-      /* Then set the neutral mode config to the appropriate value */
-      configs.NeutralMode = neutralMode;
-      status = m_driveMotor.getConfigurator().apply(configs);
+      /* First read the configs so they're up-to-date */
+      StatusCode status = m_driveMotor.getConfigurator().refresh(configs);
+      if (status.isOK()) {
+        /* Then set the neutral mode config to the appropriate value */
+        configs.NeutralMode = neutralMode;
+        status = m_driveMotor.getConfigurator().apply(configs);
+      }
+      if (!status.isOK()) {
+        System.out.println(
+            "TalonFX ID "
+                + m_driveMotor.getDeviceID()
+                + " failed config neutral mode with error "
+                + status.toString());
+      }
+      return status;
+    } else {
+      return StatusCode.OK;
     }
-    if (!status.isOK()) {
-      System.out.println(
-          "TalonFX ID "
-              + m_driveMotor.getDeviceID()
-              + " failed config neutral mode with error "
-              + status.toString());
-    }
-    return status;
   }
 
   /**
@@ -499,9 +519,13 @@ public class BreadSwerveModule {
    */
   // CLOCKWORK: Negative sign required due to not being able to configure motor inversion
   public SwerveModuleState getCurrentState() {
-    return new SwerveModuleState(
-        m_driveVelocity.getValue() / m_driveRotationsPerMeter,
-        Rotation2d.fromRotations(-m_steerPosition.getValue()));
+    if (Robot.getIsReal()) {
+      return new SwerveModuleState(
+          m_driveVelocity.getValue() / m_driveRotationsPerMeter,
+          Rotation2d.fromRotations(-m_steerPosition.getValue()));
+    } else {
+      return new SwerveModuleState(0.0, Rotation2d.fromRotations(0));
+    }
   }
 
   /**
@@ -527,8 +551,10 @@ public class BreadSwerveModule {
 
   /** Resets this module's drive motor position to 0 rotations. */
   public void resetPosition() {
-    /* Only touch drive pos, not steer */
-    m_driveMotor.setPosition(0);
+    if (Robot.getIsReal()) {
+      /* Only touch drive pos, not steer */
+      m_driveMotor.setPosition(0);
+    }
   }
 
   /**
@@ -569,13 +595,21 @@ public class BreadSwerveModule {
 
   /* Returns stator current */
   public double getStatorCurrent() {
-    BaseStatusSignal.refreshAll(m_statorCurrent);
-    return m_statorCurrent.getValue();
+    if (Robot.getIsReal()) {
+      BaseStatusSignal.refreshAll(m_statorCurrent);
+      return m_statorCurrent.getValue();
+    } else {
+      return 0;
+    }
   }
 
   /* Returns supply current */
   public double getSupplyCurrent() {
-    BaseStatusSignal.refreshAll(m_supplyCurrent);
-    return m_supplyCurrent.getValue();
+    if (Robot.getIsReal()) {
+      BaseStatusSignal.refreshAll(m_supplyCurrent);
+      return m_supplyCurrent.getValue();
+    } else {
+      return 0;
+    }
   }
 }

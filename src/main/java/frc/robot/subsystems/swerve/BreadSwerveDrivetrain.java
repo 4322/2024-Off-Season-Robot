@@ -27,6 +27,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Robot;
 import frc.robot.subsystems.swerve.BreadSwerveRequest.SwerveControlRequestParameters;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -54,9 +55,9 @@ public class BreadSwerveDrivetrain {
   protected final int ModuleCount;
   protected final BreadSwerveModule[] Modules;
 
-  protected final Pigeon2 m_pigeon2;
-  protected final StatusSignal<Double> m_yawGetter;
-  protected final StatusSignal<Double> m_angularVelocity;
+  protected Pigeon2 m_pigeon2;
+  protected StatusSignal<Double> m_yawGetter;
+  protected StatusSignal<Double> m_angularVelocity;
 
   protected SwerveDriveKinematics m_kinematics;
   protected SwerveDrivePoseEstimator m_AutoOdometry;
@@ -75,7 +76,7 @@ public class BreadSwerveDrivetrain {
 
   protected final ReadWriteLock m_stateLock = new ReentrantReadWriteLock();
 
-  protected final BreadSimSwerveDrivetrain m_simDrive;
+  protected BreadSimSwerveDrivetrain m_simDrive;
 
   /**
    * Plain-Old-Data class holding the state of the swerve drivetrain. This encapsulates most data
@@ -137,15 +138,17 @@ public class BreadSwerveDrivetrain {
 
       /* 4 signals for each module + 2 for Pigeon2 */
       m_allSignals = new BaseStatusSignal[(ModuleCount * 4) + 2];
-      for (int i = 0; i < ModuleCount; ++i) {
-        var signals = Modules[i].getSignals();
-        m_allSignals[(i * 4) + 0] = signals[0];
-        m_allSignals[(i * 4) + 1] = signals[1];
-        m_allSignals[(i * 4) + 2] = signals[2];
-        m_allSignals[(i * 4) + 3] = signals[3];
+      if (Robot.getIsReal()) {
+        for (int i = 0; i < ModuleCount; ++i) {
+          var signals = Modules[i].getSignals();
+          m_allSignals[(i * 4) + 0] = signals[0];
+          m_allSignals[(i * 4) + 1] = signals[1];
+          m_allSignals[(i * 4) + 2] = signals[2];
+          m_allSignals[(i * 4) + 3] = signals[3];
+        }
+        m_allSignals[m_allSignals.length - 2] = m_yawGetter;
+        m_allSignals[m_allSignals.length - 1] = m_angularVelocity;
       }
-      m_allSignals[m_allSignals.length - 2] = m_yawGetter;
-      m_allSignals[m_allSignals.length - 1] = m_angularVelocity;
     }
 
     /** Starts the odometry thread. */
@@ -175,20 +178,24 @@ public class BreadSwerveDrivetrain {
 
     public void run() {
       /* Make sure all signals update at the correct update frequency */
-      BaseStatusSignal.setUpdateFrequencyForAll(UpdateFrequency, m_allSignals);
+      if (Robot.getIsReal()) {
+        BaseStatusSignal.setUpdateFrequencyForAll(UpdateFrequency, m_allSignals);
+      }
       Threads.setCurrentThreadPriority(true, START_THREAD_PRIORITY);
 
       /* Run as fast as possible, our signals will control the timing */
       while (m_running) {
         /* Synchronously wait for all signals in drivetrain */
         /* Wait up to twice the period of the update frequency */
-        StatusCode status;
-        if (IsOnCANFD) {
-          status = BaseStatusSignal.waitForAll(2.0 / UpdateFrequency, m_allSignals);
-        } else {
-          /* Wait for the signals to update */
-          Timer.delay(1.0 / UpdateFrequency);
-          status = BaseStatusSignal.refreshAll(m_allSignals);
+        StatusCode status = StatusCode.OK;
+        if (Robot.getIsReal()) {
+          if (IsOnCANFD) {
+            status = BaseStatusSignal.waitForAll(2.0 / UpdateFrequency, m_allSignals);
+          } else {
+            /* Wait for the signals to update */
+            Timer.delay(1.0 / UpdateFrequency);
+            status = BaseStatusSignal.refreshAll(m_allSignals);
+          }
         }
 
         try {
@@ -212,8 +219,11 @@ public class BreadSwerveDrivetrain {
             m_modulePositions[i] = Modules[i].getPosition(false);
             m_moduleStates[i] = Modules[i].getCurrentState();
           }
-          double yawDegrees =
-              BaseStatusSignal.getLatencyCompensatedValue(m_yawGetter, m_angularVelocity);
+          double yawDegrees = 0;
+          if (Robot.getIsReal()) {
+            yawDegrees =
+                BaseStatusSignal.getLatencyCompensatedValue(m_yawGetter, m_angularVelocity);
+          }
 
           /* Keep track of previous and current pose to account for the carpet vector */
           m_ShotOdometry.update(Rotation2d.fromDegrees(yawDegrees), m_modulePositions);
@@ -357,9 +367,11 @@ public class BreadSwerveDrivetrain {
     }
     ModuleCount = modules.length;
 
-    m_pigeon2 = new Pigeon2(driveTrainConstants.Pigeon2Id, driveTrainConstants.CANbusName);
-    m_yawGetter = m_pigeon2.getYaw().clone();
-    m_angularVelocity = m_pigeon2.getAngularVelocityZWorld().clone();
+    if (Robot.getIsReal()) {
+      m_pigeon2 = new Pigeon2(driveTrainConstants.Pigeon2Id, driveTrainConstants.CANbusName);
+      m_yawGetter = m_pigeon2.getYaw().clone();
+      m_angularVelocity = m_pigeon2.getAngularVelocityZWorld().clone();
+    }
 
     Modules = new BreadSwerveModule[ModuleCount];
     m_modulePositions = new SwerveModulePosition[ModuleCount];
@@ -396,8 +408,10 @@ public class BreadSwerveDrivetrain {
     m_fieldRelativeOffset = new Rotation2d();
     m_operatorForwardDirection = new Rotation2d();
 
-    m_simDrive =
-        new BreadSimSwerveDrivetrain(m_moduleLocations, m_pigeon2, driveTrainConstants, modules);
+    if (Robot.getIsReal()) {
+      m_simDrive =
+          new BreadSimSwerveDrivetrain(m_moduleLocations, m_pigeon2, driveTrainConstants, modules);
+    }
 
     m_odometryThread = new OdometryThread();
     m_odometryThread.start();
@@ -457,10 +471,12 @@ public class BreadSwerveDrivetrain {
         Modules[i].resetPosition();
         m_modulePositions[i] = Modules[i].getPosition(true);
       }
-      m_ShotOdometry.resetPosition(
-          Rotation2d.fromDegrees(m_yawGetter.getValue()), m_modulePositions, new Pose2d());
-      m_AutoOdometry.resetPosition(
-          Rotation2d.fromDegrees(m_yawGetter.getValue()), m_modulePositions, new Pose2d());
+      Double yaw = 0.0;
+      if (Robot.getIsReal()) {
+        yaw = m_yawGetter.getValue();
+      }
+      m_ShotOdometry.resetPosition(Rotation2d.fromDegrees(yaw), m_modulePositions, new Pose2d());
+      m_AutoOdometry.resetPosition(Rotation2d.fromDegrees(yaw), m_modulePositions, new Pose2d());
     } finally {
       m_stateLock.writeLock().unlock();
     }
@@ -502,13 +518,15 @@ public class BreadSwerveDrivetrain {
     try {
       m_stateLock.writeLock().lock();
 
-      m_ShotOdometry.resetPosition(
-          Rotation2d.fromDegrees(m_yawGetter.getValue()), m_modulePositions, location);
+      Double yaw = 0.0;
+      if (Robot.getIsReal()) {
+        yaw = m_yawGetter.getValue();
+      }
+      m_ShotOdometry.resetPosition(Rotation2d.fromDegrees(yaw), m_modulePositions, location);
       /* We need to update our cached pose immediately so that race conditions don't happen */
       m_cachedState.ShotPose = location;
 
-      m_AutoOdometry.resetPosition(
-          Rotation2d.fromDegrees(m_yawGetter.getValue()), m_modulePositions, location);
+      m_AutoOdometry.resetPosition(Rotation2d.fromDegrees(yaw), m_modulePositions, location);
       /* We need to update our cached pose immediately so that race conditions don't happen */
       m_cachedState.AutoPose = location;
     } finally {

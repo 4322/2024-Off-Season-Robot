@@ -63,8 +63,7 @@ public class RobotContainer {
   public static AutonomousSelector autonomousSelector;
 
   public RobotContainer() {
-    if (Robot.getIsReal())
-    {
+    if (Robot.getIsReal()) {
       shooterIO = new ShooterIOKrakenX60();
       intakeIO = new IntakeIOFalcon500();
       elevatorIO = new ElevatorIOKrakenX60();
@@ -76,7 +75,9 @@ public class RobotContainer {
         frontRightCamera = new BreadPhotonCamera("front-right");
         backLeftCamera = new BreadPhotonCamera("back-left");
         backRightCamera = new BreadPhotonCamera("back-right");
-        aprilTagVision = new PhotonAprilTagVision(frontLeftCamera, frontRightCamera, backLeftCamera, backRightCamera);
+        aprilTagVision =
+            new PhotonAprilTagVision(
+                frontLeftCamera, frontRightCamera, backLeftCamera, backRightCamera);
       }
 
     } else {
@@ -90,13 +91,14 @@ public class RobotContainer {
     intake = new Intake(intakeIO);
     superstructure = new Superstructure(elevatorIO, pivotIO, feederIO);
 
-    swerve = new Swerve(
-          TunerConstants.DrivetrainConstants,
-          TunerConstants.FrontLeft,
-          TunerConstants.FrontRight,
-          TunerConstants.BackLeft,
-          TunerConstants.BackRight);
-          
+    swerve =
+        new Swerve(
+            TunerConstants.DrivetrainConstants,
+            TunerConstants.FrontLeft,
+            TunerConstants.FrontRight,
+            TunerConstants.BackLeft,
+            TunerConstants.BackRight);
+
     configureBindings();
     configureAprilTagVision();
   }

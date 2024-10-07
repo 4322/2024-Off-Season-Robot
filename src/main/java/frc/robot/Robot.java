@@ -17,7 +17,6 @@ import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.rlog.RLOGServer;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
@@ -91,11 +90,12 @@ public class Robot extends LoggedRobot {
       new LoggedTunableNumber("Tuning/PivotAngleDegrees", 0.0);
 
   private static boolean isReal;
+
   public static boolean getIsReal() {
     return isReal;
   }
 
- @Override
+  @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     Logger.recordMetadata("ProjectName", "2024-Beta"); // Set a metadata value
