@@ -55,13 +55,13 @@ public class BreadSwerveDrivetrain {
   protected final int ModuleCount;
   protected final BreadSwerveModule[] Modules;
 
-  protected Pigeon2 m_pigeon2;
+  protected Pigeon2 m_pigeon2;  // TODO: Make this an AdvantageKit I/O class for the main thread (Odometry thread still needs direct access)
   protected StatusSignal<Double> m_yawGetter;
   protected StatusSignal<Double> m_angularVelocity;
 
   protected SwerveDriveKinematics m_kinematics;
-  protected SwerveDrivePoseEstimator m_AutoOdometry;
-  protected SwerveDrivePoseEstimator m_ShotOdometry;
+  protected SwerveDrivePoseEstimator m_AutoOdometry;  // TODO: Make this an AdvantageKit I/O class for the main thread (Odometry thread still needs direct access)
+  protected SwerveDrivePoseEstimator m_ShotOdometry;  // TODO: Make this an AdvantageKit I/O class for the main thread (Odometry thread still needs direct access)
 
   protected SwerveModulePosition[] m_modulePositions;
   protected SwerveModuleState[] m_moduleStates;
