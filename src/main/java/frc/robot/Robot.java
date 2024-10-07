@@ -90,16 +90,23 @@ public class Robot extends LoggedRobot {
   public static LoggedTunableNumber pivotAngle =
       new LoggedTunableNumber("Tuning/PivotAngleDegrees", 0.0);
 
-  @Override
+  private static boolean isReal;
+  public static boolean getIsReal() {
+    return isReal;
+  }
+
+ @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     Logger.recordMetadata("ProjectName", "2024-Beta"); // Set a metadata value
 
     if (isReal()) {
+      isReal = true;
       Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
       Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
       new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
     } else {
+      isReal = false;
       setUseTiming(false); // Run as fast as possible
       String logPath =
           LogFileUtil

@@ -36,51 +36,67 @@ import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.vision.VisionSupplier;
 import frc.robot.vision.photonvision.BreadPhotonCamera;
 import frc.robot.vision.photonvision.PhotonAprilTagVision;
-import frc.robot.vision.photonvision.PhotonNoteDetection;
-import org.photonvision.PhotonCamera;
 
 public class RobotContainer {
 
   public static XboxController driver = new XboxController(0);
   public static XboxController operator = new XboxController(1);
 
-  public static ShooterIO shooterIO = new ShooterIOKrakenX60();
-  public static Shooter shooter = new Shooter(shooterIO);
+  public static ShooterIO shooterIO;
+  public static IntakeIO intakeIO;
+  public static ElevatorIO elevatorIO;
+  public static PivotIO pivotIO;
+  public static FeederIO feederIO;
+  public static Shooter shooter;
+  public static Intake intake;
+  public static Swerve swerve;
+  public static Superstructure superstructure;
 
-  public static IntakeIO intakeIO = new IntakeIOFalcon500();
-  public static Intake intake = new Intake(intakeIO);
+  // April tag cameras
+  public static BreadPhotonCamera frontLeftCamera;
+  public static BreadPhotonCamera frontRightCamera;
+  public static BreadPhotonCamera backLeftCamera;
+  public static BreadPhotonCamera backRightCamera;
 
-  public static ElevatorIO elevatorIO = new ElevatorIOKrakenX60();
-  public static PivotIO pivotIO = new PivotIOKrakenX60();
-  public static FeederIO feederIO = new FeederIOFalcon500();
-  public static Superstructure superstructure = new Superstructure(elevatorIO, pivotIO, feederIO);
-  public static final Swerve swerve =
-      new Swerve(
+  public static PhotonAprilTagVision aprilTagVision;
+  public static final VisionSupplier visionSupplier = new VisionSupplier();
+  public static AutonomousSelector autonomousSelector;
+
+  public RobotContainer() {
+    if (Robot.getIsReal())
+    {
+      shooterIO = new ShooterIOKrakenX60();
+      intakeIO = new IntakeIOFalcon500();
+      elevatorIO = new ElevatorIOKrakenX60();
+      pivotIO = new PivotIOKrakenX60();
+      feederIO = new FeederIOFalcon500();
+
+      if (Constants.visionEnabled) {
+        frontLeftCamera = new BreadPhotonCamera("front-left");
+        frontRightCamera = new BreadPhotonCamera("front-right");
+        backLeftCamera = new BreadPhotonCamera("back-left");
+        backRightCamera = new BreadPhotonCamera("back-right");
+        aprilTagVision = new PhotonAprilTagVision(frontLeftCamera, frontRightCamera, backLeftCamera, backRightCamera);
+      }
+
+    } else {
+      shooterIO = new ShooterIO() {};
+      intakeIO = new IntakeIO() {};
+      elevatorIO = new ElevatorIO() {};
+      pivotIO = new PivotIO() {};
+      feederIO = new FeederIO() {};
+    }
+    shooter = new Shooter(shooterIO);
+    intake = new Intake(intakeIO);
+    superstructure = new Superstructure(elevatorIO, pivotIO, feederIO);
+
+    swerve = new Swerve(
           TunerConstants.DrivetrainConstants,
           TunerConstants.FrontLeft,
           TunerConstants.FrontRight,
           TunerConstants.BackLeft,
           TunerConstants.BackRight);
-
-  // April tag cameras
-  public static final BreadPhotonCamera frontLeftCamera = new BreadPhotonCamera("front-left");
-  public static final BreadPhotonCamera frontRightCamera = new BreadPhotonCamera("front-right");
-  public static final BreadPhotonCamera backLeftCamera = new BreadPhotonCamera("back-left");
-  public static final BreadPhotonCamera backRightCamera = new BreadPhotonCamera("back-right");
-
-  // Note detection cameras
-  public static final PhotonCamera leftObjCamera = new PhotonCamera("left-obj");
-  public static final PhotonCamera rightObjCamera = new PhotonCamera("right-obj");
-
-  public static final PhotonAprilTagVision aprilTagVision =
-      new PhotonAprilTagVision(frontLeftCamera, frontRightCamera, backLeftCamera, backRightCamera);
-  public static final PhotonNoteDetection noteDetection =
-      new PhotonNoteDetection(leftObjCamera, rightObjCamera);
-  // public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection();
-  public static final VisionSupplier visionSupplier = new VisionSupplier();
-  public static AutonomousSelector autonomousSelector;
-
-  public RobotContainer() {
+          
     configureBindings();
     configureAprilTagVision();
   }
@@ -148,7 +164,9 @@ public class RobotContainer {
   }
 
   private void configureAprilTagVision() {
-    aprilTagVision.setDataInterfaces(swerve::getPose, swerve::addVisionData);
+    if (aprilTagVision != null) {
+      aprilTagVision.setDataInterfaces(swerve::getPose, swerve::addVisionData);
+    }
   }
 
   public Command getAutonomousCommand() {

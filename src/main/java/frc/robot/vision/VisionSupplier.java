@@ -161,7 +161,6 @@ public class VisionSupplier extends SubsystemBase {
     distance = robotToRadialVirtualTarget.getNorm();
 
     /* Note follower calculations */
-    // notePose = RobotContainer.noteDetection.getNotePose();
     notePose = new Translation2d();
 
     Translation2d robotToNote = notePose.minus(robotPose.getTranslation());
@@ -210,7 +209,7 @@ public class VisionSupplier extends SubsystemBase {
         new Rotation2d(robotToLowPassingTarget.getX(), robotToLowPassingTarget.getY());
 
     /* Note Poses */
-    notePoses = RobotContainer.noteDetection.getNotePoses();
+    notePoses = new Translation2d[0];
 
     /* Swerve Tolerance Calculations */
     Pose2d targetPoseA =

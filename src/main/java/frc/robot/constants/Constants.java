@@ -12,6 +12,7 @@ public class Constants {
   public static final RobotType robot = RobotType.GAMMA;
 
   public static final boolean tuningMode = true;
+  public static final boolean visionEnabled = true;
 
   public static final double FALCON_FREE_SPEED = 6380.0;
   public static final double KRAKEN_FREE_SPEED = 6000.0;
