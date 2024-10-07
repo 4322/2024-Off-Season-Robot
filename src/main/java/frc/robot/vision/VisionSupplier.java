@@ -39,7 +39,6 @@ public class VisionSupplier extends SubsystemBase {
   private double distance;
   private Rotation2d robotToPassingAngle;
   private ShotParameter robotToPassingShot;
-  private Translation2d[] notePoses;
   private double swerveAngleTolerance;
   private Rotation2d robotToSpeakerAngleAuto;
   private Rotation2d robotToLowPassAngle;
@@ -48,13 +47,7 @@ public class VisionSupplier extends SubsystemBase {
   private Translation2d notePose;
 
   public int getTargetNote(int firstChoice, int secondChoice) {
-    if (notePoses[firstChoice] != null) {
-      return firstChoice;
-    } else if (notePoses[secondChoice] != null) {
-      return secondChoice;
-    } else {
-      return firstChoice;
-    }
+    return firstChoice;
   }
 
   public Rotation2d robotToLowPassingAngle() {
