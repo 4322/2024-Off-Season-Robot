@@ -201,9 +201,6 @@ public class VisionSupplier extends SubsystemBase {
     robotToLowPassAngle =
         new Rotation2d(robotToLowPassingTarget.getX(), robotToLowPassingTarget.getY());
 
-    /* Note Poses */
-    notePoses = new Translation2d[0];
-
     /* Swerve Tolerance Calculations */
     Pose2d targetPoseA =
         new Pose2d(
