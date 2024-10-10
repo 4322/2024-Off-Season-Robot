@@ -137,7 +137,8 @@ public class PhotonAprilTagVision extends SubsystemBase {
       Logger.recordOutput(
           "Photon/Camera " + instanceIndex + " Has Targets", unprocessedResult.hasTargets());
       Logger.recordOutput(
-          "Photon/Camera " + instanceIndex + "LatencyMS", unprocessedResult.getLatencyMillis());
+          "Photon/Camera " + instanceIndex + "LatencyMS",
+          unprocessedResult.metadata.getLatencyMillis());
 
       Logger.recordOutput(
           "Photon/Raw Camera Data " + instanceIndex,
@@ -153,12 +154,13 @@ public class PhotonAprilTagVision extends SubsystemBase {
       double timestamp = unprocessedResult.getTimestampSeconds();
       Logger.recordOutput("Photon/Camera " + instanceIndex + " Timestamp", timestamp);
 
-      boolean shouldUseMultiTag = unprocessedResult.getMultiTagResult().estimatedPose.isPresent;
+      boolean shouldUseMultiTag = unprocessedResult.getMultiTagResult().isPresent();
 
       if (shouldUseMultiTag) {
         // If multitag, use directly
         cameraPose =
-            GeomUtil.transform3dToPose3d(unprocessedResult.getMultiTagResult().estimatedPose.best);
+            GeomUtil.transform3dToPose3d(
+                unprocessedResult.getMultiTagResult().get().estimatedPose.best);
 
         robotPose =
             cameraPose
@@ -166,7 +168,7 @@ public class PhotonAprilTagVision extends SubsystemBase {
                 .toPose2d();
 
         // Populate array of tag poses with tags used
-        for (int id : unprocessedResult.getMultiTagResult().fiducialIDsUsed) {
+        for (int id : unprocessedResult.getMultiTagResult().get().fiducialIDsUsed) {
           tagPose3ds.add(aprilTags.getTagPose(id).get());
         }
 

@@ -114,9 +114,7 @@ public class BreadPhotonCamera implements AutoCloseable {
             .getRawTopic("rawBytes")
             .subscribe(
                 "rawBytes", new byte[] {}, PubSubOption.periodic(0.01), PubSubOption.sendAll(true));
-    resultSubscriber =
-        new PacketSubscriber<>(
-            rawBytesEntry, PhotonPipelineResult.serde, new PhotonPipelineResult());
+    resultSubscriber = new PacketSubscriber<>(rawBytesEntry, PhotonPipelineResult.photonStruct);
     driverModePublisher = cameraTable.getBooleanTopic("driverModeRequest").publish();
     driverModeSubscriber = cameraTable.getBooleanTopic("driverMode").subscribe(false);
     inputSaveImgEntry = cameraTable.getIntegerTopic("inputSaveImgCmd").getEntry(0);
@@ -165,20 +163,20 @@ public class BreadPhotonCamera implements AutoCloseable {
     if (lastEstimate == 0.0) {
       lastEstimate = currentCall;
     } else {
-      double captureTime = ret.getTimestampSeconds();
+      double captureTime = ret.value.getNtReceiveTimestampMicros() / 1e6;
       lastEstimate = lastEstimate + (captureTime - lastCaptureTime);
       lastCaptureTime = captureTime;
 
       lastEstimate = MathUtil.clamp(lastEstimate, lastCallTwo, currentCall);
     }
 
-    ret.setTimestampSeconds(lastEstimate);
+    ret.value.setReceiveTimestampMicros((long) (lastEstimate * 1e6));
 
     lastCallTwo = lastCall;
     lastCall = currentCall;
 
     // Return result.
-    return ret;
+    return ret.value;
   }
 
   //  public ArrayList<PhotonPipelineResult> getUnprocessedResults() {
