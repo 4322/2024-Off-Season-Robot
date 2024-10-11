@@ -15,8 +15,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitSourceValue;
-import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
-
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -28,7 +26,7 @@ public class FeederIOFalcon500 implements FeederIO {
   /* Hardware */
   private final TalonFX motor = new TalonFX(FEEDER_ID);
   private final DigitalInput beamBreak = new DigitalInput(Constants.Feeder.BEAMBREAK_ID);
-  
+
   /* Configurator */
   private final TalonFXConfigurator configurator;
 
@@ -95,8 +93,7 @@ public class FeederIOFalcon500 implements FeederIO {
     configurator.apply(slot0Configs);
     configurator.apply(hardwareLimitSwitchConfigs);
 
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        50, position, velocity, current, temperature);
+    BaseStatusSignal.setUpdateFrequencyForAll(50, position, velocity, current, temperature);
 
     motor.optimizeBusUtilization();
   }
