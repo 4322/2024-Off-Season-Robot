@@ -165,14 +165,14 @@ public class BreadPhotonCamera implements AutoCloseable {
     if (lastEstimate == 0.0) {
       lastEstimate = currentCall;
     } else {
-      double captureTime = ret.getTimestampSeconds();
+      double captureTime = ret.getCaptureTimestampMicros() / 1e6;
       lastEstimate = lastEstimate + (captureTime - lastCaptureTime);
       lastCaptureTime = captureTime;
 
       lastEstimate = MathUtil.clamp(lastEstimate, lastCallTwo, currentCall);
     }
 
-    ret.setTimestampSeconds(lastEstimate);
+    ret.setRecieveTimestampMicros((long) (lastEstimate * 1e6));
 
     lastCallTwo = lastCall;
     lastCall = currentCall;
