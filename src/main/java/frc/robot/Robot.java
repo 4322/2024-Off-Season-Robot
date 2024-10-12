@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.FireAnimation;
 import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commons.LoggedTunableNumber;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import java.util.Optional;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -188,16 +190,18 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
 
     if (RobotContainer.superstructure.getSystemState() == SuperstructureState.PRE_CLIMB) {
+      leds.clearAnimation(0);
       leds.setLEDs(255, 0, 0, 0, 0, 60);
       RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
     } else if (RobotContainer.superstructure.hasPiece()) {
+      leds.clearAnimation(0);
       leds.setLEDs(0, 0, 255, 0, 0, 60);
       RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0.25);
     } else if (RobotContainer.intake.hasPiece()) {
-      leds.setLEDs(0, 255, 0, 0, 0, 60);
+      leds.clearAnimation(0);
       RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
     } else {
-      leds.setLEDs(0, 0, 0, 0, 0, 60);
+      leds.animate(new FireAnimation(1, 0.1, Constants.LED_NUM, 0.1, 0.1, false, 0));
       RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
     }
 
