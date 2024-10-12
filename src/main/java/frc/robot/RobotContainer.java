@@ -61,24 +61,29 @@ public class RobotContainer {
           TunerConstants.BackRight);
 
   // April tag cameras
-
-  public static final BreadPhotonCamera frontLeftCamera = new BreadPhotonCamera("front-left");
-  public static final BreadPhotonCamera frontRightCamera = new BreadPhotonCamera("front-right");
-  public static final BreadPhotonCamera backLeftCamera = new BreadPhotonCamera("back-left");
-  public static final BreadPhotonCamera backRightCamera = new BreadPhotonCamera("back-right");
-
+  public static BreadPhotonCamera frontLeftCamera; 
+  public static BreadPhotonCamera frontRightCamera;
+  public static BreadPhotonCamera backLeftCamera;
+  public static BreadPhotonCamera backRightCamera;
+  public static PhotonAprilTagVision aprilTagVision;
   // Note detection cameras
   // public static final PhotonCamera leftObjCamera = new PhotonCamera("left-obj");
   // public static final PhotonCamera rightObjCamera = new PhotonCamera("right-obj");
 
-  public static final PhotonAprilTagVision aprilTagVision =
-      new PhotonAprilTagVision(frontLeftCamera, frontRightCamera, backLeftCamera, backRightCamera);
+  
   // public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection(leftObjCamera, rightObjCamera);
   // public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection();
   public static final VisionSupplier visionSupplier = new VisionSupplier();
   public static AutonomousSelector autonomousSelector;
 
   public RobotContainer() {
+    if (Constants.visionEnabled) {
+      frontLeftCamera = new BreadPhotonCamera("front-left");
+      frontRightCamera = new BreadPhotonCamera("front-right");
+      backLeftCamera =  new BreadPhotonCamera("back-left");
+      backRightCamera = new BreadPhotonCamera("back-right");
+      aprilTagVision = new PhotonAprilTagVision(frontLeftCamera, frontRightCamera, backLeftCamera, backRightCamera);
+    }
     configureBindings();
     configureAprilTagVision();
   }
