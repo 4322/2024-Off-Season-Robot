@@ -58,6 +58,7 @@ public class ManualAmpCommand extends Command {
     // Apply swerve Requests
     swerve.requestPercent(new ChassisSpeeds(dx, dy, rot), true);
 
+    // Back left top paddle binded to y button
     RobotContainer.superstructure.requestAmp(true, RobotContainer.driver.getYButton());
     RobotContainer.shooter.requestAmp();
   }
