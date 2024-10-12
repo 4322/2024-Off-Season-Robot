@@ -10,6 +10,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -101,6 +102,7 @@ public class FeederIOFalcon500 implements FeederIO {
     configurator.apply(slot0Configs);
     configurator.apply(hardwareLimitSwitchConfigs);
     configurator.apply(softwareLimitSwitchConfigs);
+    configurator.apply(new VoltageConfigs());
 
     BaseStatusSignal.setUpdateFrequencyForAll(50, position, velocity, current, temperature, voltage);
 

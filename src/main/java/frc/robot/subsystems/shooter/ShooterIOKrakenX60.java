@@ -10,6 +10,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -130,12 +131,14 @@ public class ShooterIOKrakenX60 implements ShooterIO {
     leftConfigurator.apply(leftShooterSlot0Configs);
     leftConfigurator.apply(openLoopRampsConfigs);
     leftConfigurator.apply(closedLoopRampsConfigs);
+    leftConfigurator.apply(new VoltageConfigs());
 
     rightConfigurator.apply(shooterCurrentLimitConfigs);
     rightConfigurator.apply(rightMotorOutputConfigs);
     rightConfigurator.apply(rightShooterSlot0Configs);
     leftConfigurator.apply(openLoopRampsConfigs);
     rightConfigurator.apply(closedLoopRampsConfigs);
+    rightConfigurator.apply(new VoltageConfigs());
 
     /* Status Signals */
     velocityLeft = left.getVelocity();

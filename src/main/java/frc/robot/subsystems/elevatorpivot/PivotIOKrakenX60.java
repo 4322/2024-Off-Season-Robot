@@ -15,6 +15,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -142,6 +143,7 @@ public class PivotIOKrakenX60 implements PivotIO {
     pivotConfigurator.apply(pivotMotionMagicConfigs);
     pivotConfigurator.apply(openLoopRampsConfigs);
     pivotConfigurator.apply(closedLoopRampsConfigs);
+    pivotConfigurator.apply(new VoltageConfigs());
 
     pivotStatusCode =
         BaseStatusSignal.setUpdateFrequencyForAll(
