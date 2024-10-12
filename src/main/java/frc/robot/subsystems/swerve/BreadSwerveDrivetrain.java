@@ -27,6 +27,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.swerve.BreadSwerveRequest.SwerveControlRequestParameters;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -418,12 +419,14 @@ public class BreadSwerveDrivetrain {
    * @param request Request to apply
    */
   public void setControl(BreadSwerveRequest request) {
-    try {
-      m_stateLock.writeLock().lock();
+    if (Constants.driveEnabled) {
+      try {
+        m_stateLock.writeLock().lock();
 
-      m_requestToApply = request;
-    } finally {
-      m_stateLock.writeLock().unlock();
+        m_requestToApply = request;
+      } finally {
+        m_stateLock.writeLock().unlock();
+      }
     }
   }
 

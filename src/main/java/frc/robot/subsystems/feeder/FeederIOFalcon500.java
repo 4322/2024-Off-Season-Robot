@@ -40,6 +40,7 @@ public class FeederIOFalcon500 implements FeederIO {
   private StatusSignal<Double> velocity;
   private StatusSignal<Double> current;
   private StatusSignal<Double> temperature;
+  private StatusSignal<Double> voltage;
   private Debouncer beamBreakDebounce = new Debouncer(0.25, DebounceType.kFalling);
 
   /* Gains */
@@ -86,6 +87,7 @@ public class FeederIOFalcon500 implements FeederIO {
     velocity = motor.getVelocity();
     current = motor.getSupplyCurrent();
     temperature = motor.getDeviceTemp();
+    voltage = motor.getMotorVoltage();
 
     /* Apply configs */
     configurator.apply(currentLimitConfigs);
@@ -93,18 +95,18 @@ public class FeederIOFalcon500 implements FeederIO {
     configurator.apply(slot0Configs);
     configurator.apply(hardwareLimitSwitchConfigs);
 
-    BaseStatusSignal.setUpdateFrequencyForAll(50, position, velocity, current, temperature);
+    BaseStatusSignal.setUpdateFrequencyForAll(50, position, velocity, current, temperature, voltage);
 
     motor.optimizeBusUtilization();
   }
 
   @Override
   public void updateInputs(FeederIOInputs inputs) {
-    BaseStatusSignal.refreshAll(position, velocity, current, temperature);
+    BaseStatusSignal.refreshAll(position, velocity, current, temperature, voltage);
 
     inputs.posMeters = position.getValue() * Math.PI * FEEDER_ROLLER_DIAMETER / FEEDER_GEAR_RATIO;
     inputs.velocityMps = velocity.getValue() * Math.PI * FEEDER_ROLLER_DIAMETER / FEEDER_GEAR_RATIO;
-    inputs.appliedVolts = motor.getMotorVoltage().getValue();
+    inputs.appliedVolts = voltage.getValue();
     inputs.tempCelcius = temperature.getValue();
     inputs.currentAmps = current.getValue();
     inputs.beamBreakTriggered = beamBreakDebounce.calculate(!beamBreak.get());

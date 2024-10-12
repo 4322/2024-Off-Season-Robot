@@ -11,8 +11,10 @@ public class Constants {
 
   public static final RobotType robot = RobotType.BETA;
 
+  public static final boolean driveEnabled = true;
   public static final boolean tuningMode = true;
-
+  public static final boolean visionEnabled = true;
+  
   public static final double FALCON_FREE_SPEED = 6380.0;
   public static final double KRAKEN_FREE_SPEED = 6000.0;
   public static final double GOAL_INWARD_SHIFT = 0.0;
@@ -284,7 +286,7 @@ public class Constants {
       if (robot == RobotType.BETA) {
         PIVOT_ID = 4;
         PIVOT_AZIMUTH_ID = 7;
-        PIVOT_MAGNET_OFFSET = 0.2985839;
+        PIVOT_MAGNET_OFFSET = 0.307128;
         // PIVOT_MAGNET_OFFSET = 0.153809;
 
         PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(30.0);
