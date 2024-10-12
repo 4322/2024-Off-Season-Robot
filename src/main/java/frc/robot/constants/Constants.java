@@ -11,6 +11,7 @@ public class Constants {
 
   public static final RobotType robot = RobotType.BETA;
 
+  public static final boolean driveEnabled = true;
   public static final boolean tuningMode = true;
   public static final boolean visionEnabled = true;
   
