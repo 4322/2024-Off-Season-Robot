@@ -191,11 +191,11 @@ public class Robot extends LoggedRobot {
 
     if (RobotContainer.superstructure.getSystemState() == SuperstructureState.PRE_CLIMB) {
       leds.clearAnimation(0);
-      leds.setLEDs(255, 0, 0, 0, 0, 60);
+      leds.setLEDs(255, 0, 0, 0, 0, Constants.LED_NUM);
       RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
     } else if (RobotContainer.superstructure.hasPiece()) {
       leds.clearAnimation(0);
-      leds.setLEDs(0, 0, 255, 0, 0, 60);
+      leds.setLEDs(0, 0, 255, 0, 0, Constants.LED_NUM);
       RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0.25);
     } else if (RobotContainer.intake.hasPiece()) {
       leds.clearAnimation(0);
