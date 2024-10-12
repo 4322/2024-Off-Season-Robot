@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -35,6 +36,7 @@ public class FeederIOFalcon500 implements FeederIO {
   private final Slot0Configs slot0Configs;
   private final MotorOutputConfigs motorOutputConfigs;
   private final HardwareLimitSwitchConfigs hardwareLimitSwitchConfigs;
+  private final SoftwareLimitSwitchConfigs softwareLimitSwitchConfigs;
 
   private StatusSignal<Double> position;
   private StatusSignal<Double> velocity;
@@ -82,6 +84,10 @@ public class FeederIOFalcon500 implements FeederIO {
     hardwareLimitSwitchConfigs.ReverseLimitSource = ReverseLimitSourceValue.LimitSwitchPin;
     hardwareLimitSwitchConfigs.ForwardLimitSource = ForwardLimitSourceValue.LimitSwitchPin;
 
+    softwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs();
+    softwareLimitSwitchConfigs.ForwardSoftLimitEnable = false;
+    softwareLimitSwitchConfigs.ReverseSoftLimitEnable = false;
+
     /* Set status signals */
     position = motor.getPosition();
     velocity = motor.getVelocity();
@@ -94,6 +100,7 @@ public class FeederIOFalcon500 implements FeederIO {
     configurator.apply(motorOutputConfigs);
     configurator.apply(slot0Configs);
     configurator.apply(hardwareLimitSwitchConfigs);
+    configurator.apply(softwareLimitSwitchConfigs);
 
     BaseStatusSignal.setUpdateFrequencyForAll(50, position, velocity, current, temperature, voltage);
 
