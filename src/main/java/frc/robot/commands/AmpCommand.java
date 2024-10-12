@@ -68,6 +68,7 @@ public class AmpCommand extends Command {
     // Apply swerve Requests
     swerve.requestVelocity(new ChassisSpeeds(dx, dy, output), true);
 
+    // Back left top paddle binded to y button
     RobotContainer.superstructure.requestAmp(true, RobotContainer.driver.getYButton());
     RobotContainer.shooter.requestAmp();
 
