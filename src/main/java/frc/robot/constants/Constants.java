@@ -48,7 +48,8 @@ public class Constants {
         SPIT_SPEED = -0.4;
         FEED_SPEED = 0.8;
 
-        INTAKE_INVERSION = InvertedValue.Clockwise_Positive;
+        // Clockwork: Intake must not be inverted due to use of falcon
+        INTAKE_INVERSION = InvertedValue.CounterClockwise_Positive;
         VECTOR_INVERSION = InvertedValue.Clockwise_Positive;
       } else {
         INTAKE_ID = 5;
@@ -58,7 +59,6 @@ public class Constants {
         SPIT_SPEED = -0.4;
         FEED_SPEED = 0.8;
 
-        // Clockwork: Intake must not be inverted due to use of falcon
         INTAKE_INVERSION = InvertedValue.CounterClockwise_Positive;
         VECTOR_INVERSION = InvertedValue.Clockwise_Positive;
       }
@@ -139,10 +139,10 @@ public class Constants {
     static {
       if (robot == RobotType.BETA) {
 
-        ELEVATOR_LEFT_ID = 11;
-        ELEVATOR_RIGHT_ID = 12;
+        ELEVATOR_LEFT_ID = 26;
+        ELEVATOR_RIGHT_ID = 27;
 
-        ELEVATOR_HOMING_VOLTAGE = -1;
+        ELEVATOR_HOMING_VOLTAGE = -3.0;
 
         ELEVATOR_IDLE_HEIGHT = 0.015;
 
@@ -283,9 +283,9 @@ public class Constants {
 
     static {
       if (robot == RobotType.BETA) {
-        PIVOT_ID = 18;
-        PIVOT_AZIMUTH_ID = 19;
-        PIVOT_MAGNET_OFFSET = -0.395263671875 + Units.degreesToRotations(-3.3);
+        PIVOT_ID = 4;
+        PIVOT_AZIMUTH_ID = 7;
+        PIVOT_MAGNET_OFFSET = 0.2985839;
         // PIVOT_MAGNET_OFFSET = 0.153809;
 
         PIVOT_MAX_ANGLE = Rotation2d.fromDegrees(30.0);
@@ -414,8 +414,8 @@ public class Constants {
 
     static {
       if (robot == RobotType.BETA) {
-        SHOOTER_LEFT_ID = 13;
-        SHOOTER_RIGHT_ID = 14;
+        SHOOTER_LEFT_ID = 3;
+        SHOOTER_RIGHT_ID = 2;
 
         SHOOTER_SETPOINT_TOLERANCE_RPM = 100.0;
 
@@ -496,7 +496,7 @@ public class Constants {
 
     static {
       if (robot == RobotType.BETA) {
-        FEEDER_ID = 15;
+        FEEDER_ID = 25;
         BEAMBREAK_ID = 0;
 
         FEEDER_INTAKE_SPEED = 65; // 65
