@@ -136,20 +136,25 @@ public class RobotContainer {
               }
             },
             swerve));
-
+    
+    // Binded to back left bottom paddle
     new JoystickButton(driver, XboxController.Button.kB.value)
         .whileTrue(new TeleopShootCommand(swerve));
-
+    
+    // Binded to back right top paddle
     new JoystickButton(driver, XboxController.Button.kX.value)
-        .whileTrue(new PassCommand(swerve, superstructure, shooter));
-
-    new JoystickButton(driver, XboxController.Button.kA.value).whileTrue(new AmpCommand(swerve));
-
-    new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
         .whileTrue(new LowPassCommand(swerve, superstructure, shooter));
+    
+    // Binded to back right bottom paddle
+    new JoystickButton(driver, XboxController.Button.kA.value).whileTrue(new AmpCommand(swerve));
+    
+    // Back left top paddle binded to y button for amp command
+    
+    new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+        .whileTrue(new FenderShotCommand(swerve, superstructure, shooter));
 
     new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-        .whileTrue(new FenderShotCommand(swerve, superstructure, shooter));
+        .whileTrue(new PassCommand(swerve, superstructure, shooter));
   }
 
   private void configureAprilTagVision() {
