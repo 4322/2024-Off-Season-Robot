@@ -9,7 +9,7 @@ import frc.robot.subsystems.shooter.ShotParameter;
 // By default these constants are the **Beta** constants
 public class Constants {
 
-  public static final RobotType robot = RobotType.GAMMA;
+  public static final RobotType robot = RobotType.BETA;
 
   public static final boolean tuningMode = true;
 
