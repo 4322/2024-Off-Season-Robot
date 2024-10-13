@@ -249,23 +249,23 @@ public class PhotonAprilTagVision extends SubsystemBase {
       }
 
       if (shouldUseMultiTag) {
-        visionUpdatesAuto.add(
+        visionUpdates.add(
             new TimestampedVisionUpdate(
                 robotPose,
                 timestamp,
                 VecBuilder.fill(
-                    stdDevScalarAuto * thetaStdDevCoefficientAuto * xyStdDev,
-                    stdDevScalarAuto * thetaStdDevCoefficientAuto * xyStdDev,
-                    stdDevScalarAuto * thetaStdDevCoefficientAuto * thetaStdDev)));
+                    stdDevScalarShooting * thetaStdDevCoefficientShooting * xyStdDev,
+                    stdDevScalarShooting * thetaStdDevCoefficientShooting * xyStdDev,
+                    stdDevScalarShooting * thetaStdDevCoefficientShooting * thetaStdDev)));
       } else {
-        visionUpdatesAuto.add(
+        visionUpdates.add(
             new TimestampedVisionUpdate(
                 robotPose,
                 timestamp,
                 VecBuilder.fill(
-                    singleTagAdjustment * singleTagStdDevScalar * xyStdDev * stdDevScalarAuto,
-                    singleTagAdjustment * singleTagStdDevScalar * xyStdDev * stdDevScalarAuto,
-                    singleTagAdjustment * singleTagStdDevScalar * thetaStdDev * stdDevScalarAuto)));
+                    singleTagAdjustment * xyStdDev * stdDevScalarShooting,
+                    singleTagAdjustment * xyStdDev * stdDevScalarShooting,
+                    singleTagAdjustment * thetaStdDev * stdDevScalarShooting)));
 
         Logger.recordOutput("VisionData/" + instanceIndex, robotPose);
         Logger.recordOutput("Photon/Tags Used " + instanceIndex, tagPose3ds.size());
