@@ -249,14 +249,6 @@ public class PhotonAprilTagVision extends SubsystemBase {
       }
 
       if (shouldUseMultiTag) {
-        visionUpdates.add(
-            new TimestampedVisionUpdate(
-                robotPose,
-                timestamp,
-                VecBuilder.fill(
-                    stdDevScalarShooting * thetaStdDevCoefficientShooting * xyStdDev,
-                    stdDevScalarShooting * thetaStdDevCoefficientShooting * xyStdDev,
-                    stdDevScalarShooting * thetaStdDevCoefficientShooting * thetaStdDev)));
         visionUpdatesAuto.add(
             new TimestampedVisionUpdate(
                 robotPose,
@@ -266,14 +258,6 @@ public class PhotonAprilTagVision extends SubsystemBase {
                     stdDevScalarAuto * thetaStdDevCoefficientAuto * xyStdDev,
                     stdDevScalarAuto * thetaStdDevCoefficientAuto * thetaStdDev)));
       } else {
-        visionUpdates.add(
-            new TimestampedVisionUpdate(
-                robotPose,
-                timestamp,
-                VecBuilder.fill(
-                    singleTagAdjustment * xyStdDev * stdDevScalarShooting,
-                    singleTagAdjustment * xyStdDev * stdDevScalarShooting,
-                    singleTagAdjustment * thetaStdDev * stdDevScalarShooting)));
         visionUpdatesAuto.add(
             new TimestampedVisionUpdate(
                 robotPose,

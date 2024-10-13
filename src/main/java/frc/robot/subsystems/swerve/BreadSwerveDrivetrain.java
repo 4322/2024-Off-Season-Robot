@@ -385,14 +385,7 @@ public class BreadSwerveDrivetrain {
             new Pose2d(),
             odometryStandardDeviation,
             visionStandardDeviation);
-    m_AutoOdometry =
-        new SwerveDrivePoseEstimator(
-            m_kinematics,
-            new Rotation2d(),
-            m_modulePositions,
-            new Pose2d(),
-            odometryStandardDeviation,
-            visionStandardDeviation);
+    m_AutoOdometry = m_ShotOdometry;
 
     m_fieldRelativeOffset = new Rotation2d();
     m_operatorForwardDirection = new Rotation2d();
