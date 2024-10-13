@@ -61,7 +61,7 @@ public class RobotContainer {
           TunerConstants.BackRight);
 
   // April tag cameras
-  public static BreadPhotonCamera frontLeftCamera; 
+  public static BreadPhotonCamera frontLeftCamera;
   public static BreadPhotonCamera frontRightCamera;
   public static BreadPhotonCamera backLeftCamera;
   public static BreadPhotonCamera backRightCamera;
@@ -70,8 +70,8 @@ public class RobotContainer {
   // public static final PhotonCamera leftObjCamera = new PhotonCamera("left-obj");
   // public static final PhotonCamera rightObjCamera = new PhotonCamera("right-obj");
 
-  
-  // public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection(leftObjCamera, rightObjCamera);
+  // public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection(leftObjCamera,
+  // rightObjCamera);
   // public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection();
   public static final VisionSupplier visionSupplier = new VisionSupplier();
   public static AutonomousSelector autonomousSelector;
@@ -85,9 +85,8 @@ public class RobotContainer {
       aprilTagVision = new PhotonAprilTagVision(frontLeftCamera, frontRightCamera, backLeftCamera);
       configureAprilTagVision();
     }
-    
+
     configureBindings();
-    
   }
 
   private void configureBindings() {
@@ -136,20 +135,20 @@ public class RobotContainer {
               }
             },
             swerve));
-    
+
     // Binded to back left bottom paddle
     new JoystickButton(driver, XboxController.Button.kB.value)
         .whileTrue(new TeleopShootCommand(swerve));
-    
+
     // Binded to back right top paddle
     new JoystickButton(driver, XboxController.Button.kX.value)
         .whileTrue(new LowPassCommand(swerve, superstructure, shooter));
-    
+
     // Binded to back right bottom paddle
     new JoystickButton(driver, XboxController.Button.kA.value).whileTrue(new AmpCommand(swerve));
-    
+
     // Back left top paddle binded to y button for amp command
-    
+
     new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
         .whileTrue(new FenderShotCommand(swerve, superstructure, shooter));
 

@@ -104,7 +104,8 @@ public class FeederIOFalcon500 implements FeederIO {
     configurator.apply(softwareLimitSwitchConfigs);
     configurator.apply(new VoltageConfigs());
 
-    BaseStatusSignal.setUpdateFrequencyForAll(50, position, velocity, current, temperature, voltage);
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        50, position, velocity, current, temperature, voltage);
 
     motor.optimizeBusUtilization();
   }
