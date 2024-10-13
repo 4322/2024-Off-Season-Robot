@@ -123,13 +123,13 @@ public class BreadSwerveModule {
     talonConfigs.CurrentLimits.StatorCurrentLimit = constants.SlipCurrent;
     talonConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
 
-    talonConfigs.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = 0.02;
-    talonConfigs.OpenLoopRamps.TorqueOpenLoopRampPeriod = 0.02;
-    talonConfigs.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.02;
+    talonConfigs.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = 0.08;
+    talonConfigs.OpenLoopRamps.TorqueOpenLoopRampPeriod = 0.08;
+    talonConfigs.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.08;
 
-    talonConfigs.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.02;
-    talonConfigs.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.02;
-    talonConfigs.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.02;
+    talonConfigs.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.08;
+    talonConfigs.ClosedLoopRamps.TorqueClosedLoopRampPeriod = 0.08;
+    talonConfigs.ClosedLoopRamps.VoltageClosedLoopRampPeriod = 0.08;
 
     talonConfigs.MotorOutput.Inverted =
         constants.DriveMotorInverted
