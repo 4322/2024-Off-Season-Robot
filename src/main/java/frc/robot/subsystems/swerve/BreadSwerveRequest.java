@@ -57,6 +57,7 @@ public interface BreadSwerveRequest {
     public Translation2d[] swervePositions;
     public Rotation2d operatorForwardDirection;
     public double updatePeriod;
+    public double gyroYawDeg;
   }
 
   /**
@@ -193,7 +194,7 @@ public interface BreadSwerveRequest {
       ChassisSpeeds speeds =
           ChassisSpeeds.discretize(
               ChassisSpeeds.fromFieldRelativeSpeeds(
-                  toApplyX, toApplyY, toApplyOmega, parameters.currentPose.getRotation()),
+                  toApplyX, toApplyY, toApplyOmega, new Rotation2d(Math.toRadians(parameters.gyroYawDeg))),
               parameters.updatePeriod);
 
       var states = parameters.kinematics.toSwerveModuleStates(speeds, CenterOfRotation);
