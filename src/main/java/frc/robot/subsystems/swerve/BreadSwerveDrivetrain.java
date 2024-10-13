@@ -218,7 +218,6 @@ public class BreadSwerveDrivetrain {
 
           /* Keep track of previous and current pose to account for the carpet vector */
           m_ShotOdometry.update(Rotation2d.fromDegrees(yawDegrees), m_modulePositions);
-          m_AutoOdometry.update(Rotation2d.fromDegrees(yawDegrees), m_modulePositions);
 
           ChassisSpeeds speeds = m_kinematics.toChassisSpeeds(m_moduleStates);
 
@@ -240,7 +239,7 @@ public class BreadSwerveDrivetrain {
           m_cachedState.FailedDaqs = FailedDaqs;
           m_cachedState.SuccessfulDaqs = SuccessfulDaqs;
           m_cachedState.ShotPose = m_ShotOdometry.getEstimatedPosition();
-          m_cachedState.AutoPose = m_AutoOdometry.getEstimatedPosition();
+          m_cachedState.AutoPose = m_cachedState.ShotPose;
           m_cachedState.speeds = speeds;
           m_cachedState.OdometryPeriod = averageLoopTime;
           m_cachedState.ModulePositions = m_modulePositions;
