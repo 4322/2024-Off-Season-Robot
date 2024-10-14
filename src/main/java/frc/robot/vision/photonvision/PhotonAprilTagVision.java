@@ -65,7 +65,7 @@ public class PhotonAprilTagVision extends SubsystemBase {
             Units.inchesToMeters(12.74),
             Units.inchesToMeters(25.1),
             new Rotation3d(
-                Units.degreesToRadians(180.0),
+                Units.degreesToRadians(0.0),
                 Units.degreesToRadians(-25.0),
                 Units.degreesToRadians(15.0))),
         // Front Right
@@ -74,7 +74,7 @@ public class PhotonAprilTagVision extends SubsystemBase {
             Units.inchesToMeters(-12.74),
             Units.inchesToMeters(25.1),
             new Rotation3d(
-                Units.degreesToRadians(180.0),
+                Units.degreesToRadians(0.0),
                 Units.degreesToRadians(-25.0),
                 Units.degreesToRadians(-15.0))),
         // Back Left
@@ -83,7 +83,7 @@ public class PhotonAprilTagVision extends SubsystemBase {
             Units.inchesToMeters(12.74),
             Units.inchesToMeters(25.1),
             new Rotation3d(
-                Units.degreesToRadians(180.0),
+                Units.degreesToRadians(0.0),
                 Units.degreesToRadians(-25.0),
                 Units.degreesToRadians(165.0))),
         // Back Right
@@ -92,7 +92,7 @@ public class PhotonAprilTagVision extends SubsystemBase {
             Units.inchesToMeters(-12.74),
             Units.inchesToMeters(25.1),
             new Rotation3d(
-                Units.degreesToRadians(180.0),
+                Units.degreesToRadians(0.0),
                 Units.degreesToRadians(-25.0),
                 Units.degreesToRadians(-165.0))),
       };
