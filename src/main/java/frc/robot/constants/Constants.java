@@ -83,7 +83,6 @@ public class Constants {
     public static final double pseudoAutoRotateRadPerSecTolerance = Units.degreesToRadians(1);
     public static final double inhibitPseudoAutoRotateRadPerSec = Units.degreesToRadians(4);
 
-
     static {
       if (robot == RobotType.BETA) {
         SWERVE_COAST_TRESHOLD_MPS = 0.05;

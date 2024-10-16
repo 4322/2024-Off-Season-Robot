@@ -81,30 +81,30 @@ public class Swerve extends SubsystemBase {
     if (systemState == SwerveState.PERCENT) {
       /* State outputs */
       if (fieldRelative) {
-        if (desired.omegaRadiansPerSecond == 0 
-              && pseudoAutoRotateAngle == null
-              && Math.abs(getRobotRelativeSpeeds().omegaRadiansPerSecond) 
-                  < Constants.Swerve.inhibitPseudoAutoRotateRadPerSec) {
+        if (desired.omegaRadiansPerSecond == 0
+            && pseudoAutoRotateAngle == null
+            && Math.abs(getRobotRelativeSpeeds().omegaRadiansPerSecond)
+                < Constants.Swerve.inhibitPseudoAutoRotateRadPerSec) {
           pseudoAutoRotateAngle = getPose().getRotation();
-        } 
-        else if (desired.omegaRadiansPerSecond != 0) {
+        } else if (desired.omegaRadiansPerSecond != 0) {
           pseudoAutoRotateAngle = null;
         }
 
         if (pseudoAutoRotateAngle != null) {
-          drivetrain.setControl(new FieldCentricFacingAngle()
-                                  .withVelocityX(desired.vxMetersPerSecond)
-                                  .withVelocityY(desired.vyMetersPerSecond)
-                                  .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-                                  .withTargetDirection(pseudoAutoRotateAngle)
-                                  .withRotationalDeadband(Constants.Swerve.pseudoAutoRotateRadPerSecTolerance));
-        }
-        else {
-          drivetrain.setControl(new FieldCentric()
-                                  .withVelocityX(desired.vxMetersPerSecond)
-                                  .withVelocityY(desired.vyMetersPerSecond)
-                                  .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-                                  .withRotationalRate(desired.omegaRadiansPerSecond));
+          drivetrain.setControl(
+              new FieldCentricFacingAngle()
+                  .withVelocityX(desired.vxMetersPerSecond)
+                  .withVelocityY(desired.vyMetersPerSecond)
+                  .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+                  .withTargetDirection(pseudoAutoRotateAngle)
+                  .withRotationalDeadband(Constants.Swerve.pseudoAutoRotateRadPerSecTolerance));
+        } else {
+          drivetrain.setControl(
+              new FieldCentric()
+                  .withVelocityX(desired.vxMetersPerSecond)
+                  .withVelocityY(desired.vyMetersPerSecond)
+                  .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+                  .withRotationalRate(desired.omegaRadiansPerSecond));
         }
       } else {
         drivetrain.setControl(
