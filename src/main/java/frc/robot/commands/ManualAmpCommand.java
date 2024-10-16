@@ -53,7 +53,7 @@ public class ManualAmpCommand extends Command {
       dx *= -2.0;
       dy *= -2.0;
     }
-    double rot = omega * omega * omega * 6.0;
+    double rot = omega * omega * omega * 9.0;
 
     // Apply swerve Requests
     swerve.requestPercent(new ChassisSpeeds(dx, dy, rot), true);
