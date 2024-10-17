@@ -377,8 +377,8 @@ public interface BreadSwerveRequest {
 
       double rotationRate =
           HeadingController.calculate(
-              parameters.currentPose.getRotation().getRadians(),
-              angleToFace.getRadians(),
+              parameters.currentPose.getRotation().getDegrees(),
+              angleToFace.getDegrees(),
               parameters.timestamp);
 
       double toApplyOmega = rotationRate;
@@ -386,7 +386,7 @@ public interface BreadSwerveRequest {
         toApplyX = 0;
         toApplyY = 0;
       }
-      if (Math.abs(toApplyOmega) < RotationalDeadband) {
+      if (Math.abs(parameters.currentPose.getRotation().getDegrees()) < Constants.Swerve.pseudoAutoRotateDegTolerance) {
         toApplyOmega = 0;
       }
 
