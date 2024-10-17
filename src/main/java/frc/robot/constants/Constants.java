@@ -77,10 +77,10 @@ public class Constants {
     public static final double driveDeadband = 0.1;
     public static final double rotDeadband = 0.1;
 
-    public static final double pseudoAutoRotatekP = 7;
+    public static final double pseudoAutoRotatekP = 1;
     public static final double pseudoAutoRotatekI = 0;
     public static final double pseudoAutoRotatekD = 0.2;
-    public static final double pseudoAutoRotateRadPerSecTolerance = Units.degreesToRadians(1);
+    public static final double pseudoAutoRotateRadPerSecTolerance = Units.degreesToRadians(5);
     public static final double inhibitPseudoAutoRotateRadPerSec = Units.degreesToRadians(4);
 
     static {
