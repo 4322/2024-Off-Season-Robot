@@ -146,9 +146,9 @@ public class Constants {
 
         ELEVATOR_HOMING_VOLTAGE = -3.0;
 
-        ELEVATOR_IDLE_HEIGHT = 0.015;
+        ELEVATOR_IDLE_HEIGHT = 0.03;
 
-        ELEVATOR_INTAKE_HEIGHT = 0.015;
+        ELEVATOR_INTAKE_HEIGHT = 0.03;
 
         ELEVATOR_SPIT_HEIGHT = 0.2;
 
@@ -182,7 +182,7 @@ public class Constants {
                 * Math.PI
                 * ELEVATOR_SPOOL_DIAMETER;
         ELEVATOR_LEFT_INVERSION = InvertedValue.CounterClockwise_Positive;
-        ELEVATOR_MIN_HEIGHT = 0.0;
+        ELEVATOR_MIN_HEIGHT = 0.03;
         ELEVATOR_END_OF_DANGER_ZONE = 0.08740336105246657; // Top gun reference?!?!?!
         ELEVATOR_MAX_HEIGHT = 0.6387244800740626;
       } else {
