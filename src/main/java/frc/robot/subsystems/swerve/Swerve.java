@@ -96,8 +96,7 @@ public class Swerve extends SubsystemBase {
                   .withVelocityX(desired.vxMetersPerSecond)
                   .withVelocityY(desired.vyMetersPerSecond)
                   .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-                  .withTargetDirection(pseudoAutoRotateAngle)
-                  .withRotationalDeadband(Constants.Swerve.pseudoAutoRotateRadPerSecTolerance));
+                  .withTargetDirection(pseudoAutoRotateAngle));
         } else {
           drivetrain.setControl(
               new FieldCentric()
@@ -204,6 +203,7 @@ public class Swerve extends SubsystemBase {
 
   /* Resets the pose estimate of the robot */
   public void resetPose(Pose2d newPose) {
+    pseudoAutoRotateAngle = null;
     drivetrain.seedFieldRelative(newPose);
   }
 
