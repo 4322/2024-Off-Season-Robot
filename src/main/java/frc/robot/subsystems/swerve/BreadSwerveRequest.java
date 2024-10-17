@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Voltage;
+import frc.robot.constants.Constants;
 
 /**
  * Container for all the Swerve Requests. Use this to find all applicable swerve drive requests.
@@ -349,7 +350,11 @@ public interface BreadSwerveRequest {
      * <p>This PID controller operates on heading radians and outputs a target rotational rate in
      * radians per second.
      */
-    public PhoenixPIDController HeadingController = new PhoenixPIDController(0, 0, 0);
+    public PhoenixPIDController HeadingController =
+        new PhoenixPIDController(
+            Constants.Swerve.pseudoAutoRotatekP,
+            Constants.Swerve.pseudoAutoRotatekI,
+            Constants.Swerve.pseudoAutoRotatekD);
 
     /** The perspective to use when determining which direction is forward. */
     public ForwardReference ForwardReference =
