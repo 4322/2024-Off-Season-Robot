@@ -58,6 +58,7 @@ public interface BreadSwerveRequest {
     public Translation2d[] swervePositions;
     public Rotation2d operatorForwardDirection;
     public double updatePeriod;
+    public double yawAngleDeg;
   }
 
   /**
@@ -377,7 +378,7 @@ public interface BreadSwerveRequest {
 
       double rotationRate =
           HeadingController.calculate(
-              parameters.currentPose.getRotation().getDegrees(),
+              parameters.yawAngleDeg,
               angleToFace.getDegrees(),
               parameters.timestamp);
 
@@ -386,7 +387,9 @@ public interface BreadSwerveRequest {
         toApplyX = 0;
         toApplyY = 0;
       }
-      if (Math.abs(parameters.currentPose.getRotation().getDegrees()) < Constants.Swerve.pseudoAutoRotateDegTolerance) {
+      double yawAngleDegAbs = Math.abs(parameters.yawAngleDeg);
+      double angleToFaceAbs = Math.abs(angleToFace.getDegrees());
+      if (Math.abs(yawAngleDegAbs - angleToFaceAbs) < Constants.Swerve.pseudoAutoRotateDegTolerance) {
         toApplyOmega = 0;
       }
 
