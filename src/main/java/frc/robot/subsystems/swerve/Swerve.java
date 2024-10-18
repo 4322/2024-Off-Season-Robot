@@ -72,6 +72,7 @@ public class Swerve extends SubsystemBase {
     Logger.recordOutput("Swerve/Targets", targets);
     Logger.recordOutput("Swerve/Achieved", states);
     Logger.recordOutput("Swerve/OmegaRadsPerSec", getRobotRelativeSpeeds().omegaRadiansPerSecond);
+    Logger.recordOutput("Swerve/yawAngleDeg", drivetrain.m_yawGetter.getValueAsDouble());
     drivetrain.logCurrents();
   }
 
@@ -85,9 +86,12 @@ public class Swerve extends SubsystemBase {
             && pseudoAutoRotateAngle == null
             && Math.abs(getRobotRelativeSpeeds().omegaRadiansPerSecond)
                 < Constants.Swerve.inhibitPseudoAutoRotateRadPerSec) {
-          pseudoAutoRotateAngle = Rotation2d.fromDegrees(drivetrain.m_yawGetter.getValue());  
+          pseudoAutoRotateAngle = Rotation2d.fromDegrees(drivetrain.m_yawGetter.getValue());
+          Logger.recordOutput("Swerve/PseudoAutoRotate/Heading", pseudoAutoRotateAngle.getDegrees());
+          Logger.recordOutput("Swerve/PseudoAutoRotate/Enabled", true);
         } else if (desired.omegaRadiansPerSecond != 0) {
           pseudoAutoRotateAngle = null;
+          Logger.recordOutput("Swerve/PseudoAutoRotate/Enabled", false);
         }
 
         if (pseudoAutoRotateAngle != null) {
