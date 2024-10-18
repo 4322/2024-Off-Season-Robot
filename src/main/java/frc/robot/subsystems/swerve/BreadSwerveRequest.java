@@ -387,9 +387,7 @@ public interface BreadSwerveRequest {
         toApplyX = 0;
         toApplyY = 0;
       }
-      double yawAngleDegAbs = Math.abs(parameters.yawAngleDeg);
-      double angleToFaceAbs = Math.abs(angleToFace.getDegrees());
-      if (Math.abs(yawAngleDegAbs - angleToFaceAbs) < Constants.Swerve.pseudoAutoRotateDegTolerance) {
+      if (Math.abs(parameters.yawAngleDeg - angleToFace.getDegrees()) < Constants.Swerve.pseudoAutoRotateDegTolerance) {
         toApplyOmega = 0;
       }
 
