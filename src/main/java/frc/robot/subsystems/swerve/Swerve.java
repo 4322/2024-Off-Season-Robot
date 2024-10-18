@@ -82,20 +82,22 @@ public class Swerve extends SubsystemBase {
     if (systemState == SwerveState.PERCENT) {
       /* State outputs */
       if (fieldRelative) {
-        if (desired.omegaRadiansPerSecond == 0
-            && pseudoAutoRotateAngle == null
-            && Math.abs(getRobotRelativeSpeeds().omegaRadiansPerSecond)
-                < Constants.Swerve.inhibitPseudoAutoRotateRadPerSec) {
-          pseudoAutoRotateAngle = Rotation2d.fromDegrees(drivetrain.m_yawGetter.getValue());
-          Logger.recordOutput(
-              "Swerve/PseudoAutoRotate/Heading", pseudoAutoRotateAngle.getDegrees());
-          Logger.recordOutput("Swerve/PseudoAutoRotate/Enabled", true);
-        } else if (desired.omegaRadiansPerSecond != 0) {
-          pseudoAutoRotateAngle = null;
-          Logger.recordOutput("Swerve/PseudoAutoRotate/Enabled", false);
+        if (Constants.pseudoAutoRotateEnabled) {
+          if (desired.omegaRadiansPerSecond == 0
+              && pseudoAutoRotateAngle == null
+              && Math.abs(getRobotRelativeSpeeds().omegaRadiansPerSecond)
+                  < Constants.Swerve.inhibitPseudoAutoRotateRadPerSec) {
+            pseudoAutoRotateAngle = Rotation2d.fromDegrees(drivetrain.m_yawGetter.getValue());
+            Logger.recordOutput(
+                "Swerve/PseudoAutoRotate/Heading", pseudoAutoRotateAngle.getDegrees());
+            Logger.recordOutput("Swerve/PseudoAutoRotate/Enabled", true);
+          } else if (desired.omegaRadiansPerSecond != 0) {
+            pseudoAutoRotateAngle = null;
+            Logger.recordOutput("Swerve/PseudoAutoRotate/Enabled", false);
+          }
         }
 
-        if (pseudoAutoRotateAngle != null) {
+        if (pseudoAutoRotateAngle != null && Constants.pseudoAutoRotateEnabled) {
           drivetrain.setControl(
               new FieldCentricFacingAngle()
                   .withVelocityX(desired.vxMetersPerSecond)
