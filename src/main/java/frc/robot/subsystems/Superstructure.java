@@ -61,6 +61,7 @@ public class Superstructure extends SubsystemBase {
   private boolean wantsShoot = false;
   private boolean wantsShootOverDefense = false;
   private boolean shouldShoot = false;
+  private boolean shouldShootManualOverride = false;
   private boolean overrideVision = false;
   private double overrideElevatorHeight = 0.0;
   private double overridePivotAngle = 0.0;
@@ -187,9 +188,10 @@ public class Superstructure extends SubsystemBase {
       //     Rotation2d.fromDegrees(Robot.pivotAngle.get()), Robot.elevatorHeight.get());
       elevatorPivot.requestPursueSetpoint(PIVOT_FENDER_ANGLE, ELEVATOR_FENDER_HEIGHT);
       if (wantsShoot
-          && elevatorPivot.atSetpoint()
-          && RobotContainer.shooter.atSetpoint()
-          && feeder.hasPiece()) {
+          && ((elevatorPivot.atSetpoint()
+                  && RobotContainer.shooter.atSetpoint()
+                  && feeder.hasPiece())
+              || shouldShootManualOverride)) {
         shouldShoot = true;
       }
 
@@ -235,9 +237,10 @@ public class Superstructure extends SubsystemBase {
       Logger.recordOutput("Vision/Shot/RightRpm", shot.rightRPM);
 
       if ((wantsShoot)
-          && elevatorPivot.atSetpoint()
-          && RobotContainer.shooter.atSetpoint()
-          && feeder.hasPiece()) {
+          && ((elevatorPivot.atSetpoint()
+                  && RobotContainer.shooter.atSetpoint()
+                  && feeder.hasPiece())
+              || shouldShootManualOverride)) {
         shouldShoot = true;
       }
 
@@ -268,9 +271,10 @@ public class Superstructure extends SubsystemBase {
       }
 
       if (wantsShoot
-          && elevatorPivot.atSetpoint()
-          && RobotContainer.shooter.atSetpoint()
-          && feeder.hasPiece()) {
+          && ((elevatorPivot.atSetpoint()
+                  && RobotContainer.shooter.atSetpoint()
+                  && feeder.hasPiece())
+              || shouldShootManualOverride)) {
         shouldShoot = true;
       }
 
@@ -373,9 +377,10 @@ public class Superstructure extends SubsystemBase {
       }
 
       if (wantsShoot
-          && elevatorPivot.atSetpoint()
-          && RobotContainer.shooter.atSetpoint()
-          && feeder.hasPiece()) {
+          && ((elevatorPivot.atSetpoint()
+                  && RobotContainer.shooter.atSetpoint()
+                  && feeder.hasPiece())
+              || shouldShootManualOverride)) {
         shouldShoot = true;
       }
 
@@ -410,9 +415,10 @@ public class Superstructure extends SubsystemBase {
           Rotation2d.fromDegrees((shot.pivotAngleDeg + angleAddition)), shot.elevatorHeight);
 
       if ((wantsShoot)
-          && elevatorPivot.atSetpoint()
-          && RobotContainer.shooter.atSetpoint()
-          && feeder.hasPiece()) {
+          && ((elevatorPivot.atSetpoint()
+                  && RobotContainer.shooter.atSetpoint()
+                  && feeder.hasPiece())
+              || shouldShootManualOverride)) {
         shouldShoot = true;
       }
 
@@ -438,9 +444,10 @@ public class Superstructure extends SubsystemBase {
       }
 
       if (wantsShoot
-          && elevatorPivot.atSetpoint()
-          && RobotContainer.shooter.atSetpoint()
-          && feeder.hasPiece()) {
+          && ((elevatorPivot.atSetpoint()
+                  && RobotContainer.shooter.atSetpoint()
+                  && feeder.hasPiece())
+              || shouldShootManualOverride)) {
         shouldShoot = true;
       }
 
@@ -531,6 +538,10 @@ public class Superstructure extends SubsystemBase {
   public void requestLowPass(boolean set, boolean wantsShoot) {
     requestLowPass = set;
     this.wantsShoot = wantsShoot;
+  }
+
+  public void requestManualShootOverride(boolean shouldOverride) {
+    shouldShootManualOverride = shouldOverride;
   }
 
   public boolean atElevatorPivotSetpoint() {

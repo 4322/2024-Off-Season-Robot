@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.AutonomousSelector;
@@ -154,6 +155,19 @@ public class RobotContainer {
 
     new JoystickButton(driver, XboxController.Button.kRightBumper.value)
         .whileTrue(new PassCommand(swerve, superstructure, shooter));
+
+    new JoystickButton(operator, XboxController.Button.kA.value)
+        .whileTrue(
+            new InstantCommand(
+                () -> {
+                  superstructure.requestManualShootOverride(true);
+                }));
+    new JoystickButton(operator, XboxController.Button.kA.value)
+        .whileFalse(
+            new InstantCommand(
+                () -> {
+                  superstructure.requestManualShootOverride(false);
+                }));
   }
 
   private void configureAprilTagVision() {
