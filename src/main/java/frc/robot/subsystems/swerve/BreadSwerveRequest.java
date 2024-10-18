@@ -5,13 +5,15 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.VoltageOut;
-import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Voltage;
@@ -351,8 +353,8 @@ public interface BreadSwerveRequest {
      * <p>This PID controller operates on heading radians and outputs a target rotational rate in
      * radians per second.
      */
-    public PhoenixPIDController HeadingController =
-        new PhoenixPIDController(
+    public PIDController HeadingController =
+        new PIDController(
             Constants.Swerve.pseudoAutoRotatekP,
             Constants.Swerve.pseudoAutoRotatekI,
             Constants.Swerve.pseudoAutoRotatekD);
@@ -376,13 +378,11 @@ public interface BreadSwerveRequest {
         angleToFace = angleToFace.rotateBy(parameters.operatorForwardDirection);
       }
 
-      double rotationRate =
-          HeadingController.calculate(
+      double rotationRate = HeadingController.calculate(
               parameters.yawAngleDeg,
-              angleToFace.getDegrees(),
-              parameters.timestamp);
+              angleToFace.getDegrees());
 
-      double toApplyOmega = rotationRate;
+      double toApplyOmega = Units.degreesToRadians(rotationRate);
       if (Math.sqrt(toApplyX * toApplyX + toApplyY * toApplyY) < Deadband) {
         toApplyX = 0;
         toApplyY = 0;
