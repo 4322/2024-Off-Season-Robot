@@ -74,8 +74,8 @@ public class TeleopShootCommand extends Command {
       dy *= 1.75;
 
     } else {
-      dx *= 1.75;
-      dy *= 1.75;
+      dx *= -1.75;
+      dy *= -1.75;
     }
 
     // Subsystem Requests
