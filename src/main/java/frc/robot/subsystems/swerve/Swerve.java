@@ -36,6 +36,8 @@ public class Swerve extends SubsystemBase {
   private boolean requestPercent = false;
   private boolean isBrakeMode = true;
   private Timer lastMovementTimer = new Timer();
+  private Timer gyroInitWaitTimer = new Timer();
+  private boolean gyroInitialized = false;
   private Rotation2d pseudoAutoRotateAngle;
 
   private SwerveState systemState = SwerveState.PERCENT;
@@ -53,6 +55,7 @@ public class Swerve extends SubsystemBase {
     drivetrain.configNeutralMode(NeutralModeValue.Brake);
 
     lastMovementTimer.start();
+    gyroInitWaitTimer.start();
   }
 
   @Override
@@ -83,7 +86,15 @@ public class Swerve extends SubsystemBase {
       /* State outputs */
       if (fieldRelative) {
         if (Constants.pseudoAutoRotateEnabled) {
-          if (desired.omegaRadiansPerSecond == 0
+          // Wait timer prevents race condition where angle heading lock is fetched
+          // before getting correct gyro readings, causing robot to spin out of control
+          if (gyroInitWaitTimer.hasElapsed(4)) {
+            gyroInitialized = true;
+            gyroInitWaitTimer.stop();
+          }
+        
+          if (gyroInitialized
+              && desired.omegaRadiansPerSecond == 0
               && pseudoAutoRotateAngle == null
               && Math.abs(getRobotRelativeSpeeds().omegaRadiansPerSecond)
                   < Constants.Swerve.inhibitPseudoAutoRotateRadPerSec) {
