@@ -233,6 +233,7 @@ public class BreadSwerveDrivetrain {
           m_requestParameters.timestamp = currentTime;
           m_requestParameters.updatePeriod = 1.0 / UpdateFrequency;
           m_requestParameters.operatorForwardDirection = m_operatorForwardDirection;
+          m_requestParameters.yawAngleDeg = m_yawGetter.getValueAsDouble();
 
           m_requestToApply.apply(m_requestParameters, Modules);
 

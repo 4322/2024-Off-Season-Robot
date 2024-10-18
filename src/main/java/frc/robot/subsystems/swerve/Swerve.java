@@ -7,6 +7,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -14,8 +15,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commons.TimestampedVisionUpdate;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.swerve.BreadSwerveModule.DriveRequestType;
 import frc.robot.subsystems.swerve.BreadSwerveRequest.FieldCentric;
+import frc.robot.subsystems.swerve.BreadSwerveRequest.FieldCentricFacingAngle;
 import frc.robot.subsystems.swerve.BreadSwerveRequest.RobotCentric;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
@@ -33,6 +36,7 @@ public class Swerve extends SubsystemBase {
   private boolean requestPercent = false;
   private boolean isBrakeMode = true;
   private Timer lastMovementTimer = new Timer();
+  private Rotation2d pseudoAutoRotateAngle;
 
   private SwerveState systemState = SwerveState.PERCENT;
 
@@ -68,6 +72,7 @@ public class Swerve extends SubsystemBase {
     Logger.recordOutput("Swerve/Targets", targets);
     Logger.recordOutput("Swerve/Achieved", states);
     Logger.recordOutput("Swerve/OmegaRadsPerSec", getRobotRelativeSpeeds().omegaRadiansPerSecond);
+    Logger.recordOutput("Swerve/yawAngleDeg", drivetrain.m_yawGetter.getValueAsDouble());
     drivetrain.logCurrents();
   }
 
@@ -77,12 +82,34 @@ public class Swerve extends SubsystemBase {
     if (systemState == SwerveState.PERCENT) {
       /* State outputs */
       if (fieldRelative) {
-        drivetrain.setControl(
-            new FieldCentric()
-                .withVelocityX(desired.vxMetersPerSecond)
-                .withVelocityY(desired.vyMetersPerSecond)
-                .withRotationalRate(desired.omegaRadiansPerSecond)
-                .withDriveRequestType(DriveRequestType.OpenLoopVoltage));
+        if (desired.omegaRadiansPerSecond == 0
+            && pseudoAutoRotateAngle == null
+            && Math.abs(getRobotRelativeSpeeds().omegaRadiansPerSecond)
+                < Constants.Swerve.inhibitPseudoAutoRotateRadPerSec) {
+          pseudoAutoRotateAngle = Rotation2d.fromDegrees(drivetrain.m_yawGetter.getValue());
+          Logger.recordOutput(
+              "Swerve/PseudoAutoRotate/Heading", pseudoAutoRotateAngle.getDegrees());
+          Logger.recordOutput("Swerve/PseudoAutoRotate/Enabled", true);
+        } else if (desired.omegaRadiansPerSecond != 0) {
+          pseudoAutoRotateAngle = null;
+          Logger.recordOutput("Swerve/PseudoAutoRotate/Enabled", false);
+        }
+
+        if (pseudoAutoRotateAngle != null) {
+          drivetrain.setControl(
+              new FieldCentricFacingAngle()
+                  .withVelocityX(desired.vxMetersPerSecond)
+                  .withVelocityY(desired.vyMetersPerSecond)
+                  .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+                  .withTargetDirection(pseudoAutoRotateAngle));
+        } else {
+          drivetrain.setControl(
+              new FieldCentric()
+                  .withVelocityX(desired.vxMetersPerSecond)
+                  .withVelocityY(desired.vyMetersPerSecond)
+                  .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+                  .withRotationalRate(desired.omegaRadiansPerSecond));
+        }
       } else {
         drivetrain.setControl(
             new RobotCentric()
@@ -181,6 +208,7 @@ public class Swerve extends SubsystemBase {
 
   /* Resets the pose estimate of the robot */
   public void resetPose(Pose2d newPose) {
+    pseudoAutoRotateAngle = null;
     drivetrain.seedFieldRelative(newPose);
   }
 

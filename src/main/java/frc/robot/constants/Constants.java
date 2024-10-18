@@ -77,6 +77,12 @@ public class Constants {
     public static final double driveDeadband = 0.1;
     public static final double rotDeadband = 0.1;
 
+    public static final double pseudoAutoRotatekP = 6;
+    public static final double pseudoAutoRotatekI = 0;
+    public static final double pseudoAutoRotatekD = 0.0;
+    public static final double pseudoAutoRotateDegTolerance = Units.degreesToRadians(1.5);
+    public static final double inhibitPseudoAutoRotateRadPerSec = Units.degreesToRadians(4);
+
     static {
       if (robot == RobotType.BETA) {
         SWERVE_COAST_TRESHOLD_MPS = 0.05;

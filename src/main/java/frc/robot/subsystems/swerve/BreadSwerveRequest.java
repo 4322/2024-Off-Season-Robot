@@ -5,16 +5,18 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.VoltageOut;
-import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Voltage;
+import frc.robot.constants.Constants;
 
 /**
  * Container for all the Swerve Requests. Use this to find all applicable swerve drive requests.
@@ -57,6 +59,7 @@ public interface BreadSwerveRequest {
     public Translation2d[] swervePositions;
     public Rotation2d operatorForwardDirection;
     public double updatePeriod;
+    public double yawAngleDeg;
   }
 
   /**
@@ -349,7 +352,11 @@ public interface BreadSwerveRequest {
      * <p>This PID controller operates on heading radians and outputs a target rotational rate in
      * radians per second.
      */
-    public PhoenixPIDController HeadingController = new PhoenixPIDController(0, 0, 0);
+    public PIDController HeadingController =
+        new PIDController(
+            Constants.Swerve.pseudoAutoRotatekP,
+            Constants.Swerve.pseudoAutoRotatekI,
+            Constants.Swerve.pseudoAutoRotatekD);
 
     /** The perspective to use when determining which direction is forward. */
     public ForwardReference ForwardReference =
@@ -371,17 +378,15 @@ public interface BreadSwerveRequest {
       }
 
       double rotationRate =
-          HeadingController.calculate(
-              parameters.currentPose.getRotation().getRadians(),
-              angleToFace.getRadians(),
-              parameters.timestamp);
+          HeadingController.calculate(parameters.yawAngleDeg, angleToFace.getDegrees());
 
-      double toApplyOmega = rotationRate;
+      double toApplyOmega = Units.degreesToRadians(rotationRate);
       if (Math.sqrt(toApplyX * toApplyX + toApplyY * toApplyY) < Deadband) {
         toApplyX = 0;
         toApplyY = 0;
       }
-      if (Math.abs(toApplyOmega) < RotationalDeadband) {
+      if (Math.abs(parameters.yawAngleDeg - angleToFace.getDegrees())
+          < Constants.Swerve.pseudoAutoRotateDegTolerance) {
         toApplyOmega = 0;
       }
 
