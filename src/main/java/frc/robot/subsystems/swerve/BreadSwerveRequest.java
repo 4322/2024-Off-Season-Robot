@@ -5,7 +5,6 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.VoltageOut;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -378,16 +377,16 @@ public interface BreadSwerveRequest {
         angleToFace = angleToFace.rotateBy(parameters.operatorForwardDirection);
       }
 
-      double rotationRate = HeadingController.calculate(
-              parameters.yawAngleDeg,
-              angleToFace.getDegrees());
+      double rotationRate =
+          HeadingController.calculate(parameters.yawAngleDeg, angleToFace.getDegrees());
 
       double toApplyOmega = Units.degreesToRadians(rotationRate);
       if (Math.sqrt(toApplyX * toApplyX + toApplyY * toApplyY) < Deadband) {
         toApplyX = 0;
         toApplyY = 0;
       }
-      if (Math.abs(parameters.yawAngleDeg - angleToFace.getDegrees()) < Constants.Swerve.pseudoAutoRotateDegTolerance) {
+      if (Math.abs(parameters.yawAngleDeg - angleToFace.getDegrees())
+          < Constants.Swerve.pseudoAutoRotateDegTolerance) {
         toApplyOmega = 0;
       }
 
