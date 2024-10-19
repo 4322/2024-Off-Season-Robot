@@ -393,7 +393,7 @@ public interface BreadSwerveRequest {
           < Constants.Swerve.pseudoAutoRotateDegTolerance) {
         toApplyOmega = 0;
       }
-
+      logTimer.start();
       if (logTimer.hasElapsed(1)) {
         System.out.println("toApplyOmega: " + toApplyOmega + "\n" 
                             + "angleToFace: " + angleToFace + "\n"
