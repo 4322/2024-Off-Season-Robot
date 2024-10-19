@@ -16,6 +16,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Voltage;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.constants.Constants;
 
 /**
@@ -312,6 +313,8 @@ public interface BreadSwerveRequest {
    * facing a changing direction throughout the motion.
    */
   public class FieldCentricFacingAngle implements BreadSwerveRequest {
+
+    public static Timer logTimer = new Timer();
     /**
      * The velocity in the X direction, in m/s. X is defined as forward according to WPILib
      * convention, so this determines how fast to travel forward.
@@ -389,6 +392,13 @@ public interface BreadSwerveRequest {
       if (Math.abs(parameters.yawAngleDeg - angleToFace.getDegrees())
           < Constants.Swerve.pseudoAutoRotateDegTolerance) {
         toApplyOmega = 0;
+      }
+
+      if (logTimer.hasElapsed(1)) {
+        System.out.println("toApplyOmega: " + toApplyOmega + "\n" 
+                            + "angleToFace: " + angleToFace + "\n"
+                            + "yawAngleDeg: " + parameters.yawAngleDeg);
+        logTimer.restart();
       }
 
       ChassisSpeeds speeds =
