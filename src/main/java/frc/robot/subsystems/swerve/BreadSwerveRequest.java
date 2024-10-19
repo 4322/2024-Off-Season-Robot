@@ -393,7 +393,7 @@ public interface BreadSwerveRequest {
           < Constants.Swerve.pseudoAutoRotateDegTolerance) {
         toApplyOmega = 0;
       }
-      logTimer.start();
+      // Don't start logTimer. Only start logging when we want to debug pseudo auto rotate.
       if (logTimer.hasElapsed(1)) {
         System.out.println("toApplyOmega: " + toApplyOmega + "\n" 
                             + "angleToFace: " + angleToFace + "\n"

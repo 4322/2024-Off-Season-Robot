@@ -88,7 +88,7 @@ public class Swerve extends SubsystemBase {
         if (Constants.pseudoAutoRotateEnabled) {
           // Wait timer prevents race condition where angle heading lock is fetched
           // before getting correct gyro readings, causing robot to spin out of control
-          if (gyroInitWaitTimer.hasElapsed(20)) {
+          if (gyroInitWaitTimer.hasElapsed(4)) {
             gyroInitialized = true;
             gyroInitWaitTimer.stop();
           }
