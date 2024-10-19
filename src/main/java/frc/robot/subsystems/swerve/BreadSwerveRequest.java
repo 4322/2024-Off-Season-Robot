@@ -352,6 +352,7 @@ public interface BreadSwerveRequest {
      * <p>This PID controller operates on heading radians and outputs a target rotational rate in
      * radians per second.
      */
+    // TODO: This only works for kP because we're instantiating a new Swerve Request every time
     public PIDController HeadingController =
         new PIDController(
             Constants.Swerve.pseudoAutoRotatekP,
