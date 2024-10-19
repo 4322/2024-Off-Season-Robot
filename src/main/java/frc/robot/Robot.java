@@ -201,7 +201,7 @@ public class Robot extends LoggedRobot {
       leds.clearAnimation(0);
       RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
     } else {
-      leds.animate(new FireAnimation(1, 0.1, Constants.LED_NUM, 0.1, 0.1, false, 0));
+      leds.clearAnimation(0);
       RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
     }
 
