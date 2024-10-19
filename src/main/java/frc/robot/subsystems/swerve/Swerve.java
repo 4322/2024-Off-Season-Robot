@@ -92,7 +92,7 @@ public class Swerve extends SubsystemBase {
             gyroInitialized = true;
             gyroInitWaitTimer.stop();
           }
-        
+
           if (gyroInitialized
               && desired.omegaRadiansPerSecond == 0
               && pseudoAutoRotateAngle == null
@@ -260,8 +260,11 @@ public class Swerve extends SubsystemBase {
   }
 
   public boolean notRotating() {
-    return Math.abs(this.getRobotRelativeSpeeds().omegaRadiansPerSecond)
-        < SWERVE_ANGULAR_ERROR_TOLERANCE_RAD_P_S;
+    return Math.abs(this.getRobotRelativeSpeeds().omegaRadiansPerSecond) < SWERVE_ANGULAR_ERROR_TOLERANCE_RAD_P_S;
+  }
+  
+  public void clearHeadingLock() {
+    pseudoAutoRotateAngle = null;
   }
 
   /* Swerve State */

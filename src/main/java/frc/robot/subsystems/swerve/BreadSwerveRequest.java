@@ -395,9 +395,15 @@ public interface BreadSwerveRequest {
       }
       // Don't start logTimer. Only start logging when we want to debug pseudo auto rotate.
       if (logTimer.hasElapsed(1)) {
-        System.out.println("toApplyOmega: " + toApplyOmega + "\n" 
-                            + "angleToFace: " + angleToFace + "\n"
-                            + "yawAngleDeg: " + parameters.yawAngleDeg);
+        System.out.println(
+            "toApplyOmega: "
+                + toApplyOmega
+                + "\n"
+                + "angleToFace: "
+                + angleToFace
+                + "\n"
+                + "yawAngleDeg: "
+                + parameters.yawAngleDeg);
         logTimer.restart();
       }
 

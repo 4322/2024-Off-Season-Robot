@@ -246,6 +246,7 @@ public class Robot extends LoggedRobot {
       m_autonomousCommand.schedule();
     }
     RobotContainer.shooter.requestIdle();
+    RobotContainer.swerve.clearHeadingLock(); // Needed to prevent pseudo auto rotate from spinning wildly in place
     RobotController.setBrownoutVoltage(5.75);
   }
 
@@ -267,6 +268,7 @@ public class Robot extends LoggedRobot {
     }
 
     RobotContainer.shooter.requestIdle();
+    RobotContainer.swerve.clearHeadingLock(); // Needed to prevent pseudo auto rotate from spinning wildly in place
     RobotController.setBrownoutVoltage(5.75);
 
     RobotContainer.superstructure.requestVisionSpeaker(false, false, false);
