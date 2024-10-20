@@ -174,6 +174,8 @@ public class RobotContainer {
         .whileTrue(new LeftStageAlignmentCommand(swerve));
     new JoystickButton(operator, XboxController.Button.kStart.value)
         .whileTrue(new RightStageAlignmentCommand(swerve));
+    new JoystickButton(operator, XboxController.Button.kB.value)
+        .whileTrue(new CenterStageAlignmentCommand(swerve));
   }
 
   private void configureAprilTagVision() {
