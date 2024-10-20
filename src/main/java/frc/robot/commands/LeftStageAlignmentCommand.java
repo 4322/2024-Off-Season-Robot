@@ -28,7 +28,14 @@ public class LeftStageAlignmentCommand extends Command {
   @Override
   public void execute() {
     // Calculate swerve outputs
-    double setpoint = 2.0 * Math.PI / 3.0;
+    double setpoint;
+
+    if (Robot.alliance == DriverStation.Alliance.Red) {
+      setpoint = -Math.PI / 3.0;
+    }
+    else {
+      setpoint = 2.0 * Math.PI / 3.0;
+    }
     // double setpoint = RobotContainer.visionSupplier.robotToAmpAngle().getRadians();
     double measurement = swerve.getPose().getRotation().getRadians();
 
