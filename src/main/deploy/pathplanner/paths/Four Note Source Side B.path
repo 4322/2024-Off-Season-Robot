@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 7.872088097956508,
-        "y": 2.4475648380683346
+        "x": 7.958634375157244,
+        "y": 2.2300461208277103
       },
       "prevControl": {
-        "x": 7.0991728859349275,
-        "y": 2.002553049328637
+        "x": 7.185719163135663,
+        "y": 1.7850343320880127
       },
       "nextControl": {
-        "x": 8.64500330997809,
-        "y": 2.892576626808032
+        "x": 8.731549587178833,
+        "y": 2.675057909567408
       },
       "isLocked": false,
       "linkedName": null
@@ -72,7 +72,30 @@
       "rotateFast": false
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "GoingToNote",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.7,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 4.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    },
+    {
+      "name": "BackFromNote",
+      "minWaypointRelativePos": 1.7,
+      "maxWaypointRelativePos": 3.0,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 4.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.0,

@@ -69,9 +69,20 @@
   ],
   "constraintZones": [
     {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 2.6,
+      "name": "BackFromNote",
+      "minWaypointRelativePos": 2.35,
       "maxWaypointRelativePos": 3.0,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 4.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    },
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 1.75,
       "constraints": {
         "maxVelocity": 4.0,
         "maxAcceleration": 4.5,
