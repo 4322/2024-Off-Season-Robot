@@ -170,9 +170,9 @@ public class RobotContainer {
                 () -> {
                   superstructure.requestManualShootOverride(false);
                 }));
-    new JoystickButton(operator, XboxController.Axis.kLeftTrigger.value)
+    new JoystickButton(operator, XboxController.Button.kBack.value)
         .whileTrue(new LeftStageAlignmentCommand(swerve));
-    new JoystickButton(operator, XboxController.Axis.kRightTrigger.value)
+    new JoystickButton(operator, XboxController.Button.kStart.value)
         .whileTrue(new RightStageAlignmentCommand(swerve));
   }
 
