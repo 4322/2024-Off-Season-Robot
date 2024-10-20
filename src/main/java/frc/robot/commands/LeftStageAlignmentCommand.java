@@ -77,6 +77,5 @@ public class LeftStageAlignmentCommand extends Command {
   }
 
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 }

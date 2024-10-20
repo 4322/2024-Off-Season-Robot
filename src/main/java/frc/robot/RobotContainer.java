@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.AutonomousSelector;
 import frc.robot.commands.AmpCommand;
+import frc.robot.commands.CenterStageAlignmentCommand;
 import frc.robot.commands.FenderShotCommand;
 import frc.robot.commands.LeftStageAlignmentCommand;
 import frc.robot.commands.LowPassCommand;
