@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.AutonomousSelector;
 import frc.robot.commands.AmpCommand;
 import frc.robot.commands.FenderShotCommand;
+import frc.robot.commands.LeftStageAlignmentCommand;
 import frc.robot.commands.LowPassCommand;
 import frc.robot.commands.PassCommand;
+import frc.robot.commands.RightStageAlignmentCommand;
 import frc.robot.commands.TeleopShootCommand;
 import frc.robot.commons.BreadUtil;
 import frc.robot.constants.Constants;
@@ -168,6 +170,10 @@ public class RobotContainer {
                 () -> {
                   superstructure.requestManualShootOverride(false);
                 }));
+    new JoystickButton(operator, XboxController.Axis.kLeftTrigger.value)
+        .whileTrue(new LeftStageAlignmentCommand(swerve));
+    new JoystickButton(operator, XboxController.Axis.kRightTrigger.value)
+        .whileTrue(new RightStageAlignmentCommand(swerve));
   }
 
   private void configureAprilTagVision() {
