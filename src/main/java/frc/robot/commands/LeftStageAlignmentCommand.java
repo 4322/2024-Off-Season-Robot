@@ -32,8 +32,7 @@ public class LeftStageAlignmentCommand extends Command {
 
     if (Robot.alliance == DriverStation.Alliance.Red) {
       setpoint = -Math.PI / 3.0;
-    }
-    else {
+    } else {
       setpoint = 2.0 * Math.PI / 3.0;
     }
     // double setpoint = RobotContainer.visionSupplier.robotToAmpAngle().getRadians();

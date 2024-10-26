@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -32,11 +31,10 @@ public class CenterStageAlignmentCommand extends Command {
     // Calculate swerve outputs
     if (Robot.alliance == DriverStation.Alliance.Red) {
       setpoint = Math.PI;
-    }
-    else {
+    } else {
       setpoint = 0;
     }
-    
+
     // double setpoint = RobotContainer.visionSupplier.robotToAmpAngle().getRadians();
     double measurement = swerve.getPose().getRotation().getRadians();
 
