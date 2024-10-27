@@ -55,7 +55,7 @@ public class TunerConstants {
   private static final boolean kInvertLeftSide = false;
   private static final boolean kInvertRightSide = true;
 
-  private static final String kCANbusName = "Clockwork";
+  private static final String kCANbusName = "rio";
   private static final int kPigeonId = 10;
 
   // These are only used for simulation

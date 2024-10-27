@@ -80,7 +80,7 @@ public class Robot extends LoggedRobot {
 
   private boolean requestedHome = false;
 
-  private CANdle leds = new CANdle(31, "Clockwork");
+  private CANdle leds = new CANdle(31, "rio");
 
   public static LoggedTunableNumber leftSpeed = new LoggedTunableNumber("Tuning/LeftSpeed", 0.0);
   public static LoggedTunableNumber rightSpeed = new LoggedTunableNumber("Tuning/RightSpeed", 0.0);
