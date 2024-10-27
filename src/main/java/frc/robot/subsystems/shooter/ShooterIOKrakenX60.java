@@ -81,7 +81,7 @@ public class ShooterIOKrakenX60 implements ShooterIO {
     shooterCurrentLimitConfigs = new CurrentLimitsConfigs();
     shooterCurrentLimitConfigs.StatorCurrentLimitEnable = true;
     shooterCurrentLimitConfigs.StatorCurrentLimit = 100.0;
-    shooterCurrentLimitConfigs.SupplyCurrentLimit = 100.0;
+    shooterCurrentLimitConfigs.SupplyCurrentLimit = 40.0;
 
     // Motor output configs
     leftMotorOutputConfigs = new MotorOutputConfigs();
