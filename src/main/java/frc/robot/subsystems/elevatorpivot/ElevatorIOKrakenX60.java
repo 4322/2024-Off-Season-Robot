@@ -71,7 +71,7 @@ public class ElevatorIOKrakenX60 implements ElevatorIO {
     currentLimitsConfigs.StatorCurrentLimitEnable = true;
     currentLimitsConfigs.StatorCurrentLimit = 100.0;
     currentLimitsConfigs.SupplyCurrentLimit = 30.0;
-    currentLimitsConfigs.SupplyCurrentThreshold = 40.0;
+    currentLimitsConfigs.SupplyCurrentThreshold = 30.0;
     currentLimitsConfigs.SupplyTimeThreshold = 0.75;
 
     leaderMotorConfigs = new MotorOutputConfigs();

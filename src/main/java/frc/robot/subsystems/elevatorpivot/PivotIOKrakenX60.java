@@ -84,7 +84,7 @@ public class PivotIOKrakenX60 implements PivotIO {
     currentLimitConfigs = new CurrentLimitsConfigs();
     currentLimitConfigs.StatorCurrentLimitEnable = true;
     currentLimitConfigs.StatorCurrentLimit = 100.0;
-    currentLimitConfigs.SupplyCurrentLimit = 40.0;
+    currentLimitConfigs.SupplyCurrentLimit = 25.0;
     currentLimitConfigs.SupplyTimeThreshold = 1.5;
 
     motorOutputConfigs = new MotorOutputConfigs();
