@@ -123,7 +123,7 @@ public class Robot extends LoggedRobot {
       Logger.addDataReceiver(
           new WPILOGWriter(
               LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
-      RobotController.setBrownoutVoltage(5.75);
+      RobotController.setBrownoutVoltage(7.5);
     }
 
     Logger.start();
