@@ -70,7 +70,10 @@ public class AmpCommand extends Command {
 
     // Back left top paddle binded to y button
     RobotContainer.superstructure.requestAmp(true, RobotContainer.driver.getYButton());
-    RobotContainer.shooter.requestAmp();
+
+    if (RobotContainer.superstructure.atElevatorPivotSetpoint()) {
+      RobotContainer.shooter.requestAmp();
+    }
 
     // Apply superstructure requests
     // if (Math.abs(setpoint - measurement) < Units.degreesToRadians(15.0)) {
