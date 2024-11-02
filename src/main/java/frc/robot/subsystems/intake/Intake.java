@@ -22,6 +22,9 @@ public class Intake extends SubsystemBase {
 
   private double stateStartTime = 0.0;
 
+  private double intakePercentOutput = 1.0;
+  private double vectorPercentOutput = 0.5;
+
   /* System States */
   public enum IntakeState {
     IDLE,
@@ -57,8 +60,8 @@ public class Intake extends SubsystemBase {
     } else if (systemState == IntakeState.INTAKE) {
       if (RobotContainer.superstructure.getSystemState() == SuperstructureState.INTAKE
           && RobotContainer.superstructure.getPivotAngle().getDegrees() < 0.0) {
-        io.setIntakePercent(INTAKE_SPEED);
-        io.setVectorPercent(0.5);
+        io.setIntakePercent(intakePercentOutput);
+        io.setVectorPercent(vectorPercentOutput);
       } else {
         io.setIntakePercent(0.0);
         io.setVectorPercent(0.0);
@@ -107,5 +110,10 @@ public class Intake extends SubsystemBase {
   private void unsetAllRequests() {
     requestIntake = false;
     requestSpit = false;
+  }
+
+  public void configOutputPercent(double intakePercent, double vectorPercent) {
+    intakePercentOutput = intakePercent;
+    vectorPercentOutput = vectorPercent;
   }
 }

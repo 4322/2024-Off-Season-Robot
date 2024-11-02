@@ -197,6 +197,8 @@ public class Robot extends LoggedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
+    m_robotContainer.runAntiBrownoutLogic();
+
     if (RobotContainer.superstructure.getSystemState() == SuperstructureState.PRE_CLIMB) {
       leds.clearAnimation(0);
       leds.setLEDs(255, 0, 0, 0, 8, Constants.LED_NUM);
