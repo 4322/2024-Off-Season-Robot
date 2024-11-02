@@ -32,6 +32,10 @@ public class Robot extends LoggedRobot {
   public static PathPlannerPath fourNoteCenterC;
   public static PathPlannerPath fourNoteCenterD;
 
+  public static PathPlannerPath fourNoteCloseA;
+  public static PathPlannerPath fourNoteCloseB;
+  public static PathPlannerPath fourNoteCloseC;
+
   public static PathPlannerPath cheekyThreePieceA;
   public static PathPlannerPath cheekyThreePieceB;
 
@@ -134,6 +138,10 @@ public class Robot extends LoggedRobot {
     fourNoteCenterB = PathPlannerPath.fromPathFile("Four Note Center B");
     fourNoteCenterC = PathPlannerPath.fromPathFile("Four Note Center C");
     fourNoteCenterD = PathPlannerPath.fromPathFile("Four Note Center D");
+
+    fourNoteCloseA = PathPlannerPath.fromPathFile("Four Note Close A");
+    fourNoteCloseB = PathPlannerPath.fromPathFile("Four Note Close B");
+    fourNoteCloseC = PathPlannerPath.fromPathFile("Four Note Close C");
 
     cheekyThreePieceA = PathPlannerPath.fromPathFile("Cheeky Three Piece A");
     cheekyThreePieceB = PathPlannerPath.fromPathFile("Cheeky Three Piece B");

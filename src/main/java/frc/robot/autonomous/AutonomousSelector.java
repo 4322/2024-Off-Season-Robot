@@ -9,6 +9,7 @@ import frc.robot.autonomous.modes.DriveBackTwo;
 import frc.robot.autonomous.modes.FiveNoteAmpSide;
 import frc.robot.autonomous.modes.FourNoteAmpSide;
 import frc.robot.autonomous.modes.FourNoteCenter;
+import frc.robot.autonomous.modes.FourNoteClose;
 import frc.robot.autonomous.modes.FourNoteSourceSide;
 import frc.robot.autonomous.modes.Preload;
 import frc.robot.autonomous.modes.SixNoteAmpSide;
@@ -55,6 +56,8 @@ public class AutonomousSelector {
         "SOURCE_SIDE_RUSH_21", new SourceSideRush21(superstructure, swerve, shooter, intake));
     autonomousSelector.addOption(
         "AMP_SIDE_RUSH", new AmpSideRush(superstructure, swerve, shooter, intake));
+    autonomousSelector.addOption(
+        "FOUR_NOTE_CLOSE", new FourNoteClose(superstructure, swerve, shooter, intake));
 
     SmartDashboard.putData("Autonomus Selector", autonomousSelector);
   }

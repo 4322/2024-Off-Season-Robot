@@ -3,11 +3,12 @@
   "robotLength": 0.737,
   "holonomicMode": true,
   "pathFolders": [
+    "AmpSideRush",
     "CheekyThreePiece",
     "FiveNoteAmpSide",
     "FourNoteCenter",
     "FourNoteSourceSide",
-    "AmpSideRush",
+    "FourNoteClose",
     "ReverseFive",
     "SixNoteAmpSide",
     "SourceSideRush"
