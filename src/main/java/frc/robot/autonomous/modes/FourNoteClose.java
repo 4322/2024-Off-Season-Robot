@@ -4,6 +4,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Robot;
 import frc.robot.commands.FenderShotCommand;
 import frc.robot.commands.StationaryShootCommand;
@@ -36,6 +37,7 @@ public class FourNoteClose extends SequentialCommandGroup {
                   superstructure.requestIntake(true);
                   superstructure.requestVisionSpeaker(false, false, false);
                 }),
+        new WaitUntilCommand(() -> superstructure.hasPiece()).withTimeout(1.5),
         new StationaryShootCommand(swerve, superstructure, shooter),
         new TrajectoryFollowerCommand(() -> Robot.fourNoteCloseB, swerve, false, () -> false)
             .beforeStarting(
@@ -44,14 +46,16 @@ public class FourNoteClose extends SequentialCommandGroup {
                   superstructure.requestIntake(true);
                   superstructure.requestVisionSpeaker(false, false, false);
                 }),
+        new WaitUntilCommand(() -> superstructure.hasPiece()).withTimeout(1.5),
         new StationaryShootCommand(swerve, superstructure, shooter),
-        new TrajectoryFollowerCommand(() -> Robot.sixNoteAmpSideC, swerve, false, () -> false)
+        new TrajectoryFollowerCommand(() -> Robot.fourNoteCloseC, swerve, false, () -> false)
             .beforeStarting(
                 () -> {
                   intake.requestIntake();
                   superstructure.requestIntake(true);
                   superstructure.requestVisionSpeaker(false, false, false);
                 }),
+        new WaitUntilCommand(() -> superstructure.hasPiece()).withTimeout(1.5),
         new StationaryShootCommand(swerve, superstructure, shooter));
   }
 }
