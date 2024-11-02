@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -41,7 +40,6 @@ import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.vision.VisionSupplier;
 import frc.robot.vision.photonvision.BreadPhotonCamera;
 import frc.robot.vision.photonvision.PhotonAprilTagVision;
-import org.littletonrobotics.junction.Logger;
 
 public class RobotContainer {
 
@@ -81,8 +79,6 @@ public class RobotContainer {
   // public static final PhotonNoteDetection noteDetection = new PhotonNoteDetection();
   public static final VisionSupplier visionSupplier = new VisionSupplier();
   public static AutonomousSelector autonomousSelector;
-
-  public static double driveInputScaling = 6.0;
 
   public RobotContainer() {
     if (Constants.visionEnabled) {
@@ -124,12 +120,12 @@ public class RobotContainer {
               double dy = driveMag * Math.sin(driveTheta);
 
               if (Robot.alliance == DriverStation.Alliance.Blue) {
-                dx *= driveInputScaling;
-                dy *= driveInputScaling;
+                dx *= 6.0;
+                dy *= 6.0;
 
               } else {
-                dx *= -driveInputScaling;
-                dy *= -driveInputScaling;
+                dx *= -6.0;
+                dy *= -6.0;
               }
               double rot = omega * omega * omega * 12.0;
               swerve.requestPercent(new ChassisSpeeds(dx, dy, rot), true);
@@ -193,28 +189,5 @@ public class RobotContainer {
 
   public void configureAutonomousSelector() {
     autonomousSelector = new AutonomousSelector(swerve, superstructure, shooter, intake);
-  }
-
-  public void runAntiBrownoutLogic() {
-    if (RobotController.getBatteryVoltage() < Constants.Brownout.secondaryBrownoutThreshold) {
-      driveInputScaling = Constants.Brownout.secondaryReducedDriveInputScaling;
-      intake.configOutputPercent(
-          Constants.Brownout.secondaryIntakeReducedPercent,
-          Constants.Brownout.secondaryVectorReducedPercent);
-      Logger.recordOutput("BrownoutLogic/SecondaryActivated", true);
-      Logger.recordOutput("BrownoutLogic/PrimaryActivated", false);
-    } else if (RobotController.getBatteryVoltage() < Constants.Brownout.primaryBrownoutThreshold) {
-      driveInputScaling = Constants.Brownout.primaryReducedDriveInputScaling;
-      intake.configOutputPercent(
-          Constants.Brownout.primaryIntakeReducedPercent,
-          Constants.Brownout.primaryVectorReducedPercent);
-      Logger.recordOutput("BrownoutLogic/SecondaryActivated", false);
-      Logger.recordOutput("BrownoutLogic/PrimaryActivated", true);
-    } else {
-      driveInputScaling = Constants.Swerve.defaultDriveInputScaling;
-      intake.configOutputPercent(Constants.Intake.INTAKE_SPEED, Constants.Intake.VECTOR_SPEED);
-      Logger.recordOutput("BrownoutLogic/SecondaryActivated", false);
-      Logger.recordOutput("BrownoutLogic/PrimaryActivated", false);
-    }
   }
 }

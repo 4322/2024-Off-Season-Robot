@@ -26,19 +26,6 @@ public class Constants {
     GAMMA
   }
 
-  public static class Brownout {
-    public static final double primaryBrownoutThreshold = 7.25;
-    public static final double secondaryBrownoutThreshold = 6.75;
-
-    public static final double primaryIntakeReducedPercent = 0.65;
-    public static final double primaryVectorReducedPercent = 0.4;
-    public static final double primaryReducedDriveInputScaling = 4.0;
-
-    public static final double secondaryIntakeReducedPercent = 0.5;
-    public static final double secondaryVectorReducedPercent = 0.33;
-    public static final double secondaryReducedDriveInputScaling = 2.0;
-  }
-
   /* Constants pertaining to the intake */
   public static class Intake {
 
@@ -48,7 +35,6 @@ public class Constants {
 
     /* Setpoints and tolerances */
     public static final double INTAKE_SPEED;
-    public static final double VECTOR_SPEED;
     public static final double SPIT_SPEED;
     public static final double FEED_SPEED;
 
@@ -62,7 +48,6 @@ public class Constants {
         VECTOR_ID = 6;
 
         INTAKE_SPEED = 1.0;
-        VECTOR_SPEED = 0.5;
         SPIT_SPEED = -0.4;
         FEED_SPEED = 0.8;
 
@@ -74,7 +59,6 @@ public class Constants {
         VECTOR_ID = 6;
 
         INTAKE_SPEED = 1.0;
-        VECTOR_SPEED = 0.5;
         SPIT_SPEED = -0.4;
         FEED_SPEED = 0.8;
 
@@ -99,8 +83,6 @@ public class Constants {
     public static final double pseudoAutoRotatekD = 0.0;
     public static final double pseudoAutoRotateDegTolerance = Units.degreesToRadians(1.5);
     public static final double inhibitPseudoAutoRotateRadPerSec = Units.degreesToRadians(4);
-
-    public static final double defaultDriveInputScaling = 6.0;
 
     static {
       if (robot == RobotType.BETA) {
