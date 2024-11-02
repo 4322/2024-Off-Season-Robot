@@ -45,8 +45,7 @@ public class FourNoteClose extends SequentialCommandGroup {
                   superstructure.requestVisionSpeaker(false, false, false);
                 }),
         new StationaryShootCommand(swerve, superstructure, shooter),
-        new TrajectoryFollowerCommand(
-                () -> Robot.sixNoteAmpSideC, swerve, false, () -> false)
+        new TrajectoryFollowerCommand(() -> Robot.sixNoteAmpSideC, swerve, false, () -> false)
             .beforeStarting(
                 () -> {
                   intake.requestIntake();
