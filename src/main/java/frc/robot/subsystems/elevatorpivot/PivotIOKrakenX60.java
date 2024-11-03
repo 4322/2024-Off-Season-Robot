@@ -54,12 +54,12 @@ public class PivotIOKrakenX60 implements PivotIO {
   private final StatusSignal<Double> motionMagicVelocityTarget;
 
   /* Gains */
-  LoggedTunableNumber kS = new LoggedTunableNumber("Pivot/kS", 0.2); // 0.3
+  LoggedTunableNumber kS = new LoggedTunableNumber("Pivot/kS", 0.3); // 0.3
   LoggedTunableNumber kG = new LoggedTunableNumber("Pivot/kG", 0.0);
-  LoggedTunableNumber kV = new LoggedTunableNumber("Pivot/kV", 10); // 12
-  LoggedTunableNumber kP = new LoggedTunableNumber("Pivot/kP", 150); // 200
+  LoggedTunableNumber kV = new LoggedTunableNumber("Pivot/kV", 12); // 12
+  LoggedTunableNumber kP = new LoggedTunableNumber("Pivot/kP", 200); // 200
   LoggedTunableNumber kI = new LoggedTunableNumber("Pivot/kI", 0.0);
-  LoggedTunableNumber kD = new LoggedTunableNumber("Pivot/kD", 4); // 9
+  LoggedTunableNumber kD = new LoggedTunableNumber("Pivot/kD", 9); // 9
 
   LoggedTunableNumber motionAcceleration =
       new LoggedTunableNumber("Pivot/MotionAcceleration", 3); // 5
