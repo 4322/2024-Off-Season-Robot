@@ -56,7 +56,8 @@ public class Intake extends SubsystemBase {
       }
     } else if (systemState == IntakeState.INTAKE) {
       if (RobotContainer.superstructure.getSystemState() == SuperstructureState.INTAKE
-          && RobotContainer.superstructure.getPivotAngle().getDegrees() < 0.0) {
+          && RobotContainer.superstructure.getPivotAngle().getDegrees() < 0.0
+          && RobotContainer.superstructure.getElevatorHeightMeters() < 0.1) {
         io.setIntakePercent(INTAKE_SPEED);
         io.setVectorPercent(0.5);
       } else {

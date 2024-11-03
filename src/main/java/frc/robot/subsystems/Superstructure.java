@@ -579,4 +579,8 @@ public class Superstructure extends SubsystemBase {
   public Rotation2d getPivotAngle() {
     return elevatorPivot.getPivotAngle();
   }
+
+  public double getElevatorHeightMeters() {
+    return elevatorPivot.getHeight();
+  }
 }
