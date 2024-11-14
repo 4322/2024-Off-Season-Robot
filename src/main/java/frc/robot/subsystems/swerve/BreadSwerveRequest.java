@@ -384,20 +384,18 @@ public interface BreadSwerveRequest {
           < Constants.Swerve.pseudoAutoRotateDegTolerance) {
         toApplyOmega = 0;
       }
-      if (Constants.pseudoAutoRotateEnabled) {
-        logTimer.start();
-        if (logTimer.hasElapsed(1)) {
-          System.out.println(
-              "toApplyOmega: "
-                  + toApplyOmega
-                  + "\n"
-                  + "angleToFace: "
-                  + angleToFace
-                  + "\n"
-                  + "yawAngleDeg: "
-                  + parameters.yawAngleDeg);
-          logTimer.restart();
-        }
+      logTimer.start();
+      if (logTimer.hasElapsed(1)) {
+        System.out.println(
+            "toApplyOmega: "
+                + toApplyOmega
+                + "\n"
+                + "angleToFace: "
+                + angleToFace
+                + "\n"
+                + "yawAngleDeg: "
+                + parameters.yawAngleDeg);
+        logTimer.restart();
       }
 
       ChassisSpeeds speeds =
