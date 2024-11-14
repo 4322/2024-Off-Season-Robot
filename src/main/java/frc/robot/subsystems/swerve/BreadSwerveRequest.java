@@ -371,15 +371,6 @@ public interface BreadSwerveRequest {
       double toApplyX = VelocityX;
       double toApplyY = VelocityY;
       Rotation2d angleToFace = TargetDirection;
-      if (ForwardReference == BreadSwerveRequest.ForwardReference.OperatorPerspective) {
-        /* If we're operator perspective, modify the X/Y translation by the angle */
-        Translation2d tmp = new Translation2d(toApplyX, toApplyY);
-        tmp = tmp.rotateBy(parameters.operatorForwardDirection);
-        toApplyX = tmp.getX();
-        toApplyY = tmp.getY();
-        /* And rotate the direction we want to face by the angle */
-        angleToFace = angleToFace.rotateBy(parameters.operatorForwardDirection);
-      }
 
       double rotationRate =
           HeadingController.calculate(parameters.yawAngleDeg, angleToFace.getDegrees());
