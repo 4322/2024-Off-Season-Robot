@@ -187,6 +187,10 @@ public class RobotContainer {
     return autonomousSelector.get();
   }
 
+  public Pose2d getAutoStartingPose() {
+    return autonomousSelector.getStartingPose();
+  }
+
   public void configureAutonomousSelector() {
     autonomousSelector = new AutonomousSelector(swerve, superstructure, shooter, intake);
   }
