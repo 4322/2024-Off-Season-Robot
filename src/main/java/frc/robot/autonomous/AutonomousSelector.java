@@ -1,7 +1,5 @@
 package frc.robot.autonomous;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,12 +24,13 @@ import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
+import java.util.ArrayList;
 
 public class AutonomousSelector {
 
   private SendableChooser<SequentialCommandGroup> autonomousSelector =
       new SendableChooser<SequentialCommandGroup>();
-  
+
   private ArrayList<AutoStartPose> autoNames = new ArrayList<AutoStartPose>();
 
   public AutonomousSelector(
@@ -41,23 +40,31 @@ public class AutonomousSelector {
 
     autonomousSelector.addOption(
         "THREE_NOTE_CENTER", new ThreeNoteCenter(superstructure, swerve, shooter, intake));
-    autoNames.add(new AutoStartPose("THREE_NOTE_CENTER", Robot.fourNoteCenterA.getPreviewStartingHolonomicPose()));
+    autoNames.add(
+        new AutoStartPose(
+            "THREE_NOTE_CENTER", Robot.fourNoteCenterA.getPreviewStartingHolonomicPose()));
 
     autonomousSelector.addOption(
         "CHEEKY_THREE_PIECE", new CheekyThreePiece(superstructure, swerve, shooter, intake));
-    autoNames.add(new AutoStartPose("CHEEKY_THREE_PIECE", Robot.cheekyThreePieceA.getPreviewStartingHolonomicPose()));
+    autoNames.add(
+        new AutoStartPose(
+            "CHEEKY_THREE_PIECE", Robot.cheekyThreePieceA.getPreviewStartingHolonomicPose()));
 
     autonomousSelector.addOption(
         "SIX_NOTE_AMP_SIDE", new SixNoteAmpSide(superstructure, swerve, shooter, intake));
-    autoNames.add(new AutoStartPose("SIX_NOTE_AMP_SIDE", Robot.sixNoteAmpSideA.getPreviewStartingHolonomicPose()));
-    
+    autoNames.add(
+        new AutoStartPose(
+            "SIX_NOTE_AMP_SIDE", Robot.sixNoteAmpSideA.getPreviewStartingHolonomicPose()));
+
     autonomousSelector.addOption(
         "SIX_NOTE_AMP_SIDE_ALTERNATE",
         new SixNoteAmpSideAlternate(superstructure, swerve, shooter, intake));
 
     autonomousSelector.addOption(
         "FOUR_NOTE_CENTER", new FourNoteCenter(superstructure, swerve, shooter, intake));
-    autoNames.add(new AutoStartPose("FOUR_NOTE_CENTER", Robot.fourNoteCenterA.getPreviewStartingHolonomicPose()));
+    autoNames.add(
+        new AutoStartPose(
+            "FOUR_NOTE_CENTER", Robot.fourNoteCenterA.getPreviewStartingHolonomicPose()));
 
     autonomousSelector.addOption(
         "FOUR_NOTE_AMP_SIDE", new FourNoteAmpSide(superstructure, swerve, shooter, intake));
@@ -73,22 +80,28 @@ public class AutonomousSelector {
 
     autonomousSelector.addOption(
         "FOUR_NOTE_SOURCE_SIDE", new FourNoteSourceSide(superstructure, swerve, shooter, intake));
-    autoNames.add(new AutoStartPose("FOUR_NOTE_SOURCE_SIDE", Robot.fourNoteSourceSideA.getPreviewStartingHolonomicPose()));
+    autoNames.add(
+        new AutoStartPose(
+            "FOUR_NOTE_SOURCE_SIDE", Robot.fourNoteSourceSideA.getPreviewStartingHolonomicPose()));
 
     autonomousSelector.addOption(
         "SOURCE_SIDE_RUSH_12", new SourceSideRush12(superstructure, swerve, shooter, intake));
-    autoNames.add(new AutoStartPose("SOURCE_SIDE_RUSH_12", Robot.ssrRushA.getPreviewStartingHolonomicPose()));
+    autoNames.add(
+        new AutoStartPose("SOURCE_SIDE_RUSH_12", Robot.ssrRushA.getPreviewStartingHolonomicPose()));
 
     autonomousSelector.addOption(
         "SOURCE_SIDE_RUSH_21", new SourceSideRush21(superstructure, swerve, shooter, intake));
 
     autonomousSelector.addOption(
         "AMP_SIDE_RUSH", new AmpSideRush(superstructure, swerve, shooter, intake));
-    autoNames.add(new AutoStartPose("AMP_SIDE_RUSH", Robot.asrRushA.getPreviewStartingHolonomicPose()));
+    autoNames.add(
+        new AutoStartPose("AMP_SIDE_RUSH", Robot.asrRushA.getPreviewStartingHolonomicPose()));
 
     autonomousSelector.addOption(
         "FOUR_NOTE_CLOSE", new FourNoteClose(superstructure, swerve, shooter, intake));
-    autoNames.add(new AutoStartPose("FOUR_NOTE_CLOSE", Robot.fourNoteCloseA.getPreviewStartingHolonomicPose()));
+    autoNames.add(
+        new AutoStartPose(
+            "FOUR_NOTE_CLOSE", Robot.fourNoteCloseA.getPreviewStartingHolonomicPose()));
 
     SmartDashboard.putData("Autonomus Selector", autonomousSelector);
   }
