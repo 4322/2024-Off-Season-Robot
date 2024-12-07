@@ -43,7 +43,9 @@ public class SixNoteAmpSide extends SequentialCommandGroup {
                   superstructure.requestIntake(true);
                   superstructure.requestVisionSpeaker(true, true, false);
                 })
-            .deadlineWith(new RunCommand(() -> shooter.requestVisionSpeaker(false))),
+            .deadlineWith(new RunCommand(() -> shooter.requestVisionSpeaker(false)))
+            .alongWith(new WaitUntilCommand(() -> !superstructure.hasPiece())),
+        new WaitUntilCommand(() -> superstructure.hasPiece()),
         new TrajectoryFollowerCommand(() -> Robot.sixNoteAmpSideB, swerve, false, () -> true)
             .beforeStarting(
                 () -> {
@@ -51,7 +53,9 @@ public class SixNoteAmpSide extends SequentialCommandGroup {
                   superstructure.requestIntake(true);
                   superstructure.requestVisionSpeaker(true, true, false);
                 })
-            .deadlineWith(new RunCommand(() -> shooter.requestVisionSpeaker(false))),
+            .deadlineWith(new RunCommand(() -> shooter.requestVisionSpeaker(false)))
+            .alongWith(new WaitUntilCommand(() -> !superstructure.hasPiece())),
+        new WaitUntilCommand(() -> superstructure.hasPiece()),
         new TrajectoryFollowerCommand(
                 () -> Robot.sixNoteAmpSideC, swerve, false, () -> superstructure.hasPiece())
             .beforeStarting(
@@ -79,6 +83,6 @@ public class SixNoteAmpSide extends SequentialCommandGroup {
                   superstructure.requestVisionSpeaker(true, false, false);
                 })
             .deadlineWith(new RunCommand(() -> shooter.requestVisionSpeaker(false))),
-        new StationaryShootCommand(swerve, superstructure, shooter).withTimeout(1.0));
+        new StationaryShootCommand(swerve, superstructure, shooter));
   }
 }
