@@ -2,8 +2,6 @@ package frc.robot;
 
 import com.ctre.phoenix.led.CANdle;
 import com.pathplanner.lib.path.PathPlannerPath;
-
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -200,55 +198,56 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
 
     if (DriverStation.isAutonomous() && DriverStation.isDisabled()) {
-      double xError = m_robotContainer.getAutoStartingPose().getX() - RobotContainer.swerve.getAutoPose().getX();
-      double yError = m_robotContainer.getAutoStartingPose().getY() - RobotContainer.swerve.getAutoPose().getY();
-      double rotError = m_robotContainer.getAutoStartingPose().getRotation().getDegrees()
-                          - RobotContainer.swerve.getAutoPose().getRotation().getDegrees();
+      double xError =
+          m_robotContainer.getAutoStartingPose().getX()
+              - RobotContainer.swerve.getAutoPose().getX();
+      double yError =
+          m_robotContainer.getAutoStartingPose().getY()
+              - RobotContainer.swerve.getAutoPose().getY();
+      double rotError =
+          m_robotContainer.getAutoStartingPose().getRotation().getDegrees()
+              - RobotContainer.swerve.getAutoPose().getRotation().getDegrees();
 
-      if (xError < -0.1) {
+      if (xError < -0.05) {
         if (alliance == Alliance.Red) {
-          leds.setLEDs(0, 0, 255, 0, 29, 36); 
-        }
-        else {
+          leds.setLEDs(0, 0, 255, 0, 29, 36);
+        } else {
           leds.setLEDs(255, 0, 0, 0, 29, 36);
         }
-        
-      } else if (xError > 0.1) {
-          if (alliance == Alliance.Red) {
-            leds.setLEDs(255, 0, 0, 0, 29, 36);
-          } else {
-            leds.setLEDs(0, 0, 255, 0, 29, 36);
-          }
+
+      } else if (xError > 0.05) {
+        if (alliance == Alliance.Red) {
+          leds.setLEDs(255, 0, 0, 0, 29, 36);
+        } else {
+          leds.setLEDs(0, 0, 255, 0, 29, 36);
+        }
       } else {
         leds.setLEDs(0, 255, 0, 0, 29, 36);
       }
-      
-      if (yError < -0.1) {
+
+      if (yError < -0.05) {
         if (alliance == Alliance.Red) {
           leds.setLEDs(255, 0, 0, 0, 8, 20);
-          leds.setLEDs(0, 0, 0, 0, 66, 20); 
-        }
-        else {
+          leds.setLEDs(0, 0, 0, 0, 66, 20);
+        } else {
           leds.setLEDs(255, 0, 0, 0, 66, 20);
           leds.setLEDs(0, 0, 0, 0, 8, 20);
         }
-        
-      } else if (yError > 0.1) {
-          if (alliance == Alliance.Red) {
-            leds.setLEDs(255, 0, 0, 0, 66, 20);
-            leds.setLEDs(0, 0, 0, 0, 8, 20);
-          } else {
-            leds.setLEDs(255, 0, 0, 0, 8, 20);
-            leds.setLEDs(0, 0, 0, 0, 66, 20);
-          }
+
+      } else if (yError > 0.05) {
+        if (alliance == Alliance.Red) {
+          leds.setLEDs(255, 0, 0, 0, 66, 20);
+          leds.setLEDs(0, 0, 0, 0, 8, 20);
+        } else {
+          leds.setLEDs(255, 0, 0, 0, 8, 20);
+          leds.setLEDs(0, 0, 0, 0, 66, 20);
+        }
       } else {
         leds.setLEDs(0, 255, 0, 0, 8, 20);
         leds.setLEDs(0, 255, 0, 0, 66, 20);
       }
-      
-    }
 
-    else {
+    } else {
       if (RobotContainer.superstructure.getSystemState() == SuperstructureState.PRE_CLIMB) {
         leds.clearAnimation(0);
         leds.setLEDs(255, 0, 0, 0, 8, Constants.LED_NUM);
