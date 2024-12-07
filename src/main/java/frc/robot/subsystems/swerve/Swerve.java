@@ -108,9 +108,10 @@ public class Swerve extends SubsystemBase {
           }
         }
 
-        if (pseudoAutoRotateAngle != null && Constants.pseudoAutoRotateEnabled &&
-            desired.vxMetersPerSecond >= Constants.pseudoAutoRotateMinMetersPerSec &&
-            desired.vyMetersPerSecond >= Constants.pseudoAutoRotateMinMetersPerSec) {
+        if (pseudoAutoRotateAngle != null
+            && Constants.pseudoAutoRotateEnabled
+            && desired.vxMetersPerSecond >= Constants.pseudoAutoRotateMinMetersPerSec
+            && desired.vyMetersPerSecond >= Constants.pseudoAutoRotateMinMetersPerSec) {
           drivetrain.setControl(
               new FieldCentricFacingAngle()
                   .withVelocityX(desired.vxMetersPerSecond)
