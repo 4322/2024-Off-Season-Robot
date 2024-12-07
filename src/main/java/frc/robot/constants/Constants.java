@@ -16,6 +16,8 @@ public class Constants {
   public static final boolean tuningMode = false;
   public static final boolean visionEnabled = true;
 
+  public static final double pseudoAutoRotateMinMetersPerSec = 0.3;  // disable below this speed for fine adjustments
+
   public static final double FALCON_FREE_SPEED = 6380.0;
   public static final double KRAKEN_FREE_SPEED = 6000.0;
   public static final double GOAL_INWARD_SHIFT = 0.0;
