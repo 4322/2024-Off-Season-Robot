@@ -43,7 +43,7 @@ public class SixNoteAmpSide extends SequentialCommandGroup {
                   superstructure.requestIntake(true);
                   superstructure.requestVisionSpeaker(true, true, false);
                 })
-            .alongWith(new RunCommand(() -> shooter.requestVisionSpeaker(false))),
+            .deadlineWith(new RunCommand(() -> shooter.requestVisionSpeaker(false))),
         new TrajectoryFollowerCommand(() -> Robot.sixNoteAmpSideB, swerve, false, () -> true)
             .beforeStarting(
                 () -> {
@@ -51,7 +51,7 @@ public class SixNoteAmpSide extends SequentialCommandGroup {
                   superstructure.requestIntake(true);
                   superstructure.requestVisionSpeaker(true, true, false);
                 })
-            .alongWith(new RunCommand(() -> shooter.requestVisionSpeaker(false))),
+            .deadlineWith(new RunCommand(() -> shooter.requestVisionSpeaker(false))),
         new TrajectoryFollowerCommand(
                 () -> Robot.sixNoteAmpSideC, swerve, false, () -> superstructure.hasPiece())
             .beforeStarting(
@@ -60,7 +60,7 @@ public class SixNoteAmpSide extends SequentialCommandGroup {
                   superstructure.requestIntake(true);
                   superstructure.requestVisionSpeaker(true, true, false);
                 })
-            .alongWith(new RunCommand(() -> shooter.requestVisionSpeaker(false)))
+            .deadlineWith(new RunCommand(() -> shooter.requestVisionSpeaker(false)))
             .alongWith(
                 new SequentialCommandGroup(
                     new WaitUntilCommand(
@@ -78,7 +78,7 @@ public class SixNoteAmpSide extends SequentialCommandGroup {
                   superstructure.requestIntake(true);
                   superstructure.requestVisionSpeaker(true, false, false);
                 })
-            .alongWith(new RunCommand(() -> shooter.requestVisionSpeaker(false))),
-        new StationaryShootCommand(swerve, superstructure, shooter));
+            .deadlineWith(new RunCommand(() -> shooter.requestVisionSpeaker(false))),
+        new StationaryShootCommand(swerve, superstructure, shooter).withTimeout(1.0));
   }
 }
