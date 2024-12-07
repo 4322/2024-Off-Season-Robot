@@ -99,7 +99,7 @@ public class AutonomousSelector {
 
   public Pose2d getStartingPose() {
     for (AutoStartPose auto : autoNames) {
-      if (auto.getName() == autonomousSelector.getSelected().getName()) {
+      if (auto.getName().equals(autonomousSelector.getSelected().getName())) {
         return auto.getStartingPose();
       }
     }
