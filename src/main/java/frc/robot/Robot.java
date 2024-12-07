@@ -225,17 +225,21 @@ public class Robot extends LoggedRobot {
       
       if (yError < -0.1) {
         if (alliance == Alliance.Red) {
-          leds.setLEDs(255, 0, 0, 0, 8, 20); 
+          leds.setLEDs(255, 0, 0, 0, 8, 20);
+          leds.setLEDs(0, 0, 0, 0, 66, 20); 
         }
         else {
           leds.setLEDs(255, 0, 0, 0, 66, 20);
+          leds.setLEDs(0, 0, 0, 0, 8, 20);
         }
         
       } else if (yError > 0.1) {
           if (alliance == Alliance.Red) {
             leds.setLEDs(255, 0, 0, 0, 66, 20);
+            leds.setLEDs(0, 0, 0, 0, 8, 20);
           } else {
             leds.setLEDs(255, 0, 0, 0, 8, 20);
+            leds.setLEDs(0, 0, 0, 0, 66, 20);
           }
       } else {
         leds.setLEDs(0, 255, 0, 0, 8, 20);
