@@ -197,21 +197,73 @@ public class Robot extends LoggedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-    if (RobotContainer.superstructure.getSystemState() == SuperstructureState.PRE_CLIMB) {
-      leds.clearAnimation(0);
-      leds.setLEDs(255, 0, 0, 0, 8, Constants.LED_NUM);
-      RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
-    } else if (RobotContainer.superstructure.hasPiece()) {
-      leds.clearAnimation(0);
-      leds.setLEDs(0, 0, 255, 0, 8, Constants.LED_NUM);
-      RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0.25);
-    } else if (RobotContainer.intake.hasPiece()) {
-      leds.clearAnimation(0);
-      RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
+    if (DriverStation.isAutonomous() && DriverStation.isDisabled()) {
+      double xError =
+          m_robotContainer.getAutoStartingPose().getX()
+              - RobotContainer.swerve.getAutoPose().getX();
+      double yError =
+          m_robotContainer.getAutoStartingPose().getY()
+              - RobotContainer.swerve.getAutoPose().getY();
+      double rotError =
+          m_robotContainer.getAutoStartingPose().getRotation().getDegrees()
+              - RobotContainer.swerve.getAutoPose().getRotation().getDegrees();
+
+      if (xError < -0.05) {
+        if (alliance == Alliance.Red) {
+          leds.setLEDs(0, 0, 255, 0, 29, 36);
+        } else {
+          leds.setLEDs(255, 0, 0, 0, 29, 36);
+        }
+
+      } else if (xError > 0.05) {
+        if (alliance == Alliance.Red) {
+          leds.setLEDs(255, 0, 0, 0, 29, 36);
+        } else {
+          leds.setLEDs(0, 0, 255, 0, 29, 36);
+        }
+      } else {
+        leds.setLEDs(0, 255, 0, 0, 29, 36);
+      }
+
+      if (yError < -0.05) {
+        if (alliance == Alliance.Red) {
+          leds.setLEDs(255, 0, 0, 0, 8, 20);
+          leds.setLEDs(0, 0, 0, 0, 66, 20);
+        } else {
+          leds.setLEDs(255, 0, 0, 0, 66, 20);
+          leds.setLEDs(0, 0, 0, 0, 8, 20);
+        }
+
+      } else if (yError > 0.05) {
+        if (alliance == Alliance.Red) {
+          leds.setLEDs(255, 0, 0, 0, 66, 20);
+          leds.setLEDs(0, 0, 0, 0, 8, 20);
+        } else {
+          leds.setLEDs(255, 0, 0, 0, 8, 20);
+          leds.setLEDs(0, 0, 0, 0, 66, 20);
+        }
+      } else {
+        leds.setLEDs(0, 255, 0, 0, 8, 20);
+        leds.setLEDs(0, 255, 0, 0, 66, 20);
+      }
+
     } else {
-      leds.clearAnimation(0);
-      leds.setLEDs(0, 0, 0, 0, 8, Constants.LED_NUM);
-      RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
+      if (RobotContainer.superstructure.getSystemState() == SuperstructureState.PRE_CLIMB) {
+        leds.clearAnimation(0);
+        leds.setLEDs(255, 0, 0, 0, 8, Constants.LED_NUM);
+        RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
+      } else if (RobotContainer.superstructure.hasPiece()) {
+        leds.clearAnimation(0);
+        leds.setLEDs(0, 0, 255, 0, 8, Constants.LED_NUM);
+        RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0.25);
+      } else if (RobotContainer.intake.hasPiece()) {
+        leds.clearAnimation(0);
+        RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
+      } else {
+        leds.clearAnimation(0);
+        leds.setLEDs(0, 0, 0, 0, 8, Constants.LED_NUM);
+        RobotContainer.driver.setRumble(RumbleType.kBothRumble, 0);
+      }
     }
 
     Optional<Alliance> allianceOptional = DriverStation.getAlliance();
