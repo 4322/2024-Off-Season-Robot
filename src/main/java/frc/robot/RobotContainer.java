@@ -84,9 +84,9 @@ public class RobotContainer {
     if (Constants.visionEnabled) {
       frontLeftCamera = new BreadPhotonCamera("front-left");
       frontRightCamera = new BreadPhotonCamera("front-right");
-      backLeftCamera = new BreadPhotonCamera("back-left");
+      // backLeftCamera = new BreadPhotonCamera("back-left");
       // backRightCamera = new BreadPhotonCamera("back-right");
-      aprilTagVision = new PhotonAprilTagVision(frontLeftCamera, frontRightCamera, backLeftCamera);
+      aprilTagVision = new PhotonAprilTagVision(frontLeftCamera, frontRightCamera);
       configureAprilTagVision();
     }
 
