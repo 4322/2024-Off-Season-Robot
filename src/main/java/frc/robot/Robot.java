@@ -288,6 +288,7 @@ public class Robot extends LoggedRobot {
       RobotContainer.superstructure.requestFender(false, false);
       RobotContainer.shooter.requestIdle();
     }
+    RobotContainer.swerve.clearHeadingLock(); // don't rotate when re-enabling
   }
 
   @Override
@@ -309,7 +310,7 @@ public class Robot extends LoggedRobot {
     RobotContainer.shooter.requestIdle();
     RobotContainer.swerve
         .clearHeadingLock(); // Needed to prevent pseudo auto rotate from spinning wildly in place
-    RobotController.setBrownoutVoltage(5.75);
+    RobotController.setBrownoutVoltage(5.75); // roboRIO 2 only
   }
 
   @Override
