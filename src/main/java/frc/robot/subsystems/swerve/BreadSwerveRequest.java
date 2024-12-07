@@ -5,7 +5,6 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.VoltageOut;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -359,7 +358,7 @@ public interface BreadSwerveRequest {
     // TODO: This only works for kP because we're instantiating a new Swerve Request every time
     public PIDController HeadingController =
         new PIDController(
-            Constants.Swerve.pseudoAutoRotateFastkP,
+            Constants.Swerve.pseudoAutoRotatekP,
             Constants.Swerve.pseudoAutoRotatekI,
             Constants.Swerve.pseudoAutoRotatekD);
 
@@ -372,11 +371,6 @@ public interface BreadSwerveRequest {
       double toApplyX = VelocityX;
       double toApplyY = VelocityY;
       Rotation2d angleToFace = TargetDirection;
-
-      if (toApplyX < Constants.pseudoAutoRotateMinMetersPerSec
-          && toApplyY < Constants.pseudoAutoRotateMinMetersPerSec) {
-        HeadingController.setP(Constants.Swerve.pseudoAutoRotateSlowkP);
-      }
 
       double rotationRate =
           HeadingController.calculate(parameters.yawAngleDeg, angleToFace.getDegrees());
