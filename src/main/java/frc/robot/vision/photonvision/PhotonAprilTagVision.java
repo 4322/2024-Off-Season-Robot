@@ -238,14 +238,14 @@ public class PhotonAprilTagVision extends SubsystemBase {
       }
       double avgDistance = totalDistance / tagPose3ds.size();
       double xyStdDev = 0.0;
-      double thetaStdDev = 0.0;
+      double thetaStdDev = 100000.0; // high std dev to decrease trust in vision heading estimate
 
       if (shouldUseMultiTag) {
         xyStdDev = Math.pow(avgDistance, 2.0) / tagPose3ds.size();
-        thetaStdDev = Math.pow(avgDistance, 2.0) / tagPose3ds.size();
+        // thetaStdDev = Math.pow(avgDistance, 2.0) / tagPose3ds.size();
       } else {
         xyStdDev = xyStdDevModel.predict(avgDistance);
-        thetaStdDev = thetaStdDevModel.predict(avgDistance);
+        // thetaStdDev = thetaStdDevModel.predict(avgDistance);
       }
 
       if (shouldUseMultiTag) {
