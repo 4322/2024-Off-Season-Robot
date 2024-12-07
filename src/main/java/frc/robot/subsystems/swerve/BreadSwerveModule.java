@@ -119,7 +119,7 @@ public class BreadSwerveModule {
     talonConfigs.Slot0 = constants.DriveMotorGains;
     talonConfigs.TorqueCurrent.PeakForwardTorqueCurrent = constants.SlipCurrent;
     talonConfigs.TorqueCurrent.PeakReverseTorqueCurrent = -constants.SlipCurrent;
-    talonConfigs.CurrentLimits.SupplyCurrentLimit = 35.0;
+    talonConfigs.CurrentLimits.SupplyCurrentLimit = 30.0;
     talonConfigs.CurrentLimits.StatorCurrentLimit = constants.SlipCurrent;
     talonConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
 
