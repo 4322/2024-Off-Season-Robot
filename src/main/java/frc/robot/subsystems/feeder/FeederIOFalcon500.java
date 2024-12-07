@@ -62,8 +62,6 @@ public class FeederIOFalcon500 implements FeederIO {
     /* Create configs */
     currentLimitConfigs = new CurrentLimitsConfigs();
     currentLimitConfigs.SupplyCurrentLimit = 30.0;
-    currentLimitConfigs.SupplyCurrentThreshold = 30.0;
-    currentLimitConfigs.SupplyTimeThreshold = 1.5;
     currentLimitConfigs.SupplyCurrentLimitEnable = true;
 
     motorOutputConfigs = new MotorOutputConfigs();
@@ -145,8 +143,6 @@ public class FeederIOFalcon500 implements FeederIO {
   public void setCurrentLimit(
       double currentLimit, double supplyCurrentThreshold, double supplyTimeThreshold) {
     currentLimitConfigs.StatorCurrentLimitEnable = true;
-    currentLimitConfigs.SupplyCurrentThreshold = supplyCurrentThreshold;
-    currentLimitConfigs.SupplyTimeThreshold = supplyTimeThreshold;
     currentLimitConfigs.StatorCurrentLimit = currentLimit;
 
     configurator.apply(currentLimitConfigs);

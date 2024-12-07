@@ -252,8 +252,6 @@ public class ShooterIOKrakenX60 implements ShooterIO {
       double currentLimit, double supplyCurrentThreshold, double supplyTimeThreshold) {
     shooterCurrentLimitConfigs.StatorCurrentLimitEnable = true;
     shooterCurrentLimitConfigs.StatorCurrentLimit = currentLimit;
-    shooterCurrentLimitConfigs.SupplyCurrentThreshold = supplyCurrentThreshold;
-    shooterCurrentLimitConfigs.SupplyTimeThreshold = supplyTimeThreshold;
 
     leftConfigurator.apply(shooterCurrentLimitConfigs);
     rightConfigurator.apply(shooterCurrentLimitConfigs);

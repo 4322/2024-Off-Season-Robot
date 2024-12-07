@@ -64,19 +64,15 @@ public class IntakeIOFalcon500 implements IntakeIO {
 
     /* Create configs */
     intakeCurrentLimitConfigs = new CurrentLimitsConfigs();
-    intakeCurrentLimitConfigs.SupplyCurrentLimit = 30.0;
-    intakeCurrentLimitConfigs.SupplyCurrentThreshold = 40.0;
+    intakeCurrentLimitConfigs.SupplyCurrentLimit = 40.0;
     // CLOCKWORK: Stator limit was originally 300
     intakeCurrentLimitConfigs.StatorCurrentLimit = 120.0;
-    intakeCurrentLimitConfigs.SupplyTimeThreshold = 0.1;
     intakeCurrentLimitConfigs.SupplyCurrentLimitEnable = true;
 
     vectorCurrentLimitConfigs = new CurrentLimitsConfigs();
     // CLOCKWORK: Supply limit was originally 100
-    vectorCurrentLimitConfigs.SupplyCurrentLimit = 30.0;
+    vectorCurrentLimitConfigs.SupplyCurrentLimit = 40.0;
     // CLOCKWORK: Supply threshold was originally 100
-    vectorCurrentLimitConfigs.SupplyCurrentThreshold = 40.0;
-    vectorCurrentLimitConfigs.SupplyTimeThreshold = 0.1;
     // CLOCKWORK: Added stator current limit
     vectorCurrentLimitConfigs.StatorCurrentLimit = 120.0;
     vectorCurrentLimitConfigs.SupplyCurrentLimitEnable = true;
@@ -181,8 +177,6 @@ public class IntakeIOFalcon500 implements IntakeIO {
   public void setIntakeCurrentLimit(
       double currentLimit, double supplyCurrentThreshold, double supplyTimeThreshold) {
     intakeCurrentLimitConfigs.StatorCurrentLimitEnable = true;
-    intakeCurrentLimitConfigs.SupplyCurrentThreshold = supplyCurrentThreshold;
-    intakeCurrentLimitConfigs.SupplyTimeThreshold = supplyTimeThreshold;
     intakeCurrentLimitConfigs.StatorCurrentLimit = currentLimit;
 
     intakeConfigurator.apply(intakeCurrentLimitConfigs);
@@ -192,8 +186,6 @@ public class IntakeIOFalcon500 implements IntakeIO {
   public void setVectorCurrentLimit(
       double currentLimit, double supplyCurrentThreshold, double supplyTimeThreshold) {
     vectorCurrentLimitConfigs.StatorCurrentLimitEnable = true;
-    vectorCurrentLimitConfigs.SupplyCurrentThreshold = supplyCurrentThreshold;
-    vectorCurrentLimitConfigs.SupplyTimeThreshold = supplyTimeThreshold;
     vectorCurrentLimitConfigs.StatorCurrentLimit = currentLimit;
 
     vectorConfigurator.apply(vectorCurrentLimitConfigs);

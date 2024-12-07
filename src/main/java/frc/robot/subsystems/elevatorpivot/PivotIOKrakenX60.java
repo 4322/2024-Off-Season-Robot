@@ -85,7 +85,6 @@ public class PivotIOKrakenX60 implements PivotIO {
     currentLimitConfigs.StatorCurrentLimitEnable = true;
     currentLimitConfigs.StatorCurrentLimit = 100.0;
     currentLimitConfigs.SupplyCurrentLimit = 40.0;
-    currentLimitConfigs.SupplyTimeThreshold = 1.5;
 
     motorOutputConfigs = new MotorOutputConfigs();
     motorOutputConfigs.Inverted = PIVOT_INVERSION;
@@ -207,8 +206,6 @@ public class PivotIOKrakenX60 implements PivotIO {
       double currentLimit, double supplyCurrentThreshold, double supplyTimeThreshold) {
     currentLimitConfigs.StatorCurrentLimitEnable = true;
     currentLimitConfigs.StatorCurrentLimit = currentLimit;
-    currentLimitConfigs.SupplyCurrentThreshold = supplyCurrentThreshold;
-    currentLimitConfigs.SupplyTimeThreshold = supplyTimeThreshold;
 
     pivotConfigurator.apply(currentLimitConfigs);
   }
